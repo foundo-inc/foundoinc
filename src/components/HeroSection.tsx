@@ -28,9 +28,10 @@ const HeroSection = () => (
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-[1.1] mb-5 tracking-tight font-display animate-fade-up">
-            Launch Your{" "}
+            Turn Your Idea into a{" "}
             <span className="text-gradient">U.S. Company</span>
-            {" "}from Anywhere
+            <br />
+            <span className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-muted-foreground tracking-normal">Foundo for Founders</span>
           </h1>
 
           <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-md leading-relaxed animate-fade-up-delay">
