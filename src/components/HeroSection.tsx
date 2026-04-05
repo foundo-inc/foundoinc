@@ -175,7 +175,9 @@ const HeroSection = () => {
         </div>
       </div>
     </div>
-  </section>
-);
+      <StatePricingModal open={pricingOpen} onOpenChange={setPricingOpen} />
+    </section>
+  );
+};
 
 export default HeroSection;
