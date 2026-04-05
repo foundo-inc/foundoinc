@@ -19,9 +19,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-background/90 backdrop-blur-xl shadow-sm border-b border-border/50' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-xl shadow-sm border-b border-border' : 'bg-transparent'}`}>
       <div className="container mx-auto flex items-center justify-between h-20 px-4">
-        <a href="#" className="flex items-center gap-2">
+        <a href="#" className="flex items-center gap-2.5">
           <div className="h-9 w-9 rounded-xl hero-gradient-2 flex items-center justify-center">
             <span className="text-primary-foreground font-bold text-lg">F</span>
           </div>
@@ -32,7 +32,7 @@ const Navbar = () => {
             <a
               key={l.label}
               href={l.href}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-primary/10 ${scrolled ? 'text-muted-foreground hover:text-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10'}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${scrolled ? 'text-muted-foreground hover:text-foreground' : 'text-primary-foreground/70 hover:text-primary-foreground'}`}
             >
               {l.label}
             </a>
@@ -49,7 +49,7 @@ const Navbar = () => {
         </button>
       </div>
       {open && (
-        <div className="md:hidden glass-card-strong mx-4 mb-4 rounded-2xl p-4 space-y-1 shadow-xl">
+        <div className="md:hidden bg-card border border-border mx-4 mb-4 rounded-2xl p-4 space-y-1 shadow-xl">
           {links.map(l => (
             <a key={l.label} href={l.href} className="block py-3 px-4 rounded-xl text-sm font-medium text-foreground hover:bg-accent transition-colors" onClick={() => setOpen(false)}>{l.label}</a>
           ))}

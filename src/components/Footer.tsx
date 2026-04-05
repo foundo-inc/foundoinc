@@ -1,9 +1,9 @@
 const Footer = () => (
-  <footer className="py-16 border-t border-border/50 bg-card">
+  <footer className="py-16 border-t border-border bg-card">
     <div className="container mx-auto px-4">
       <div className="grid md:grid-cols-4 gap-10 mb-12">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2.5 mb-4">
             <div className="h-9 w-9 rounded-xl hero-gradient-2 flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">F</span>
             </div>
@@ -30,7 +30,7 @@ const Footer = () => (
           </div>
         </div>
       </div>
-      <div className="pt-8 border-t border-border/50">
+      <div className="pt-8 border-t border-border">
         <p className="text-center text-xs text-muted-foreground">© {new Date().getFullYear()} Foundo. All rights reserved.</p>
       </div>
     </div>

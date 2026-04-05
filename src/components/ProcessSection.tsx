@@ -8,38 +8,29 @@ const steps = [
 ];
 
 const ProcessSection = () => (
-  <section id="how-it-works" className="py-24 md:py-32 relative">
-    <div className="absolute inset-0 mesh-gradient" />
-    <div className="container mx-auto px-4 relative">
-      <div className="text-center max-w-2xl mx-auto mb-20">
-        <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider mb-5">
-          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          How It Works
-        </div>
+  <section id="how-it-works" className="py-24 md:py-32">
+    <div className="container mx-auto px-4">
+      <div className="text-center max-w-2xl mx-auto mb-16">
+        <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">How It Works</p>
         <h2 className="text-3xl md:text-5xl font-extrabold mb-5 font-display">
-          4 Simple Steps to Your
-          <br />
+          4 Simple Steps to Your <br className="hidden md:block" />
           <span className="text-gradient">U.S. Business</span>
         </h2>
-        <p className="text-muted-foreground text-lg leading-relaxed">From sign-up to your fully operational U.S. company in days, not months.</p>
+        <p className="text-muted-foreground text-lg">From sign-up to your fully operational U.S. company in days, not months.</p>
       </div>
-
-      <div className="max-w-4xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-5">
-          {steps.map((s, i) => (
-            <div key={i} className="group relative p-8 rounded-3xl bg-card border border-border/60 card-hover overflow-hidden">
-              <span className="absolute top-6 right-6 text-6xl font-extrabold text-primary/[0.04] font-display">{s.num}</span>
-              <div className="h-14 w-14 rounded-2xl hero-gradient-2 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-primary/20">
-                <s.icon className="h-7 w-7 text-primary-foreground" />
-              </div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full">Step {s.num}</span>
-              </div>
-              <h3 className="font-bold text-xl mb-2 font-display">{s.title}</h3>
+      <div className="max-w-3xl mx-auto space-y-6">
+        {steps.map((s, i) => (
+          <div key={i} className="group flex gap-6 p-6 rounded-2xl border border-border bg-card card-hover items-start">
+            <div className="h-14 w-14 rounded-xl hero-gradient-2 flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+              <s.icon className="h-7 w-7 text-primary-foreground" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-primary mb-1 block">Step {s.num}</span>
+              <h3 className="font-bold text-xl mb-1 font-display">{s.title}</h3>
               <p className="text-muted-foreground text-sm leading-relaxed">{s.desc}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
