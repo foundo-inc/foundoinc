@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, DollarSign, Sparkles, Shield, Globe2, CreditCard } from "lucide-react";
+import StatePricingModal from "@/components/StatePricingModal";
 
 const stats = [
   { value: "10K+", label: "Companies Formed" },
