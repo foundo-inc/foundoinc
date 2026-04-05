@@ -27,12 +27,10 @@ const HeroSection = () => (
             <span className="text-primary text-xs font-semibold tracking-wide">IRS Certified Acceptance Agent</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[3.75rem] xl:text-[4.25rem] font-extrabold text-foreground leading-[1.08] mb-5 tracking-tight font-display animate-fade-up">
-            Launch Your
-            <br />
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-[1.1] mb-5 tracking-tight font-display animate-fade-up">
+            Launch Your{" "}
             <span className="text-gradient">U.S. Company</span>
-            <br />
-            from Anywhere
+            {" "}from Anywhere
           </h1>
 
           <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-md leading-relaxed animate-fade-up-delay">
