@@ -30,9 +30,8 @@ const HeroSection = () => {
               <span className="text-primary text-[11px] md:text-xs font-semibold tracking-wide">IRS Certified Acceptance Agent</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-[1.05] mb-2 md:mb-3 tracking-tight font-display animate-fade-up">
-              Turn Your Idea into a{" "}
-              <span className="text-gradient">U.S. Company</span>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-none mb-2 md:mb-3 tracking-tighter font-display animate-fade-up">
+              Turn Your Idea into a <span className="text-gradient">U.S. Company</span>
             </h1>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-muted-foreground tracking-normal mb-4 md:mb-5 animate-fade-up">Foundo for Founders</p>
 
