@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, DollarSign, Sparkles, Shield, Globe2, CreditCard } from "lucide-react";
+import StatePricingModal from "@/components/StatePricingModal";
 
 const stats = [
   { value: "10K+", label: "Companies Formed" },
@@ -11,7 +13,10 @@ const logos = [
   "Stripe", "Mercury", "Wise", "PayPal", "Payoneer", "Relay", "Brex", "Shopify"
 ];
 
-const HeroSection = () => (
+const HeroSection = () => {
+  const [pricingOpen, setPricingOpen] = useState(false);
+
+  return (
   <section className="relative bg-background pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
     {/* Decorative gradients */}
     <div className="absolute top-[-200px] right-[-200px] w-[700px] h-[700px] rounded-full bg-primary/[0.04] blur-3xl" />
@@ -52,7 +57,7 @@ const HeroSection = () => (
             <Button size="lg" className="rounded-full text-sm font-semibold px-7 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12">
               Start Your Business <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" className="rounded-full text-sm font-semibold border-border text-foreground hover:bg-muted/50 h-12 transition-all duration-300">
+            <Button variant="outline" size="lg" className="rounded-full text-sm font-semibold border-border text-foreground hover:bg-muted/50 h-12 transition-all duration-300" onClick={() => setPricingOpen(true)}>
               <DollarSign className="mr-1 h-4 w-4" /> See Formation Cost
             </Button>
           </div>
@@ -170,7 +175,9 @@ const HeroSection = () => (
         </div>
       </div>
     </div>
-  </section>
-);
+      <StatePricingModal open={pricingOpen} onOpenChange={setPricingOpen} />
+    </section>
+  );
+};
 
 export default HeroSection;
