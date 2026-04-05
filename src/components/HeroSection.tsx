@@ -57,7 +57,7 @@ const HeroSection = () => {
             <Button size="lg" className="rounded-full text-sm font-semibold px-7 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12">
               Start Your Business <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" className="rounded-full text-sm font-semibold border-border text-foreground hover:bg-muted/50 h-12 transition-all duration-300">
+            <Button variant="outline" size="lg" className="rounded-full text-sm font-semibold border-border text-foreground hover:bg-muted/50 h-12 transition-all duration-300" onClick={() => setPricingOpen(true)}>
               <DollarSign className="mr-1 h-4 w-4" /> See Formation Cost
             </Button>
           </div>
