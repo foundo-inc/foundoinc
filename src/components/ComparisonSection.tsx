@@ -14,49 +14,42 @@ const features: { feature: string; foundo: Status; diy: Status; lawyer: Status }
 ];
 
 const StatusIcon = ({ status }: { status: Status }) => {
-  if (status === "yes") return <CheckCircle className="h-5 w-5 text-primary" />;
-  if (status === "no") return <XCircle className="h-5 w-5 text-destructive/50" />;
-  return <MinusCircle className="h-5 w-5 text-muted-foreground/40" />;
+  if (status === "yes") return <CheckCircle className="h-4 w-4 text-primary" />;
+  if (status === "no") return <XCircle className="h-4 w-4 text-destructive/40" />;
+  return <MinusCircle className="h-4 w-4 text-muted-foreground/30" />;
 };
 
 const ComparisonSection = () => (
-  <section className="py-28 md:py-36 section-alt relative overflow-hidden">
-    <div className="absolute inset-0 bg-dot-pattern" />
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="text-center max-w-2xl mx-auto mb-20">
-        <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6 glow-blue-subtle">
-          <span className="text-primary text-xs font-bold uppercase tracking-widest">Comparison</span>
-        </div>
-        <h2 className="text-3xl md:text-5xl font-extrabold mb-5 font-display">
+  <section className="py-20 md:py-28 bg-muted/30 relative">
+    <div className="container mx-auto px-4">
+      <div className="text-center max-w-xl mx-auto mb-14">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">Comparison</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 font-display">
           Foundo vs <span className="text-gradient">Alternatives</span>
         </h2>
-        <p className="text-muted-foreground text-lg">
-          See why international founders choose Foundo over DIY or expensive lawyers.
-        </p>
+        <p className="text-muted-foreground text-sm">Why international founders choose Foundo.</p>
       </div>
 
-      <div className="max-w-4xl mx-auto rounded-2xl bg-card overflow-hidden shadow-lg shadow-primary/5 gradient-border">
-        {/* Header */}
-        <div className="grid grid-cols-4 gap-0 border-b border-border bg-muted/30">
-          <div className="p-5 font-semibold text-sm text-muted-foreground">Feature</div>
-          <div className="p-5 text-center bg-primary/5 border-x border-primary/10">
-            <span className="font-extrabold text-primary font-display text-lg">Foundo</span>
+      <div className="max-w-3xl mx-auto rounded-2xl border border-border bg-card overflow-hidden shadow-sm">
+        <div className="grid grid-cols-4 gap-0 border-b border-border bg-muted/40">
+          <div className="p-4 font-medium text-xs text-muted-foreground">Feature</div>
+          <div className="p-4 text-center bg-primary/[0.06] border-x border-primary/10">
+            <span className="font-extrabold text-primary font-display text-sm">Foundo</span>
           </div>
-          <div className="p-5 text-center font-semibold text-sm text-muted-foreground">DIY</div>
-          <div className="p-5 text-center font-semibold text-sm text-muted-foreground">Law Firm</div>
+          <div className="p-4 text-center font-medium text-xs text-muted-foreground">DIY</div>
+          <div className="p-4 text-center font-medium text-xs text-muted-foreground">Law Firm</div>
         </div>
 
-        {/* Rows */}
         {features.map((f, i) => (
-          <div key={i} className={`grid grid-cols-4 gap-0 group hover:bg-muted/20 transition-colors ${i < features.length - 1 ? "border-b border-border" : ""}`}>
-            <div className="p-5 flex items-center text-sm font-medium text-foreground">{f.feature}</div>
-            <div className="p-5 flex items-center justify-center bg-primary/5 border-x border-primary/10">
+          <div key={i} className={`grid grid-cols-4 gap-0 hover:bg-muted/20 transition-colors ${i < features.length - 1 ? "border-b border-border" : ""}`}>
+            <div className="p-4 flex items-center text-xs font-medium text-foreground">{f.feature}</div>
+            <div className="p-4 flex items-center justify-center bg-primary/[0.04] border-x border-primary/10">
               <StatusIcon status={f.foundo} />
             </div>
-            <div className="p-5 flex items-center justify-center">
+            <div className="p-4 flex items-center justify-center">
               <StatusIcon status={f.diy} />
             </div>
-            <div className="p-5 flex items-center justify-center">
+            <div className="p-4 flex items-center justify-center">
               <StatusIcon status={f.lawyer} />
             </div>
           </div>
