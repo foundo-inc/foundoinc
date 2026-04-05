@@ -30,12 +30,11 @@ const HeroSection = () => {
               <span className="text-primary text-[11px] md:text-xs font-semibold tracking-wide">IRS Certified Acceptance Agent</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-[1.15] mb-4 md:mb-5 tracking-tight font-display animate-fade-up">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[3.25rem] xl:text-[3.75rem] font-extrabold text-foreground leading-[1.05] mb-2 md:mb-3 tracking-tight font-display animate-fade-up">
               Turn Your Idea into a{" "}
               <span className="text-gradient">U.S. Company</span>
-              <br />
-              <span className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-semibold text-muted-foreground tracking-normal">Foundo for Founders</span>
             </h1>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-muted-foreground tracking-normal mb-4 md:mb-5 animate-fade-up">Foundo for Founders</p>
 
             <p className="text-muted-foreground text-sm md:text-base lg:text-lg mb-5 md:mb-6 max-w-md leading-relaxed animate-fade-up-delay">
               Form your U.S. company with EIN, ITIN, and business bank account.
