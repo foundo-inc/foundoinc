@@ -16,19 +16,22 @@ const faqs = [
 ];
 
 const FAQSection = () => (
-  <section className="py-24 md:py-32 bg-background">
-    <div className="container mx-auto px-4">
-      <div className="text-center max-w-2xl mx-auto mb-16">
-        <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-4">FAQ</p>
+  <section id="faq" className="py-28 md:py-36 section-alt relative overflow-hidden">
+    <div className="absolute inset-0 bg-grid-pattern" />
+    <div className="container mx-auto px-4 relative z-10">
+      <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="inline-flex items-center gap-2 glass-card rounded-full px-4 py-2 mb-6 glow-blue-subtle">
+          <span className="text-primary text-xs font-bold uppercase tracking-widest">FAQ</span>
+        </div>
         <h2 className="text-3xl md:text-5xl font-extrabold mb-5 font-display">
-          Frequently Asked Questions
+          Frequently Asked <span className="text-gradient">Questions</span>
         </h2>
       </div>
       <div className="max-w-3xl mx-auto">
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((faq, i) => (
-            <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-xl px-6 data-[state=open]:shadow-sm">
-              <AccordionTrigger className="text-left font-semibold text-base py-5 hover:no-underline">
+            <AccordionItem key={i} value={`faq-${i}`} className="border border-border rounded-xl px-6 bg-card data-[state=open]:shadow-md data-[state=open]:shadow-primary/5 data-[state=open]:border-primary/20 transition-all duration-300">
+              <AccordionTrigger className="text-left font-semibold text-base py-5 hover:no-underline hover:text-primary transition-colors">
                 {faq.q}
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-5">
