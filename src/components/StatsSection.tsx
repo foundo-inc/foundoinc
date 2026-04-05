@@ -8,32 +8,26 @@ const stats = [
 ];
 
 const StatsSection = () => (
-  <section className="py-28 md:py-36 section-dark relative overflow-hidden">
-    <div className="absolute inset-0 bg-grid-pattern opacity-50" />
-    <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[radial-gradient(ellipse_at_center,_hsl(230,97%,46%,0.1)_0%,_transparent_60%)]" />
+  <section className="py-20 md:py-28 bg-foreground relative overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(230,97%,46%,0.12)_0%,_transparent_50%)]" />
     
     <div className="container mx-auto px-4 relative z-10">
-      <div className="text-center max-w-2xl mx-auto mb-20">
-        <div className="inline-flex items-center gap-2 glass-card-dark rounded-full px-4 py-2 mb-6">
-          <span className="text-primary text-xs font-bold uppercase tracking-widest">By The Numbers</span>
-        </div>
-        <h2 className="text-3xl md:text-5xl font-extrabold mb-5 font-display text-primary-foreground">
-          Trusted by Founders <span className="text-gradient-light">Worldwide</span>
+      <div className="text-center max-w-xl mx-auto mb-14">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">By The Numbers</p>
+        <h2 className="text-3xl md:text-4xl font-extrabold font-display text-primary-foreground">
+          Trusted by Founders <span className="text-primary">Worldwide</span>
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
         {stats.map((s, i) => (
-          <div key={i} className="group text-center p-8 rounded-2xl glass-card-dark card-hover relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative z-10">
-              <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                <s.icon className="h-7 w-7 text-primary" />
-              </div>
-              <p className="text-4xl md:text-5xl font-extrabold text-primary-foreground font-display mb-2">{s.value}</p>
-              <p className="font-semibold text-primary-foreground/80 text-sm mb-1">{s.label}</p>
-              <p className="text-primary-foreground/40 text-xs">{s.desc}</p>
+          <div key={i} className="group text-center p-6 rounded-2xl border border-primary-foreground/[0.06] bg-primary-foreground/[0.03] hover:bg-primary-foreground/[0.06] transition-all duration-300">
+            <div className="h-11 w-11 rounded-xl bg-primary/15 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+              <s.icon className="h-5 w-5 text-primary" />
             </div>
+            <p className="text-3xl md:text-4xl font-extrabold text-primary-foreground font-display mb-1">{s.value}</p>
+            <p className="font-medium text-primary-foreground/70 text-xs mb-0.5">{s.label}</p>
+            <p className="text-primary-foreground/40 text-[10px]">{s.desc}</p>
           </div>
         ))}
       </div>
