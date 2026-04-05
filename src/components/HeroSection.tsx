@@ -13,7 +13,10 @@ const logos = [
   "Stripe", "Mercury", "Wise", "PayPal", "Payoneer", "Relay", "Brex", "Shopify"
 ];
 
-const HeroSection = () => (
+const HeroSection = () => {
+  const [pricingOpen, setPricingOpen] = useState(false);
+
+  return (
   <section className="relative bg-background pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden">
     {/* Decorative gradients */}
     <div className="absolute top-[-200px] right-[-200px] w-[700px] h-[700px] rounded-full bg-primary/[0.04] blur-3xl" />
