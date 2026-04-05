@@ -11,32 +11,32 @@ const benefits = [
 ];
 
 const WhyFoundoSection = () => (
-  <section id="why-foundo" className="py-16 md:py-24 lg:py-28 bg-background relative">
+  <section id="why-foundo" className="py-20 md:py-28 lg:py-32 bg-background relative">
     <div className="container mx-auto px-5 md:px-4">
-      <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+      <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         <div className="lg:sticky lg:top-28">
-          <p className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 md:mb-3">Why Foundo</p>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 md:mb-4 font-display leading-tight">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Why Foundo</p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-5 font-display leading-tight">
             We Don't Just Set Up Your Business — We Set You Up for{" "}
             <span className="text-gradient">Success.</span>
           </h2>
-          <p className="text-muted-foreground text-xs md:text-sm mb-5 md:mb-6 leading-relaxed max-w-md">
+          <p className="text-muted-foreground text-base md:text-lg mb-6 md:mb-8 leading-relaxed max-w-lg">
             See how Foundo stacks up against doing it yourself or using traditional legal firms.
           </p>
-          <Button size="lg" className="rounded-full shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-11 md:h-12 px-6 md:px-7 text-xs md:text-sm font-semibold">
-            Get Started Today <ArrowRight className="ml-2 h-4 w-4" />
+          <Button size="lg" className="rounded-full shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12 md:h-14 px-7 md:px-8 text-sm md:text-base font-semibold">
+            Get Started Today <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
 
-        <div className="space-y-2.5 md:space-y-3">
+        <div className="space-y-3 md:space-y-4">
           {benefits.map((b, i) => (
-            <div key={i} className="group flex items-start gap-3 md:gap-4 p-4 md:p-5 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-300">
-              <div className="h-9 md:h-10 w-9 md:w-10 rounded-lg bg-primary/[0.08] flex items-center justify-center shrink-0 group-hover:bg-primary/[0.12] transition-colors">
-                <b.icon className="h-4 md:h-5 w-4 md:w-5 text-primary" />
+            <div key={i} className="group flex items-start gap-4 md:gap-5 p-5 md:p-6 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-300">
+              <div className="h-11 md:h-12 w-11 md:w-12 rounded-lg bg-primary/[0.08] flex items-center justify-center shrink-0 group-hover:bg-primary/[0.12] transition-colors">
+                <b.icon className="h-5 md:h-6 w-5 md:w-6 text-primary" />
               </div>
               <div>
-                <h3 className="font-bold text-xs md:text-sm mb-0.5 font-display">{b.title}</h3>
-                <p className="text-muted-foreground text-[11px] md:text-xs leading-relaxed">{b.desc}</p>
+                <h3 className="font-bold text-base md:text-lg mb-1 font-display">{b.title}</h3>
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed">{b.desc}</p>
               </div>
             </div>
           ))}

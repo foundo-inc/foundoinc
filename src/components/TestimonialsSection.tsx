@@ -12,30 +12,30 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => (
-  <section className="py-16 md:py-24 lg:py-28 bg-muted/30 relative">
+  <section className="py-20 md:py-28 lg:py-32 bg-muted/30 relative">
     <div className="container mx-auto px-5 md:px-4">
-      <div className="text-center max-w-xl mx-auto mb-10 md:mb-14">
-        <p className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 md:mb-3">Testimonials</p>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 md:mb-4 font-display">
+      <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+        <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Testimonials</p>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-5 font-display leading-tight">
           Hear From Our <span className="text-gradient">Clients</span>
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         {testimonials.map((t, i) => (
-          <div key={i} className="group p-4 md:p-5 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-300">
-            <div className="flex items-center gap-2.5 mb-2.5 md:mb-3">
-              <div className={`h-8 md:h-9 w-8 md:w-9 rounded-full ${t.color} flex items-center justify-center text-primary-foreground font-bold text-[10px] md:text-xs`}>
+          <div key={i} className="group p-5 md:p-6 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-300">
+            <div className="flex items-center gap-3 mb-3 md:mb-4">
+              <div className={`h-10 md:h-11 w-10 md:w-11 rounded-full ${t.color} flex items-center justify-center text-primary-foreground font-bold text-sm`}>
                 {t.avatar}
               </div>
               <div>
-                <p className="font-bold text-[11px] md:text-xs font-display">{t.name}</p>
-                <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.company}</p>
+                <p className="font-bold text-sm md:text-base font-display">{t.name}</p>
+                <p className="text-xs md:text-sm text-muted-foreground">{t.company}</p>
               </div>
             </div>
-            <p className="text-foreground text-[11px] md:text-xs leading-relaxed mb-2.5 md:mb-3">{t.text}</p>
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, j) => <Star key={j} className="h-2.5 md:h-3 w-2.5 md:w-3 fill-amber-400 text-amber-400" />)}
+            <p className="text-foreground text-sm md:text-base leading-relaxed mb-3 md:mb-4">{t.text}</p>
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, j) => <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />)}
             </div>
           </div>
         ))}

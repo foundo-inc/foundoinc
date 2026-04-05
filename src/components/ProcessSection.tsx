@@ -8,29 +8,29 @@ const steps = [
 ];
 
 const ProcessSection = () => (
-  <section id="how-it-works" className="py-16 md:py-24 lg:py-28 bg-background relative">
+  <section id="how-it-works" className="py-20 md:py-28 lg:py-32 bg-background relative">
     <div className="container mx-auto px-5 md:px-4">
-      <div className="text-center max-w-xl mx-auto mb-10 md:mb-14">
-        <p className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2 md:mb-3">How It Works</p>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 md:mb-4 font-display">
+      <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+        <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">How It Works</p>
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-5 font-display leading-tight">
           From Zero to U.S. Business in <span className="text-gradient">4 Steps</span>
         </h2>
-        <p className="text-muted-foreground text-xs md:text-sm">No lawyers, no complexity. Easy as signing up for an app.</p>
+        <p className="text-muted-foreground text-base md:text-lg">No lawyers, no complexity. Easy as signing up for an app.</p>
       </div>
       
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         {steps.map((s, i) => (
-          <div key={i} className="group text-center p-4 md:p-6 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.04] transition-all duration-300 hover:-translate-y-1 relative">
-            <div className="relative inline-flex mb-3 md:mb-5">
-              <div className="h-12 md:h-16 w-12 md:w-16 rounded-xl md:rounded-2xl bg-primary/[0.08] flex items-center justify-center group-hover:bg-primary/[0.12] transition-colors">
-                <s.icon className="h-5 md:h-7 w-5 md:w-7 text-primary" />
+          <div key={i} className="group text-center p-5 md:p-7 rounded-2xl border border-border bg-card hover:border-primary/20 hover:shadow-lg hover:shadow-primary/[0.04] transition-all duration-300 hover:-translate-y-1 relative">
+            <div className="relative inline-flex mb-4 md:mb-6">
+              <div className="h-14 md:h-18 w-14 md:w-18 rounded-2xl bg-primary/[0.08] flex items-center justify-center group-hover:bg-primary/[0.12] transition-colors">
+                <s.icon className="h-6 md:h-8 w-6 md:w-8 text-primary" />
               </div>
-              <span className="absolute -top-1 -right-1 md:-top-1.5 md:-right-1.5 h-5 md:h-6 w-5 md:w-6 rounded-full bg-primary text-primary-foreground text-[9px] md:text-[10px] font-bold flex items-center justify-center shadow-md">
+              <span className="absolute -top-1.5 -right-1.5 h-6 md:h-7 w-6 md:w-7 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center shadow-md">
                 {s.num}
               </span>
             </div>
-            <h3 className="font-bold text-xs md:text-sm mb-1 md:mb-1.5 font-display">{s.title}</h3>
-            <p className="text-muted-foreground text-[11px] md:text-xs leading-relaxed">{s.desc}</p>
+            <h3 className="font-bold text-base md:text-lg mb-1.5 md:mb-2 font-display">{s.title}</h3>
+            <p className="text-muted-foreground text-sm md:text-base leading-relaxed">{s.desc}</p>
           </div>
         ))}
       </div>
