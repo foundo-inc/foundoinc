@@ -4,18 +4,21 @@ import { Button } from "@/components/ui/button";
 const states = [
   {
     name: "Wyoming",
+    abbr: "WY",
     popular: true,
     price: "$399",
     benefits: ["No state income tax", "Strongest privacy protections", "Low annual fees ($60/yr)", "No public disclosure", "Fast processing (1–2 days)"],
   },
   {
     name: "Delaware",
+    abbr: "DE",
     popular: false,
     price: "$449",
     benefits: ["Preferred by investors & VCs", "Business-friendly courts", "Flexible corporate laws", "No sales tax on services", "Established legal precedent"],
   },
   {
     name: "New Mexico",
+    abbr: "NM",
     popular: false,
     price: "$349",
     benefits: ["Lowest formation cost", "No annual report required", "No state franchise tax", "Strong privacy protections", "Great for solo founders"],
