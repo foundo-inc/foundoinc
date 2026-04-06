@@ -1,16 +1,25 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, DollarSign, Sparkles, Shield, Globe2, CreditCard } from "lucide-react";
-import StatePricingModal from "@/components/StatePricingModal";
+import StatePricingModal from "./StatePricingModal";
+import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign } from "lucide-react";
 
-const stats = [
-  { value: "10K+", label: "Companies Formed" },
-  { value: "50+", label: "Countries Served" },
-  { value: "24/7", label: "Expert Support" },
+import mercuryLogo from "@/assets/partners/mercury.svg";
+import airwallexLogo from "@/assets/partners/airwallex.svg";
+import payoneerLogo from "@/assets/partners/payoneer.svg";
+import stripeLogo from "@/assets/partners/stripe.svg";
+import quoLogo from "@/assets/partners/quo.svg";
+
+const features = [
+  { icon: Shield, text: "Full legal compliance" },
+  { icon: Clock, text: "Ready in 1–3 days" },
+  { icon: DollarSign, text: "All-inclusive pricing" },
 ];
 
-const logos = [
-  "Stripe", "Mercury", "Wise", "PayPal", "Payoneer", "Relay", "Brex", "Shopify"
+const partnerLogos = [
+  { name: "Mercury", logo: mercuryLogo },
+  { name: "Airwallex", logo: airwallexLogo },
+  { name: "Payoneer", logo: payoneerLogo },
+  { name: "Stripe", logo: stripeLogo },
+  { name: "Quo", logo: quoLogo },
 ];
 
 const HeroSection = () => {
