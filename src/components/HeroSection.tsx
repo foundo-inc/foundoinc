@@ -1,6 +1,7 @@
 import { useState } from "react";
 import StatePricingModal from "./StatePricingModal";
-import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign } from "lucide-react";
+import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign, Sparkles, Globe2, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import mercuryLogo from "@/assets/partners/mercury.svg";
 import airwallexLogo from "@/assets/partners/airwallex.svg";
@@ -12,6 +13,12 @@ const features = [
   { icon: Shield, text: "Full legal compliance" },
   { icon: Clock, text: "Ready in 1–3 days" },
   { icon: DollarSign, text: "All-inclusive pricing" },
+];
+
+const stats = [
+  { value: "500+", label: "Companies Formed" },
+  { value: "50+", label: "Countries" },
+  { value: "$2B+", label: "Revenue Processed" },
 ];
 
 const partnerLogos = [
@@ -159,16 +166,17 @@ const HeroSection = () => {
 
         <div className="mt-14 md:mt-20 lg:mt-28 pt-10 border-t border-border/50">
           <p className="text-center text-sm text-muted-foreground mb-8 font-medium tracking-wide uppercase">
-            Trusted by <span className="text-foreground font-semibold">600+</span> businesses worldwide
+            Our Strategic Partners and Affiliates
           </p>
-          <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10" />
-            <div className="flex items-center gap-12 md:gap-16 animate-marquee">
-              {[...logos, ...logos].map((logo, i) => (
-                <span key={i} className="text-muted-foreground/25 font-bold text-lg md:text-xl font-display tracking-tight whitespace-nowrap">{logo}</span>
-              ))}
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-14 lg:gap-20 max-w-4xl mx-auto">
+            {partnerLogos.map((p) => (
+              <img
+                key={p.name}
+                src={p.logo}
+                alt={p.name}
+                className="h-6 md:h-8 w-auto opacity-40 hover:opacity-80 transition-opacity duration-300"
+              />
+            ))}
           </div>
         </div>
       </div>
