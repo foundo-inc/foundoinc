@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import mercuryLogo from "@/assets/partners/mercury.svg";
 import airwallexLogo from "@/assets/partners/airwallex.svg";
 import payoneerLogo from "@/assets/partners/payoneer.svg";
-import stripeLogo from "@/assets/partners/stripe.svg";
+
 
 
 const features = [
@@ -25,7 +25,6 @@ const partnerLogos = [
   { name: "Mercury", logo: mercuryLogo },
   { name: "Airwallex", logo: airwallexLogo },
   { name: "Payoneer", logo: payoneerLogo },
-  { name: "Stripe", logo: stripeLogo },
 ];
 
 const HeroSection = () => {
