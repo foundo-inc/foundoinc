@@ -168,9 +168,9 @@ const HeroSection = () => {
           <p className="text-center text-sm text-muted-foreground mb-8 font-medium tracking-wide uppercase">
             Our Strategic Partners and Affiliates
           </p>
-          <div className="flex flex-nowrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto overflow-x-auto no-scrollbar">
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto">
             {partnerLogos.map((p) => (
-              <div key={p.name} className="flex items-center justify-center flex-shrink-0 w-[140px] md:w-[160px] h-[32px] md:h-[36px]">
+              <div key={p.name} className="flex items-center justify-center w-[100px] sm:w-[140px] md:w-[160px] h-[28px] sm:h-[32px] md:h-[36px]">
                 <img
                   src={p.logo}
                   alt={p.name}
