@@ -54,7 +54,7 @@ const HeroSection = () => {
                 Start Your Business <ArrowRight className="ml-2 h-4 md:h-5 w-4 md:w-5 shrink-0" />
               </Button>
               <Button variant="outline" size="lg" className="rounded-full text-sm md:text-base font-semibold border-border text-foreground hover:bg-muted/50 h-12 md:h-14 px-5 md:px-8 transition-all duration-300" onClick={() => setPricingOpen(true)}>
-                <DollarSign className="mr-1 h-4 md:h-5 w-4 md:w-5 shrink-0" /> <span className="whitespace-nowrap">See Pricing</span>
+                <DollarSign className="mr-1 h-4 md:h-5 w-4 md:w-5 shrink-0" /> See Formation Cost
               </Button>
             </div>
 
