@@ -76,7 +76,7 @@ const StatesSection = () => (
                   : "bg-primary text-primary-foreground shadow-md shadow-primary/20"
               }`}
             >
-              <span className="truncate">Start in {state.name}</span> <ArrowRight className="ml-1.5 h-4 w-4 shrink-0" />
+              <span className="truncate">Start in {state.abbr}</span> <ArrowRight className="ml-1.5 h-4 w-4 shrink-0" />
             </Button>
           </div>
         ))}
