@@ -167,13 +167,13 @@ const HeroSection = () => {
           <p className="text-center text-sm text-muted-foreground mb-8 font-medium tracking-wide uppercase">
             Our Strategic Partners and Affiliates
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-14 lg:gap-20 max-w-4xl mx-auto">
+          <div className="flex flex-nowrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto overflow-x-auto no-scrollbar">
             {partnerLogos.map((p) => (
-              <div key={p.name} className="flex items-center justify-center h-8 md:h-10">
+              <div key={p.name} className="flex items-center justify-center flex-shrink-0 w-[140px] md:w-[160px] h-[32px] md:h-[36px]">
                 <img
                   src={p.logo}
                   alt={p.name}
-                  className="h-full w-auto opacity-40 hover:opacity-80 transition-opacity duration-300 object-contain"
+                  className="w-full h-full object-contain opacity-40 hover:opacity-80 transition-opacity duration-300"
                 />
               </div>
             ))}
