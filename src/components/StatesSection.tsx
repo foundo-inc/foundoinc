@@ -48,8 +48,8 @@ const StatesSection = () => (
             }`}
           >
             {state.popular && (
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-primary-foreground text-primary text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-1.5 shadow-md">
-                <Star className="h-3.5 w-3.5 fill-current" /> MOST POPULAR
+              <div className="absolute -top-3 md:-top-3.5 left-1/2 -translate-x-1/2 bg-primary-foreground text-primary text-[10px] sm:text-xs font-bold px-3 sm:px-4 py-1 sm:py-1.5 rounded-full flex items-center gap-1 sm:gap-1.5 shadow-md whitespace-nowrap">
+                <Star className="h-3 sm:h-3.5 w-3 sm:w-3.5 fill-current" /> MOST POPULAR
               </div>
             )}
             <h3 className="text-xl sm:text-2xl md:text-2xl lg:text-3xl font-extrabold font-display mb-1.5 text-primary-foreground">{state.name}</h3>
@@ -73,7 +73,7 @@ const StatesSection = () => (
                   : "bg-primary text-primary-foreground shadow-md shadow-primary/20"
               }`}
             >
-              Start in {state.name} <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+              Start in {state.name} <ArrowRight className="ml-1.5 sm:ml-2 h-4 w-4 md:h-5 md:w-5 shrink-0" />
             </Button>
           </div>
         ))}
