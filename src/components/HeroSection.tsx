@@ -170,11 +170,11 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-10 md:gap-14 lg:gap-20 max-w-4xl mx-auto">
             {partnerLogos.map((p) => (
-              <div key={p.name} className="flex items-center justify-center w-[120px] md:w-[140px]">
+              <div key={p.name} className="flex items-center justify-center h-8 md:h-10">
                 <img
                   src={p.logo}
                   alt={p.name}
-                  className="w-full h-auto opacity-40 hover:opacity-80 transition-opacity duration-300"
+                  className="h-full w-auto opacity-40 hover:opacity-80 transition-opacity duration-300 object-contain"
                 />
               </div>
             ))}
