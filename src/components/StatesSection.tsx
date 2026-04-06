@@ -73,7 +73,7 @@ const StatesSection = () => (
                   : "bg-primary text-primary-foreground shadow-md shadow-primary/20"
               }`}
             >
-              Start in {state.name} <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
+              Start in {state.name} <ArrowRight className="ml-1.5 sm:ml-2 h-4 w-4 md:h-5 md:w-5 shrink-0" />
             </Button>
           </div>
         ))}
