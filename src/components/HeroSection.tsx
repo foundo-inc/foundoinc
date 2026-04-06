@@ -7,7 +7,7 @@ import mercuryLogo from "@/assets/partners/mercury.svg";
 import airwallexLogo from "@/assets/partners/airwallex.svg";
 import payoneerLogo from "@/assets/partners/payoneer.svg";
 import stripeLogo from "@/assets/partners/stripe.svg";
-import quoLogo from "@/assets/partners/quo.svg";
+
 
 const features = [
   { icon: Shield, text: "Full legal compliance" },
@@ -26,7 +26,6 @@ const partnerLogos = [
   { name: "Airwallex", logo: airwallexLogo },
   { name: "Payoneer", logo: payoneerLogo },
   { name: "Stripe", logo: stripeLogo },
-  { name: "Quo", logo: quoLogo },
 ];
 
 const HeroSection = () => {
