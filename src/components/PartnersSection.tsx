@@ -1,36 +1,31 @@
-import { CreditCard, Landmark, ShieldCheck, Globe } from "lucide-react";
+import mercuryLogo from "@/assets/partners/mercury.svg";
+import airwallexLogo from "@/assets/partners/airwallex.svg";
+import payoneerLogo from "@/assets/partners/payoneer.svg";
+import stripeLogo from "@/assets/partners/stripe.svg";
+import quoLogo from "@/assets/partners/quo.svg";
 
 const partners = [
-  { icon: CreditCard, name: "Stripe", desc: "Accept online payments globally." },
-  { icon: CreditCard, name: "PayPal", desc: "Payments from 200+ countries." },
-  { icon: Landmark, name: "Mercury", desc: "Modern banking for startups." },
-  { icon: Landmark, name: "Relay", desc: "Fee-free business banking." },
-  { icon: Globe, name: "Wise", desc: "Multi-currency, low fees." },
-  { icon: ShieldCheck, name: "Payoneer", desc: "Global payment management." },
+  { name: "Mercury", logo: mercuryLogo },
+  { name: "Airwallex", logo: airwallexLogo },
+  { name: "Payoneer", logo: payoneerLogo },
+  { name: "Stripe", logo: stripeLogo },
+  { name: "Quo", logo: quoLogo },
 ];
 
 const PartnersSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-background relative">
+  <section className="py-16 md:py-24 bg-background relative">
     <div className="container mx-auto px-5 md:px-4">
-      <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Integrations</p>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-5 font-display leading-tight">
-          Banking & Payment <span className="text-gradient">Partners</span>
-        </h2>
-        <p className="text-muted-foreground text-base md:text-lg">Connect with the best platforms from day one.</p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-3xl mx-auto">
-        {partners.map((p, i) => (
-          <div key={i} className="group flex items-center gap-4 p-5 md:p-6 rounded-xl border border-border bg-card hover:border-primary/20 hover:shadow-md hover:shadow-primary/[0.03] transition-all duration-300">
-            <div className="h-11 md:h-12 w-11 md:w-12 rounded-lg bg-primary/[0.08] flex items-center justify-center shrink-0 group-hover:bg-primary/[0.12] transition-colors">
-              <p.icon className="h-5 md:h-6 w-5 md:w-6 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-bold text-base md:text-lg font-display">{p.name}</h3>
-              <p className="text-muted-foreground text-sm md:text-base">{p.desc}</p>
-            </div>
-          </div>
+      <p className="text-center text-muted-foreground text-sm md:text-base font-medium mb-10 md:mb-14">
+        Our Strategic Partners and Affiliates
+      </p>
+      <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16 lg:gap-20 max-w-4xl mx-auto">
+        {partners.map((p) => (
+          <img
+            key={p.name}
+            src={p.logo}
+            alt={p.name}
+            className="h-7 md:h-9 w-auto opacity-60 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0"
+          />
         ))}
       </div>
     </div>
