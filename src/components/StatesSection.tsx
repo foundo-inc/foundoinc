@@ -67,13 +67,13 @@ const StatesSection = () => (
             </ul>
             <Button
               size="lg"
-              className={`w-full rounded-full h-12 md:h-13 lg:h-14 text-sm sm:text-base font-semibold transition-all duration-300 hover:-translate-y-0.5 ${
+              className={`w-full rounded-full h-12 md:h-13 lg:h-14 text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 hover:-translate-y-0.5 px-4 sm:px-6 ${
                 state.popular
                   ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg"
                   : "bg-primary text-primary-foreground shadow-md shadow-primary/20"
               }`}
             >
-              Start in {state.name} <ArrowRight className="ml-1.5 sm:ml-2 h-4 w-4 md:h-5 md:w-5 shrink-0" />
+              <span className="truncate">Start in {state.name}</span> <ArrowRight className="ml-1.5 h-4 w-4 shrink-0" />
             </Button>
           </div>
         ))}
