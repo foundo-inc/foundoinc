@@ -50,11 +50,11 @@ const HeroSection = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-10 md:mb-12 animate-fade-up-delay-2">
-              <Button size="lg" className="rounded-full text-sm md:text-base font-semibold px-7 md:px-8 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12 md:h-14">
-                Start Your Business <ArrowRight className="ml-2 h-4 md:h-5 w-4 md:w-5" />
+              <Button size="lg" className="rounded-full text-sm md:text-base font-semibold px-6 md:px-8 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12 md:h-14">
+                Start Your Business <ArrowRight className="ml-2 h-4 md:h-5 w-4 md:w-5 shrink-0" />
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full text-sm md:text-base font-semibold border-border text-foreground hover:bg-muted/50 h-12 md:h-14 transition-all duration-300" onClick={() => setPricingOpen(true)}>
-                <DollarSign className="mr-1 h-4 md:h-5 w-4 md:w-5" /> See Formation Cost
+              <Button variant="outline" size="lg" className="rounded-full text-sm md:text-base font-semibold border-border text-foreground hover:bg-muted/50 h-12 md:h-14 px-5 md:px-8 transition-all duration-300" onClick={() => setPricingOpen(true)}>
+                <DollarSign className="mr-1 h-4 md:h-5 w-4 md:w-5 shrink-0" /> <span className="whitespace-nowrap">See Pricing</span>
               </Button>
             </div>
 
