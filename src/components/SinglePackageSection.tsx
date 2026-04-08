@@ -51,7 +51,7 @@ const SinglePackageSection = () => (
 
           <div className="grid lg:grid-cols-5 relative z-10">
             {/* Left - Pricing */}
-            <div className="lg:col-span-2 p-8 md:p-10 lg:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
+            <div className="lg:col-span-2 p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
               <div>
                 <div className="inline-flex items-center gap-2 bg-white text-[#0429E7] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6">
                   <Zap className="h-3 w-3" />
@@ -68,7 +68,7 @@ const SinglePackageSection = () => (
                 {/* Price */}
                 <div className="mb-2">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl md:text-6xl font-extrabold font-display text-white leading-none">
+                    <span className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display text-white leading-none">
                       $199
                     </span>
                     <span className="text-white/50 text-sm">/month</span>
@@ -88,7 +88,7 @@ const SinglePackageSection = () => (
               <div className="mt-8">
                 <Button
                   size="lg"
-                  className="rounded-full w-full bg-white text-[#0429E7] hover:bg-white/90 font-bold h-14 text-base shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                  className="rounded-full w-full bg-white text-[#0429E7] hover:bg-white/90 font-bold h-12 md:h-14 text-base shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
                 >
                   Get started today
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -100,12 +100,12 @@ const SinglePackageSection = () => (
             </div>
 
             {/* Right - Features */}
-            <div className="lg:col-span-3 p-8 md:p-10 lg:p-12">
+            <div className="lg:col-span-3 p-6 sm:p-8 md:p-10 lg:p-12">
               <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-6">
                 What's included
               </p>
 
-              <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-4">
                 {[...leftFeatures, ...rightFeatures].map((f, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="h-5 w-5 rounded-full bg-white/15 flex items-center justify-center shrink-0 mt-0.5">
