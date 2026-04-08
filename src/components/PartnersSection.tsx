@@ -10,7 +10,7 @@ const partners = [
 ];
 
 const PartnersSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-background relative">
+  <section className="py-16 md:py-20 bg-background relative">
     <div className="container mx-auto px-5 md:px-4">
       <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Integrations</p>

@@ -2,7 +2,7 @@ import { ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const GuaranteeSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-muted/30">
+  <section className="py-16 md:py-20 bg-muted/30">
     <div className="container mx-auto px-5 md:px-4">
       <div className="max-w-3xl mx-auto text-center">
         <div className="h-20 w-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
