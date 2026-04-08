@@ -23,7 +23,7 @@ const FinalCTASection = () => (
           Talk to an Expert
         </Button>
       </div>
-      <p className="text-sm text-primary-foreground/30">Explore the process before paying</p>
+      
     </div>
   </section>
 );
