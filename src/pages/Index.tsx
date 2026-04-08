@@ -21,6 +21,7 @@ import FAQSection from "@/components/FAQSection";
 import UrgencyCTASection from "@/components/UrgencyCTASection";
 import FinalCTASection from "@/components/FinalCTASection";
 import WeHandleSection from "@/components/WeHandleSection";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -44,6 +45,7 @@ const Index = () => (
     <PromiseSection />
     <TestimonialsSection />
     <GuaranteeSection />
+    <ContactSection />
     <FinalCTASection />
     <FAQSection />
     <Footer />
