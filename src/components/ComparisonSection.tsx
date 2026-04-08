@@ -20,7 +20,7 @@ const StatusIcon = ({ status }: { status: Status }) => {
 };
 
 const ComparisonSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-muted/30 relative">
+  <section className="py-16 md:py-20 bg-muted/30 relative">
     <div className="container mx-auto px-4">
       <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Comparison</p>
