@@ -26,7 +26,7 @@ const states = [
 ];
 
 const StatesSection = () => (
-  <section className="py-16 md:py-20 bg-foreground relative overflow-hidden">
+  <section className="py-20 md:py-28 lg:py-36 bg-foreground relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(230,97%,46%,0.08)_0%,_transparent_50%)]" />
     
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

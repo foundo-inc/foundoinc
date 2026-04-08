@@ -8,7 +8,7 @@ const stats = [
 ];
 
 const StatsSection = () => (
-  <section className="py-16 md:py-20 bg-foreground relative overflow-hidden">
+  <section className="py-20 md:py-28 lg:py-32 bg-foreground relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(230,97%,46%,0.12)_0%,_transparent_50%)]" />
     
     <div className="container mx-auto px-5 md:px-4 relative z-10">

@@ -25,7 +25,7 @@ const stats = [
 ];
 
 const SinglePackageSection = () => (
-  <section id="pricing" className="py-16 md:py-20 relative overflow-hidden">
+  <section id="pricing" className="py-20 md:py-28 lg:py-32 relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.04)_0%,_transparent_70%)]" />
 
     <div className="container mx-auto px-5 md:px-4 relative z-10">

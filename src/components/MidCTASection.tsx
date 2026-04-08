@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const MidCTASection = () => (
-  <section className="py-16 md:py-20 relative overflow-hidden">
+  <section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
     <div className="absolute inset-0 hero-gradient" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.1)_0%,_transparent_50%)]" />
 

@@ -11,7 +11,7 @@ const benefits = [
 ];
 
 const WhyFoundoSection = () => (
-  <section id="why-foundo" className="py-16 md:py-20 bg-background relative">
+  <section id="why-foundo" className="py-20 md:py-28 lg:py-32 bg-background relative">
     <div className="container mx-auto px-5 md:px-4">
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         <div className="lg:sticky lg:top-28">

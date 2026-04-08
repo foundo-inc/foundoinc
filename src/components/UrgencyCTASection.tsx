@@ -8,7 +8,7 @@ const stats = [
 ];
 
 const UrgencyCTASection = () => (
-  <section className="py-16 md:py-20 relative overflow-hidden">
+  <section className="py-20 md:py-28 lg:py-32 relative overflow-hidden">
     <div className="absolute inset-0 bg-primary" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.08)_0%,_transparent_50%)]" />
 
