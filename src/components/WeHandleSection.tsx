@@ -28,17 +28,17 @@ const WeHandleSection = () => (
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6 max-w-6xl mx-auto">
         {services.map(({ icon: Icon, label, desc }) => (
           <div
             key={label}
-            className="group flex flex-col gap-3 rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:-translate-y-1"
+            className="group flex flex-col gap-4 rounded-2xl border border-border bg-card p-8 md:p-9 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:-translate-y-1"
           >
-            <div className="h-11 w-11 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-300">
-              <Icon className="h-5 w-5 text-primary" />
+            <div className="h-14 w-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-300">
+              <Icon className="h-7 w-7 text-primary" />
             </div>
-            <h3 className="text-sm font-bold text-foreground tracking-tight">{label}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+            <h3 className="text-base md:text-lg font-bold text-foreground">{label}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
           </div>
         ))}
       </div>
