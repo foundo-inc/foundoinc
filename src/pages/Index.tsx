@@ -38,6 +38,7 @@ const Index = () => (
     
     <WhyFoundoSection />
     <ComparisonSection />
+    <WeHandleSection />
     <TrustSecuritySection />
     
     <PromiseSection />
@@ -45,7 +46,6 @@ const Index = () => (
     <GuaranteeSection />
     <FinalCTASection />
     <FAQSection />
-    <WeHandleSection />
     <Footer />
   </div>
 );
