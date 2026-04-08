@@ -32,6 +32,7 @@ const Index = () => (
     <StatesSection />
     <HowItWorksSection />
     <ServicesSection />
+    <UrgencyCTASection />
     
     <MidCTASection />
     <WhyFoundoSection />
@@ -44,7 +45,6 @@ const Index = () => (
     <TestimonialsSection />
     <GuaranteeSection />
     <FAQSection />
-    <UrgencyCTASection />
     <FinalCTASection />
     <Footer />
   </div>
