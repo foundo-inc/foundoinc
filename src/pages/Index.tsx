@@ -7,7 +7,7 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import ServicesSection from "@/components/ServicesSection";
 import StatesSection from "@/components/StatesSection";
 
-import MidCTASection from "@/components/MidCTASection";
+
 import WhyFoundoSection from "@/components/WhyFoundoSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import TrustSecuritySection from "@/components/TrustSecuritySection";
@@ -34,7 +34,7 @@ const Index = () => (
     <ServicesSection />
     <UrgencyCTASection />
     
-    <MidCTASection />
+    
     <WhyFoundoSection />
     <ComparisonSection />
     <TrustSecuritySection />
