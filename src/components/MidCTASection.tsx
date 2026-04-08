@@ -21,10 +21,10 @@ const MidCTASection = () => (
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-        <Button size="lg" className="rounded-full text-sm md:text-base px-7 md:px-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-xl h-12 md:h-14 font-semibold transition-all duration-300 hover:-translate-y-0.5">
+        <Button size="lg" className="w-full sm:w-auto rounded-full text-sm md:text-base px-7 md:px-8 bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-xl h-12 md:h-14 font-semibold transition-all duration-300 hover:-translate-y-0.5">
           Start Your Business Now <ArrowRight className="ml-2 h-5 w-5" />
         </Button>
-        <Button variant="outline" size="lg" className="rounded-full text-sm md:text-base border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent h-12 md:h-14 transition-all duration-300">
+        <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-full text-sm md:text-base border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent h-12 md:h-14 transition-all duration-300">
           See Pricing Plans
         </Button>
       </div>
