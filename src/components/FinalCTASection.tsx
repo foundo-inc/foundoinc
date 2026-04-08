@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 const FinalCTASection = () => (
   <section className="pt-20 md:pt-28 lg:pt-32 pb-0 bg-foreground relative overflow-hidden">
-    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(230,97%,46%,0.12)_0%,_transparent_50%)]" />
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/[0.06] rounded-full blur-[120px] pointer-events-none" />
     
     <div className="container mx-auto px-5 md:px-4 relative z-10 text-center">
       <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-primary-foreground mb-2 md:mb-3 font-display leading-tight">
