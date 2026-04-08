@@ -34,7 +34,7 @@ const UrgencyCTASection = () => (
           ))}
         </div>
 
-        <Button size="lg" className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold h-14 px-10 text-base shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <Button size="lg" className="w-full sm:w-auto rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold h-12 md:h-14 px-10 text-base shadow-lg transition-all duration-300 hover:-translate-y-0.5">
           Start my company now <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
 

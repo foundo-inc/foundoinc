@@ -115,7 +115,7 @@ const ContactSection = () => {
               type="submit"
               size="lg"
               disabled={sending}
-              className="rounded-full h-14 px-10 text-base font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5"
+              className="w-full sm:w-auto rounded-full h-12 md:h-14 px-10 text-base font-semibold shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5"
             >
               {sending ? "Sending..." : "Send Message"} <Send className="ml-2 h-5 w-5" />
             </Button>

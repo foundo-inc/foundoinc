@@ -32,7 +32,7 @@ const GuaranteeSection = () => (
           </div>
         </div>
 
-        <Button size="lg" className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-14 px-10 text-base shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+        <Button size="lg" className="w-full sm:w-auto rounded-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-12 md:h-14 px-10 text-base shadow-lg transition-all duration-300 hover:-translate-y-0.5">
           Start risk-free today <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
