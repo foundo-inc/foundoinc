@@ -40,8 +40,6 @@ const Index = () => (
     <TrustSecuritySection />
     
     <PromiseSection />
-    <SolutionSection />
-    <SuccessStoriesSection />
     <TestimonialsSection />
     <GuaranteeSection />
     <FinalCTASection />
