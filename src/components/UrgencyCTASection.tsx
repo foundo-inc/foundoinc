@@ -8,11 +8,11 @@ const stats = [
 ];
 
 const UrgencyCTASection = () => (
-  <section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
+  <section className="py-20 md:py-24 lg:py-28 relative overflow-hidden">
     <div className="absolute inset-0 hero-gradient" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.1)_0%,_transparent_50%)]" />
 
-    <div className="container mx-auto px-5 md:px-4 relative z-10">
+    <div className="container mx-auto relative z-10">
       <div className="max-w-3xl mx-auto text-center">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground/60 mb-4">Don't Wait</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-display leading-tight text-primary-foreground mb-5">

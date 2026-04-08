@@ -38,7 +38,7 @@ const HeroSection = () => {
       <div className="absolute bottom-[-100px] left-[-100px] w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-primary/[0.03] blur-3xl" />
       <div className="absolute inset-0 bg-grid-pattern opacity-60" />
 
-      <div className="container mx-auto px-5 md:px-4 relative z-10">
+      <div className="container mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div>
             <div className="inline-flex items-center gap-2 bg-primary/[0.06] border border-primary/10 rounded-full px-4 py-2 mb-6 md:mb-8 animate-fade-up">

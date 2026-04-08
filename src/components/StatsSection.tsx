@@ -8,10 +8,10 @@ const stats = [
 ];
 
 const StatsSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-foreground relative overflow-hidden">
+  <section className="py-20 md:py-24 lg:py-28 bg-foreground relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(230,97%,46%,0.12)_0%,_transparent_50%)]" />
     
-    <div className="container mx-auto px-5 md:px-4 relative z-10">
+    <div className="container mx-auto relative z-10">
       <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">By The Numbers</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-display text-primary-foreground leading-tight">

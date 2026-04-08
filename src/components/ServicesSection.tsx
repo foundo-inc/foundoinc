@@ -10,8 +10,8 @@ const services = [
 ];
 
 const ServicesSection = () => (
-  <section id="services" className="pt-4 md:pt-6 pb-12 md:pb-16 bg-background relative">
-    <div className="container mx-auto px-5 md:px-4">
+  <section id="services" className="py-20 md:py-24 lg:py-28 bg-background relative">
+    <div className="container mx-auto">
       <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Our Services</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-5 font-display leading-tight">

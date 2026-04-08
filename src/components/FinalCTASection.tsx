@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const FinalCTASection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-background relative overflow-hidden">
-    <div className="container mx-auto px-5 md:px-4 relative z-10">
+  <section className="py-20 md:py-24 lg:py-28 bg-background relative overflow-hidden">
+    <div className="container mx-auto relative z-10">
       <div className="relative max-w-5xl mx-auto rounded-[2rem] bg-foreground px-6 py-12 md:px-10 md:py-16 lg:px-16 lg:py-20 text-center overflow-hidden gradient-border glow-sm">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[520px] h-[260px] bg-primary/[0.08] rounded-full blur-[120px] pointer-events-none" />
 

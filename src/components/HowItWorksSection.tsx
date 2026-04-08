@@ -28,8 +28,8 @@ const steps = [
 ];
 
 const HowItWorksSection = () => (
-  <section className="pt-12 md:pt-16 pb-4 md:pb-6">
-    <div className="container mx-auto px-5 md:px-4">
+  <section className="py-20 md:py-24 lg:py-28">
+    <div className="container mx-auto">
       <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3">How It Works</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-display leading-tight mb-4">

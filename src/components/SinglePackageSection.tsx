@@ -25,10 +25,10 @@ const stats = [
 ];
 
 const SinglePackageSection = () => (
-  <section id="pricing" className="py-20 md:py-28 lg:py-32 relative overflow-hidden">
+  <section id="pricing" className="py-20 md:py-24 lg:py-28 relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_hsl(var(--primary)/0.04)_0%,_transparent_70%)]" />
 
-    <div className="container mx-auto px-5 md:px-4 relative z-10">
+    <div className="container mx-auto relative z-10">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto mb-14 md:mb-20">
         <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-1.5 mb-6">
