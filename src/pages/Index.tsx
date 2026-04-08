@@ -29,9 +29,9 @@ const Index = () => (
     <StatsSection />
     {/* <PricingSection /> */}
     <SinglePackageSection />
+    <StatesSection />
     <HowItWorksSection />
     <ServicesSection />
-    <StatesSection />
     <ProcessSection />
     <MidCTASection />
     <WhyFoundoSection />
