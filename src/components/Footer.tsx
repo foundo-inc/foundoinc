@@ -31,9 +31,6 @@ const Footer = () => (
           <a href="#" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">
             WhatsApp Support <ArrowUpRight className="h-4 w-4" />
           </a>
-          <a href="mailto:info@foundo.com" className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/10 text-primary-foreground/60 px-5 py-3 text-sm font-medium hover:border-primary/30 hover:text-primary transition-all duration-300">
-            <Mail className="h-4 w-4" /> Email us
-          </a>
         </div>
       </div>
 
