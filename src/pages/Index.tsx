@@ -11,7 +11,7 @@ import MidCTASection from "@/components/MidCTASection";
 import WhyFoundoSection from "@/components/WhyFoundoSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import TrustSecuritySection from "@/components/TrustSecuritySection";
-import PartnersSection from "@/components/PartnersSection";
+
 import PromiseSection from "@/components/PromiseSection";
 import SolutionSection from "@/components/SolutionSection";
 import SuccessStoriesSection from "@/components/SuccessStoriesSection";
@@ -37,7 +37,7 @@ const Index = () => (
     <WhyFoundoSection />
     <ComparisonSection />
     <TrustSecuritySection />
-    <PartnersSection />
+    
     <PromiseSection />
     <SolutionSection />
     <SuccessStoriesSection />
