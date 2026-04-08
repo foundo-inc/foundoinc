@@ -26,10 +26,10 @@ const states = [
 ];
 
 const StatesSection = () => (
-  <section className="py-20 md:py-28 lg:py-36 bg-foreground relative overflow-hidden">
+  <section className="py-20 md:py-24 lg:py-28 bg-foreground relative overflow-hidden">
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_hsl(230,97%,46%,0.08)_0%,_transparent_50%)]" />
     
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="container mx-auto relative z-10">
       <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16 lg:mb-20">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Popular States</p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold mb-4 md:mb-6 font-display text-primary-foreground leading-tight">
