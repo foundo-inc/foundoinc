@@ -32,8 +32,7 @@ const Index = () => (
     <StatesSection />
     <HowItWorksSection />
     <ServicesSection />
-    <UrgencyCTASection />
-    
+
     
     <WhyFoundoSection />
     <ComparisonSection />
