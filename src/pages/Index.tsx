@@ -6,7 +6,7 @@ import SinglePackageSection from "@/components/SinglePackageSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import ServicesSection from "@/components/ServicesSection";
 import StatesSection from "@/components/StatesSection";
-import ProcessSection from "@/components/ProcessSection";
+
 import MidCTASection from "@/components/MidCTASection";
 import WhyFoundoSection from "@/components/WhyFoundoSection";
 import ComparisonSection from "@/components/ComparisonSection";
@@ -32,7 +32,7 @@ const Index = () => (
     <StatesSection />
     <HowItWorksSection />
     <ServicesSection />
-    <ProcessSection />
+    
     <MidCTASection />
     <WhyFoundoSection />
     <ComparisonSection />
