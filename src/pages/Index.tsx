@@ -20,6 +20,7 @@ import GuaranteeSection from "@/components/GuaranteeSection";
 import FAQSection from "@/components/FAQSection";
 import UrgencyCTASection from "@/components/UrgencyCTASection";
 import FinalCTASection from "@/components/FinalCTASection";
+import WeHandleSection from "@/components/WeHandleSection";
 import Footer from "@/components/Footer";
 
 const Index = () => (
