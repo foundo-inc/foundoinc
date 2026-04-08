@@ -30,7 +30,7 @@ const Index = () => (
     {/* <PricingSection /> */}
     <SinglePackageSection />
     <StatesSection />
-    <HowItWorksSection />
+    
     <ServicesSection />
     <ProcessSection />
     <MidCTASection />
