@@ -12,8 +12,8 @@ const services = [
 ];
 
 const WeHandleSection = () => (
-  <section className="py-20 md:py-28 lg:py-32 bg-muted/30">
-    <div className="container mx-auto px-5 md:px-4">
+  <section className="py-20 md:py-24 lg:py-28 bg-muted/30">
+    <div className="container mx-auto">
       <div className="text-center mb-12 md:mb-16">
         <div className="inline-flex items-center rounded-full border border-border bg-background px-4 py-2 mb-6">
           <span className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">

@@ -18,7 +18,7 @@ const Footer = () => (
     {/* Subtle gradient accent */}
     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/[0.06] rounded-full blur-[120px] pointer-events-none" />
 
-    <div className="container mx-auto px-5 md:px-4 relative z-10">
+    <div className="container mx-auto relative z-10">
       {/* Top bar — brand + newsletter */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-10 md:py-14 gap-6">
         <div className="flex items-center gap-3">
