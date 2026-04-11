@@ -23,7 +23,7 @@ const Footer = () => (
       {/* Top bar — brand + newsletter */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-10 md:py-14 gap-6">
         <div className="flex items-center">
-          <img src={foundoLogoWhite} alt="Foundo" className="h-10 md:h-12 w-auto" />
+          <img src={foundoLogoWhite} alt="Foundo" className="h-12 md:h-14 w-auto" />
         </div>
         <div className="flex items-center gap-3">
           <a href="#" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">
