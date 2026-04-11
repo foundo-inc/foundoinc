@@ -17,7 +17,7 @@ const Navbar = () => {
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20">
         <a href="#" className="flex items-center group">
-          <img src={foundoLogo} alt="Foundo" className="h-8 md:h-10 w-auto" />
+          <img src={foundoLogo} alt="Foundo" className="h-10 md:h-12 w-auto" />
         </a>
 
         <div className="hidden md:flex items-center gap-1">
