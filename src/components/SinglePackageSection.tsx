@@ -19,7 +19,7 @@ const rightFeatures = [
 ];
 
 const stats = [
-  { icon: Users, value: "2,400+", label: "Founders trust us" },
+  { icon: Users, value: "500+", label: "Founders trust us" },
   { icon: Shield, value: "100%", label: "Compliance rate" },
   { icon: Zap, value: "48hrs", label: "Avg. setup time" },
 ];
@@ -90,7 +90,7 @@ const SinglePackageSection = () => (
                   size="lg"
                   className="rounded-full w-full bg-white text-[#0429E7] hover:bg-white/90 font-bold h-12 md:h-14 text-base shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                  Get started today
+                  Get started
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <p className="text-center text-xs text-white/40 mt-3">
