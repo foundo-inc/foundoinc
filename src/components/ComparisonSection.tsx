@@ -1,22 +1,42 @@
 import { CheckCircle, XCircle, MinusCircle } from "lucide-react";
 
-type Status = "yes" | "no" | "partial";
+type Status = "included" | "not-included" | "custom";
 
-const features: { feature: string; foundo: Status; stripe: Status; firstbase: Status }[] = [
-  { feature: "LLC Formation", foundo: "yes", stripe: "yes", firstbase: "yes" },
-  { feature: "EIN Registration", foundo: "yes", stripe: "yes", firstbase: "yes" },
-  { feature: "Registered Agent", foundo: "yes", stripe: "partial", firstbase: "yes" },
-  { feature: "U.S. Bank Account", foundo: "yes", stripe: "yes", firstbase: "partial" },
-  { feature: "Payment Gateway", foundo: "yes", stripe: "yes", firstbase: "no" },
-  { feature: "Ongoing Compliance", foundo: "yes", stripe: "no", firstbase: "partial" },
-  { feature: "Dedicated Support", foundo: "yes", stripe: "no", firstbase: "partial" },
-  { feature: "Flat Pricing", foundo: "yes", stripe: "no", firstbase: "no" },
+const features: { feature: string; foundo: string; stripe: string; firstbase: string }[] = [
+  { feature: "LLC Formation", foundo: "Included", stripe: "Included", firstbase: "Included" },
+  { feature: "Registered Agent", foundo: "Included", stripe: "Included", firstbase: "$149/year extra" },
+  { feature: "US Address", foundo: "Included", stripe: "Included", firstbase: "$315/year extra" },
+  { feature: "EIN Application", foundo: "Included", stripe: "Included", firstbase: "Included" },
+  { feature: "U.S. Bank Account", foundo: "Included", stripe: "Included", firstbase: "Included" },
+  { feature: "State Options", foundo: "All 50 states", stripe: "Delaware only", firstbase: "All 50 states" },
+  { feature: "ITIN Assistance", foundo: "Included", stripe: "Not included", firstbase: "Included" },
+  { feature: "Pricing", foundo: "$249 + State Fees", stripe: "$500 One-time", firstbase: "$399 + State Fees" },
 ];
 
-const StatusIcon = ({ status }: { status: Status }) => {
-  if (status === "yes") return <CheckCircle className="h-5 w-5 text-primary" />;
-  if (status === "no") return <XCircle className="h-5 w-5 text-destructive/40" />;
-  return <MinusCircle className="h-5 w-5 text-muted-foreground/30" />;
+const CellValue = ({ value, isFoundo = false }: { value: string; isFoundo?: boolean }) => {
+  if (value === "Included") {
+    return (
+      <span className="flex items-center justify-center gap-1.5">
+        <CheckCircle className="h-5 w-5 text-primary" />
+        <span className="text-xs md:text-sm text-foreground/80">Included</span>
+      </span>
+    );
+  }
+  if (value === "Not included") {
+    return (
+      <span className="flex items-center justify-center gap-1.5">
+        <XCircle className="h-5 w-5 text-destructive/40" />
+        <span className="text-xs md:text-sm text-muted-foreground/60">Not included</span>
+      </span>
+    );
+  }
+  // Custom text values
+  const isNegative = value.includes("extra") || value === "Delaware only";
+  return (
+    <span className={`text-xs md:text-sm font-medium text-center ${isFoundo ? "text-primary" : isNegative ? "text-destructive/70" : "text-foreground/80"}`}>
+      {value}
+    </span>
+  );
 };
 
 const ComparisonSection = () => (
@@ -47,13 +67,13 @@ const ComparisonSection = () => (
             <div key={i} className={`grid grid-cols-4 hover:bg-muted/20 transition-colors ${i < features.length - 1 ? "border-b border-border" : ""}`}>
               <div className="p-3 md:p-5 flex items-center text-xs sm:text-sm md:text-base font-medium text-foreground leading-tight">{f.feature}</div>
               <div className="p-3 md:p-5 flex items-center justify-center bg-primary/[0.04] border-x border-primary/10">
-                <StatusIcon status={f.foundo} />
+                <CellValue value={f.foundo} isFoundo />
               </div>
               <div className="p-3 md:p-5 flex items-center justify-center">
-                <StatusIcon status={f.stripe} />
+                <CellValue value={f.stripe} />
               </div>
               <div className="p-3 md:p-5 flex items-center justify-center">
-                <StatusIcon status={f.firstbase} />
+                <CellValue value={f.firstbase} />
               </div>
             </div>
           ))}
