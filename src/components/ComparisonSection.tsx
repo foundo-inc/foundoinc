@@ -15,20 +15,10 @@ const features: { feature: string; foundo: string; stripe: string; firstbase: st
 
 const CellValue = ({ value, isFoundo = false }: { value: string; isFoundo?: boolean }) => {
   if (value === "Included") {
-    return (
-      <span className="flex items-center justify-center gap-1.5">
-        <CheckCircle className="h-5 w-5 text-primary" />
-        <span className="text-xs md:text-sm text-foreground/80">Included</span>
-      </span>
-    );
+    return <CheckCircle className="h-5 w-5 text-primary" />;
   }
   if (value === "Not included") {
-    return (
-      <span className="flex items-center justify-center gap-1.5">
-        <XCircle className="h-5 w-5 text-destructive/40" />
-        <span className="text-xs md:text-sm text-muted-foreground/60">Not included</span>
-      </span>
-    );
+    return <XCircle className="h-5 w-5 text-destructive/40" />;
   }
   // Custom text values
   const isNegative = value.includes("extra") || value === "Delaware only";
