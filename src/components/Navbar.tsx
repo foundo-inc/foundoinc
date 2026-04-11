@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
+import foundoLogo from "@/assets/foundo-logo.svg";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -15,11 +16,8 @@ const Navbar = () => {
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20">
-        <a href="#" className="flex items-center gap-2.5 group">
-          <div className="h-9 md:h-10 w-9 md:w-10 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
-            <span className="text-primary-foreground font-bold text-sm md:text-base">F</span>
-          </div>
-          <span className="text-xl md:text-2xl font-bold font-display tracking-tight text-foreground">foundo.</span>
+        <a href="#" className="flex items-center group">
+          <img src={foundoLogo} alt="Foundo" className="h-8 md:h-10 w-auto" />
         </a>
 
         <div className="hidden md:flex items-center gap-1">
