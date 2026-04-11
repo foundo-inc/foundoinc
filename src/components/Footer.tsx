@@ -1,4 +1,5 @@
 import { Mail, ArrowUpRight } from "lucide-react";
+import foundoLogoWhite from "@/assets/foundo-logo-white.svg";
 
 const footerLinks = {
   Company: ["Home", "Pricing", "FAQ"],
@@ -21,11 +22,8 @@ const Footer = () => (
     <div className="container mx-auto relative z-10">
       {/* Top bar — brand + newsletter */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-10 md:py-14 gap-6">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-extrabold text-base font-display">F</span>
-          </div>
-          <span className="text-xl font-extrabold font-display text-primary-foreground tracking-tight">foundo</span>
+        <div className="flex items-center">
+          <img src={foundoLogoWhite} alt="Foundo" className="h-10 md:h-12 w-auto" />
         </div>
         <div className="flex items-center gap-3">
           <a href="#" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">
