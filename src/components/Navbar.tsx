@@ -30,7 +30,6 @@ const Navbar = () => {
               className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
             >
               {l.label}
-              {l.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
             </a>
           ))}
         </div>
