@@ -7,10 +7,12 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Business Formation", href: "#services", hasDropdown: true },
+    { label: "Services", href: "#services" },
     { label: "Pricing", href: "#pricing" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Blog", href: "#" },
+    { label: "Process", href: "#process" },
+    { label: "Compare", href: "#compare" },
+    { label: "FAQs", href: "#faq" },
+    { label: "Contact", href: "#contact" },
   ];
 
   return (
