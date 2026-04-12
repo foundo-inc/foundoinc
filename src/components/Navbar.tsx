@@ -7,10 +7,12 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Business Formation", href: "#services", hasDropdown: true },
+    { label: "Services", href: "#services" },
     { label: "Pricing", href: "#pricing" },
-    { label: "FAQ", href: "#faq" },
-    { label: "Blog", href: "#" },
+    { label: "Process", href: "#process" },
+    { label: "Compare", href: "#compare" },
+    { label: "FAQs", href: "#faq" },
+    { label: "Contact", href: "#contact" },
   ];
 
   return (
@@ -28,7 +30,6 @@ const Navbar = () => {
               className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
             >
               {l.label}
-              {l.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
             </a>
           ))}
         </div>
