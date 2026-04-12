@@ -50,6 +50,7 @@ const Index = () => (
     <FinalCTASection />
     <FAQSection />
     <Footer />
+    <WhatsAppPopup />
   </div>
 );
 
