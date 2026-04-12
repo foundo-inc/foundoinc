@@ -109,19 +109,6 @@ const WhatsAppPopup = () => {
             </div>
           </div>
 
-          {/* Special Offer */}
-          <div
-            className="rounded-xl p-5 mb-7"
-            style={{ backgroundColor: "#f0fdf4", border: "1px solid #dcfce7" }}
-          >
-            <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#25D366" }}>
-              🎉 Special Offer
-            </p>
-            <p className="text-gray-800 text-[15px] leading-relaxed">
-              <span className="font-bold">Get 10% off</span> your LLC formation when you start your chat now!
-            </p>
-            <p className="text-gray-400 text-[13px] mt-1">Limited time offer for new customers</p>
-          </div>
 
           {/* Buttons */}
           <div className="flex gap-3">
