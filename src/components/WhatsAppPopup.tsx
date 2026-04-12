@@ -28,8 +28,7 @@ const WhatsAppPopup = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
-        style={{ backgroundColor: "#25D366" }}
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform bg-primary"
       >
         <MessageCircle className="w-7 h-7 text-white fill-white" />
       </button>
@@ -53,10 +52,7 @@ const WhatsAppPopup = () => {
         <div className="p-7 pt-8">
           {/* Header */}
           <div className="flex items-start gap-4 mb-7">
-            <div
-              className="w-[56px] h-[56px] rounded-full flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: "#25D366" }}
-            >
+            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary">
               <MessageCircle className="w-7 h-7 text-white fill-white" />
             </div>
             <div className="pt-0.5">
@@ -75,8 +71,8 @@ const WhatsAppPopup = () => {
             <div className="flex items-center gap-3.5">
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                  <circle cx="11" cy="11" r="10" stroke="#25D366" strokeWidth="2" />
-                  <path d="M11 6v5l3 3" stroke="#25D366" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="11" cy="11" r="10" stroke="#0436E3" strokeWidth="2" />
+                  <path d="M11 6v5l3 3" stroke="#0436E3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <p className="text-gray-700 text-[15px]">
@@ -109,34 +105,18 @@ const WhatsAppPopup = () => {
             </div>
           </div>
 
-          {/* Special Offer */}
-          <div
-            className="rounded-xl p-5 mb-7"
-            style={{ backgroundColor: "#f0fdf4", border: "1px solid #dcfce7" }}
-          >
-            <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#25D366" }}>
-              🎉 Special Offer
-            </p>
-            <p className="text-gray-800 text-[15px] leading-relaxed">
-              <span className="font-bold">Get 10% off</span> your LLC formation when you start your chat now!
-            </p>
-            <p className="text-gray-400 text-[13px] mt-1">Limited time offer for new customers</p>
-          </div>
-
           {/* Buttons */}
           <div className="flex gap-3">
             <button
               onClick={handleStartChat}
-              className="flex-1 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2.5 hover:opacity-90 transition-opacity text-[15px]"
-              style={{ backgroundColor: "#25D366" }}
+              className="flex-1 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2.5 hover:opacity-90 transition-opacity text-[15px] bg-primary"
             >
               <MessageCircle className="w-5 h-5 fill-white" />
               Start Chat Now
             </button>
             <button
               onClick={handleClose}
-              className="flex-1 font-semibold py-4 px-6 rounded-xl hover:bg-gray-50 transition-colors text-[15px] text-gray-700"
-              style={{ border: "1.5px solid #e5e7eb" }}
+              className="flex-1 font-semibold py-4 px-6 rounded-xl hover:bg-gray-50 transition-colors text-[15px] text-gray-700 border border-gray-200"
             >
               Maybe Later
             </button>
