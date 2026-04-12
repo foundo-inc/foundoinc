@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, MessageCircle, Clock, Shield, Star } from "lucide-react";
+import { X, MessageCircle } from "lucide-react";
 
 const WhatsAppPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,83 +18,125 @@ const WhatsAppPopup = () => {
   };
 
   const handleStartChat = () => {
-    window.open("https://wa.me/1234567890?text=Hi%2C%20I%20need%20help%20with%20LLC%20formation", "_blank");
+    window.open(
+      "https://wa.me/1234567890?text=Hi%2C%20I%20need%20help%20with%20LLC%20formation",
+      "_blank"
+    );
   };
 
   if (!isOpen) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        className="fixed bottom-6 right-6 z-50 w-[60px] h-[60px] rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+        style={{ backgroundColor: "#25D366" }}
       >
-        <MessageCircle className="w-7 h-7 text-white" />
+        <MessageCircle className="w-7 h-7 text-white fill-white" />
       </button>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md relative animate-in zoom-in-95 fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.45)" }}>
+      <div
+        className="bg-white rounded-2xl w-full max-w-[480px] relative"
+        style={{ boxShadow: "0 25px 60px rgba(0,0,0,0.15)" }}
+      >
+        {/* Close */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 transition-colors z-10"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="p-6 pb-4">
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center flex-shrink-0">
-              <MessageCircle className="w-7 h-7 text-white" />
+        <div className="p-7 pt-8">
+          {/* Header */}
+          <div className="flex items-start gap-4 mb-7">
+            <div
+              className="w-[56px] h-[56px] rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: "#25D366" }}
+            >
+              <MessageCircle className="w-7 h-7 text-white fill-white" />
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-900">Need Expert Help? Chat with Us</h3>
-              <p className="text-gray-600 text-sm mt-1">
-                Get instant support from our <span className="font-semibold text-gray-900">U.S. business experts</span>
+            <div className="pt-0.5">
+              <h3 className="text-[22px] font-bold text-gray-900 leading-tight">
+                Need Expert Help? Chat with Us
+              </h3>
+              <p className="text-gray-500 text-[15px] mt-1.5">
+                Get instant support from our{" "}
+                <span className="font-semibold text-gray-900">U.S. business experts</span>
               </p>
             </div>
           </div>
 
-          <div className="space-y-4 mb-6">
-            <div className="flex items-center gap-3">
-              <Clock className="w-5 h-5 text-[#25D366]" />
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">Quick WhatsApp Support</span> - Get help when we're available
+          {/* Features */}
+          <div className="space-y-5 mb-7">
+            <div className="flex items-center gap-3.5">
+              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="11" r="10" stroke="#25D366" strokeWidth="2" />
+                  <path d="M11 6v5l3 3" stroke="#25D366" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <p className="text-gray-700 text-[15px]">
+                <span className="font-semibold text-gray-900">Quick WhatsApp Support</span>
+                <span className="text-gray-400"> – </span>Get help when we're available
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <Shield className="w-5 h-5 text-[#0436E3]" />
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">24-Hour LLC Formation</span> - Register with Secretary of State
+            <div className="flex items-center gap-3.5">
+              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <circle cx="11" cy="11" r="10" stroke="#0436E3" strokeWidth="2" />
+                  <path d="M8 11l2 2 4-4" stroke="#0436E3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <p className="text-gray-700 text-[15px]">
+                <span className="font-semibold text-gray-900">24-Hour LLC Formation</span>
+                <span className="text-gray-400"> – </span>Register with Secretary of State
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              <Star className="w-5 h-5 text-[#0436E3]" />
-              <p className="text-gray-700 text-sm">
-                <span className="font-semibold">Expert Guidance</span> - Step-by-step assistance from professionals
+            <div className="flex items-center gap-3.5">
+              <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <path d="M11 2l2.5 5.5L19 8.5l-4 4 1 5.5L11 15.5 6 18l1-5.5-4-4 5.5-1L11 2z" stroke="#0436E3" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <p className="text-gray-700 text-[15px]">
+                <span className="font-semibold text-gray-900">Expert Guidance</span>
+                <span className="text-gray-400"> – </span>Step-by-step assistance from professionals
               </p>
             </div>
           </div>
 
-          <div className="bg-green-50 border border-green-100 rounded-xl p-4 mb-6">
-            <p className="text-xs font-semibold text-[#25D366] uppercase tracking-wide mb-1">🎉 Special Offer</p>
-            <p className="text-gray-800 text-sm">
+          {/* Special Offer */}
+          <div
+            className="rounded-xl p-5 mb-7"
+            style={{ backgroundColor: "#f0fdf4", border: "1px solid #dcfce7" }}
+          >
+            <p className="text-xs font-bold uppercase tracking-wider mb-1.5" style={{ color: "#25D366" }}>
+              🎉 Special Offer
+            </p>
+            <p className="text-gray-800 text-[15px] leading-relaxed">
               <span className="font-bold">Get 10% off</span> your LLC formation when you start your chat now!
             </p>
-            <p className="text-gray-500 text-xs mt-1">Limited time offer for new customers</p>
+            <p className="text-gray-400 text-[13px] mt-1">Limited time offer for new customers</p>
           </div>
 
+          {/* Buttons */}
           <div className="flex gap-3">
             <button
               onClick={handleStartChat}
-              className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors"
+              className="flex-1 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2.5 hover:opacity-90 transition-opacity text-[15px]"
+              style={{ backgroundColor: "#25D366" }}
             >
-              <MessageCircle className="w-5 h-5" />
+              <MessageCircle className="w-5 h-5 fill-white" />
               Start Chat Now
             </button>
             <button
               onClick={handleClose}
-              className="flex-1 border border-gray-300 text-gray-700 font-semibold py-3.5 px-6 rounded-xl hover:bg-gray-50 transition-colors"
+              className="flex-1 font-semibold py-4 px-6 rounded-xl hover:bg-gray-50 transition-colors text-[15px] text-gray-700"
+              style={{ border: "1.5px solid #e5e7eb" }}
             >
               Maybe Later
             </button>
