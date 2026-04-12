@@ -23,6 +23,7 @@ import FinalCTASection from "@/components/FinalCTASection";
 import WeHandleSection from "@/components/WeHandleSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import WhatsAppPopup from "@/components/WhatsAppPopup";
 
 const Index = () => (
   <div className="min-h-screen">
@@ -49,6 +50,7 @@ const Index = () => (
     <FinalCTASection />
     <FAQSection />
     <Footer />
+    <WhatsAppPopup />
   </div>
 );
 
