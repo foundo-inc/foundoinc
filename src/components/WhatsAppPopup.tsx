@@ -105,22 +105,14 @@ const WhatsAppPopup = () => {
             </div>
           </div>
 
-          {/* Buttons */}
-          <div className="flex gap-3">
-            <button
-              onClick={handleStartChat}
-              className="flex-1 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2.5 hover:opacity-90 transition-opacity text-[15px] bg-primary"
-            >
-              <MessageCircle className="w-5 h-5 fill-white" />
-              Start Chat Now
-            </button>
-            <button
-              onClick={handleClose}
-              className="flex-1 font-semibold py-4 px-6 rounded-xl hover:bg-gray-50 transition-colors text-[15px] text-gray-700 border border-gray-200"
-            >
-              Maybe Later
-            </button>
-          </div>
+          {/* Button */}
+          <button
+            onClick={handleStartChat}
+            className="w-full text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2.5 hover:opacity-90 transition-opacity text-[15px] bg-primary"
+          >
+            <MessageCircle className="w-5 h-5 fill-white" />
+            Start Chat Now
+          </button>
         </div>
       </div>
     </div>
