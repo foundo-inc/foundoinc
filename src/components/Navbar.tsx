@@ -1,26 +1,27 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import foundoLogo from "@/assets/foundo-logo.svg";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Services", href: "#services" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "Process", href: "#process" },
-    { label: "Compare", href: "#compare" },
-    { label: "FAQs", href: "#faq" },
-    { label: "Contact", href: "#contact" },
+    { label: "Services", href: "/#services" },
+    { label: "Pricing", href: "/#pricing" },
+    { label: "Process", href: "/#process" },
+    { label: "About", href: "/about" },
+    { label: "FAQs", href: "/#faq" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
       <div className="mx-auto flex items-center justify-between h-16 md:h-20 px-3 md:px-8 lg:container">
-        <a href="#" className="flex items-center group">
+        <Link to="/" className="flex items-center group">
           <img src={foundoLogo} alt="Foundo" className="h-14 md:h-16 w-auto" />
-        </a>
+        </Link>
 
         <div className="hidden md:flex items-center gap-1">
           {links.map(l => (
