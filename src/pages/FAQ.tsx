@@ -125,11 +125,7 @@ const FAQPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background pointer-events-none" />
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-
+      <section className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden bg-background">
         <div className="container mx-auto relative">
           <div className="max-w-3xl mx-auto text-center">
             <Badge variant="secondary" className="mb-5 gap-1.5 px-3 py-1.5">
@@ -139,20 +135,9 @@ const FAQPage = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-display leading-[1.1] mb-5">
               How can we <span className="text-gradient">help you?</span>
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
               Browse {totalCount}+ answers about forming and running your U.S. company from anywhere in the world.
             </p>
-
-            {/* Search */}
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search for answers..."
-                className="pl-12 h-14 text-base rounded-2xl border-border bg-card shadow-sm focus-visible:ring-primary/30"
-              />
-            </div>
           </div>
         </div>
       </section>
