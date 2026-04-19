@@ -310,43 +310,6 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* FINAL CTA */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto px-5 md:px-4 max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.18em] mb-6">
-            <TrendingUp className="h-3.5 w-3.5" />
-            Ready when you are
-          </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold font-display leading-[1.05] mb-5">
-            Launch your U.S. company
-            <br />
-            <span className="text-gradient">in days, not months.</span>
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join 500+ founders who chose Foundo to start, run, and grow their
-            U.S. business — from anywhere in the world.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
-              size="lg"
-              className="rounded-full px-8 h-13 text-base font-bold shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all"
-            >
-              Get started — $199/mo
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-            <Link to="/contact">
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-full px-8 h-13 text-base font-bold border-foreground text-foreground hover:bg-foreground hover:text-background w-full sm:w-auto"
-              >
-                Talk to an expert
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );
