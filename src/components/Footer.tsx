@@ -4,10 +4,20 @@ import foundoLogoWhite from "@/assets/foundo-logo-white.svg";
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Company: [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
     { label: "Pricing", href: "/pricing" },
     { label: "FAQ", href: "/faq" },
-    { label: "Contact", href: "/contact" },
+  ],
+  Addons: [
+    { label: "Premium Business Address", href: "#" },
+    { label: "ITIN Application", href: "#" },
+    { label: "Annual Report Filing", href: "#" },
+    { label: "Seller Permit", href: "#" },
+  ],
+  Services: [
+    { label: "US Dedicated IP VPS", href: "#" },
+    { label: "Business Website Setup", href: "#" },
+    { label: "Company Dissolution", href: "#" },
+    { label: "Company Amendment", href: "#" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy-policy" },
