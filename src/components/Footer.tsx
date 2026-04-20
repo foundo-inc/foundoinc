@@ -80,7 +80,7 @@ const Footer = () => (
           </div>
         </div>
         <p className="text-[11px] text-primary-foreground/20 text-center sm:text-right max-w-md leading-relaxed">
-          Foundo products may not be available to all customers. We are not a law firm, nor can we offer official legal advice.
+          Foundo Inc, registered in Colorado, United States — Governed by the laws of the State of Colorado, USA.
         </p>
       </div>
     </div>
