@@ -35,11 +35,11 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-sm font-medium rounded-xl">
-            Login
+          <Button variant="ghost" size="sm" className="text-sm font-medium rounded-xl" asChild>
+            <a href="/dashboard">Login</a>
           </Button>
-          <Button size="default" className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5">
-            Get Started
+          <Button size="default" className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5" asChild>
+            <a href="/dashboard">Get Started</a>
           </Button>
         </div>
 
