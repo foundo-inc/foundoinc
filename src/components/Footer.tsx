@@ -1,11 +1,28 @@
 import { Mail, ArrowUpRight } from "lucide-react";
 import foundoLogoWhite from "@/assets/foundo-logo-white.svg";
 
-const footerLinks = {
-  Company: ["Home", "Pricing", "FAQ"],
-  Addons: ["Premium Business Address", "ITIN Application", "Annual Report Filing", "Seller Permit"],
-  Services: ["US Dedicated IP VPS", "Business Website Setup", "Company Dissolution", "Company Amendment"],
-  Legal: ["Privacy Policy", "Terms and Conditions"],
+const footerLinks: Record<string, { label: string; href: string }[]> = {
+  Company: [
+    { label: "Home", href: "/" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "FAQ", href: "/faq" },
+  ],
+  Addons: [
+    { label: "Premium Business Address", href: "#" },
+    { label: "ITIN Application", href: "#" },
+    { label: "Annual Report Filing", href: "#" },
+    { label: "Seller Permit", href: "#" },
+  ],
+  Services: [
+    { label: "US Dedicated IP VPS", href: "#" },
+    { label: "Business Website Setup", href: "#" },
+    { label: "Company Dissolution", href: "#" },
+    { label: "Company Amendment", href: "#" },
+  ],
+  Legal: [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+  ],
 };
 
 const socials = [
@@ -41,7 +58,7 @@ const Footer = () => (
             <p className="text-xs font-bold text-primary-foreground/30 uppercase tracking-[0.15em] mb-4">{title}</p>
             <div className="space-y-2.5">
               {links.map(l => (
-                <a key={l} href="#" className="block text-sm text-primary-foreground/50 hover:text-primary-foreground transition-colors duration-200">{l}</a>
+                <a key={l.label} href={l.href} className="block text-sm text-primary-foreground/50 hover:text-primary-foreground transition-colors duration-200">{l.label}</a>
               ))}
             </div>
           </div>
