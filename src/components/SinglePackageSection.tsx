@@ -89,9 +89,9 @@ const SinglePackageSection = () => (
                 <Button
                   size="lg"
                   className="rounded-full w-full bg-white text-[#0429E7] hover:bg-white/90 font-bold h-12 md:h-14 text-base shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                  asChild
                 >
-                  Get started
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <a href="/dashboard">Get started <ArrowRight className="ml-2 h-4 w-4" /></a>
                 </Button>
                 <p className="text-center text-xs text-white/40 mt-3">
                   No credit card required to start
