@@ -226,40 +226,25 @@ const FAQPage = () => {
         </div>
       </section>
 
-      {/* Still need help CTA */}
-      <section className="pb-20 md:pb-28">
-        <div className="container mx-auto">
-          <div className="max-w-4xl mx-auto bg-gradient-to-br from-primary to-primary/80 rounded-3xl p-8 md:p-12 text-primary-foreground relative overflow-hidden">
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-            <div className="relative grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-extrabold font-display mb-3 leading-tight">
-                  Still have questions?
-                </h2>
-                <p className="text-primary-foreground/90 text-sm md:text-base">
-                  Our founder specialists are available 24/7 on WhatsApp and email. Real humans, fast answers.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 md:justify-end">
-                <Button asChild size="lg" variant="secondary" className="font-semibold">
-                  <Link to="/contact">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Contact Us
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-white text-primary hover:bg-white/90 font-semibold"
-                >
-                  <a href="https://wa.me/" target="_blank" rel="noreferrer">
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    WhatsApp
-                    <ArrowRight className="w-4 h-4 ml-1" />
-                  </a>
-                </Button>
-              </div>
-            </div>
+      {/* CTA */}
+      <section className="py-20 md:py-28 bg-foreground relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-3xl" />
+        <div className="container mx-auto relative z-10 text-center max-w-3xl">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-background leading-[1.05] tracking-tighter mb-6">
+            Ready to join the <span className="text-gradient-light">Foundo family?</span>
+          </h2>
+          <p className="text-lg md:text-xl text-background/70 mb-10 max-w-2xl mx-auto">
+            Hundreds of founders trusted us with their dream. Yours could be next.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="rounded-full text-base font-semibold px-8 h-14 shadow-xl shadow-primary/30">
+              <a href="/dashboard">Start Your Business <ArrowRight className="ml-2 h-5 w-5" /></a>
+            </Button>
+            <Link to="/contact">
+              <Button size="lg" variant="outline" className="rounded-full text-base font-semibold px-8 h-14 bg-transparent border-background/20 text-background hover:bg-background/10 hover:text-background">
+                Talk to Us
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
