@@ -85,7 +85,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-3">10. Governing Law</h2>
               <p className="text-muted-foreground leading-relaxed">
-                These Terms shall be governed by the laws of the United States and the state in which Foundo is headquartered, without regard to conflict of law principles.
+                These Terms shall be governed by and construed in accordance with the laws of the State of Colorado and the United States of America, without regard to conflict of law principles.
               </p>
             </section>
 
