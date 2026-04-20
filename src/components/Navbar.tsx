@@ -8,11 +8,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { label: "Services", href: "/#services" },
+    { label: "LLC Formation", href: "/" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Process", href: "/#process" },
     { label: "About", href: "/about" },
-    { label: "FAQs", href: "/#faq" },
+    { label: "FAQs", href: "/faq" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -36,11 +35,11 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-sm font-medium rounded-xl">
-            Login
+          <Button variant="ghost" size="sm" className="text-sm font-medium rounded-xl" asChild>
+            <a href="/dashboard">Login</a>
           </Button>
-          <Button size="default" className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5">
-            Get Started
+          <Button size="default" className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5" asChild>
+            <a href="/dashboard">Get Started</a>
           </Button>
         </div>
 
@@ -57,8 +56,12 @@ const Navbar = () => {
             </a>
           ))}
           <div className="pt-3 space-y-2">
-            <Button variant="outline" className="w-full rounded-xl h-12 text-base" size="lg">Login</Button>
-            <Button className="w-full rounded-xl shadow-lg shadow-primary/20 h-12 text-base" size="lg">Get Started</Button>
+            <Button variant="outline" className="w-full rounded-xl h-12 text-base" size="lg" asChild>
+              <a href="/dashboard">Login</a>
+            </Button>
+            <Button className="w-full rounded-xl shadow-lg shadow-primary/20 h-12 text-base" size="lg" asChild>
+              <a href="/dashboard">Get Started</a>
+            </Button>
           </div>
         </div>
       )}
