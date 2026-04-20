@@ -56,8 +56,12 @@ const Navbar = () => {
             </a>
           ))}
           <div className="pt-3 space-y-2">
-            <Button variant="outline" className="w-full rounded-xl h-12 text-base" size="lg">Login</Button>
-            <Button className="w-full rounded-xl shadow-lg shadow-primary/20 h-12 text-base" size="lg">Get Started</Button>
+            <Button variant="outline" className="w-full rounded-xl h-12 text-base" size="lg" asChild>
+              <a href="/dashboard">Login</a>
+            </Button>
+            <Button className="w-full rounded-xl shadow-lg shadow-primary/20 h-12 text-base" size="lg" asChild>
+              <a href="/dashboard">Get Started</a>
+            </Button>
           </div>
         </div>
       )}
