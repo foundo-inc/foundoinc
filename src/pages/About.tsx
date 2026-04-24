@@ -12,7 +12,7 @@ const values = [
 ];
 
 const stats = [
-  { value: "500+", label: "Companies Formed", icon: Trophy },
+  { value: "700+", label: "Founders Served", icon: Trophy },
   { value: "50+", label: "Countries Served", icon: Globe2 },
   { value: "$2B+", label: "Revenue Processed", icon: TrendingUp },
   { value: "98%", label: "Client Satisfaction", icon: Heart },
