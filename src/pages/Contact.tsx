@@ -12,22 +12,22 @@ const channels = [
     icon: MessageCircle,
     title: "WhatsApp",
     desc: "Fastest replies. Available 7 days a week.",
-    value: "+1 (555) 010-1234",
+    value: "+91 95100 22071",
     action: "Chat now",
     accent: true,
   },
   {
     icon: Mail,
-    title: "Email Us",
+    title: "Email",
     desc: "We reply within 2 business hours.",
-    value: "hello@foundo.com",
+    value: "info@foundo.co",
     action: "Send email",
   },
   {
     icon: Phone,
-    title: "Call Us",
+    title: "Call",
     desc: "Mon–Fri, 9am to 6pm EST.",
-    value: "+1 (555) 010-5678",
+    value: "+1 (983) 212-4409",
     action: "Call now",
   },
 ];
@@ -214,12 +214,12 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-foreground">Our Office</h3>
-                    <p className="text-sm text-muted-foreground">Headquartered in Wyoming</p>
+                    <p className="text-sm text-muted-foreground">Headquartered in Colorado</p>
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  30 N Gould St, Ste R<br />
-                  Sheridan, WY 82801<br />
+                  1500 N GRANT ST STE 5284<br />
+                  DENVER, CO 80203<br />
                   United States
                 </p>
               </div>
