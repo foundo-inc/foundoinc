@@ -50,7 +50,7 @@ const includedRight = [
 ];
 
 const stats = [
-  { icon: Users, value: "700+", label: "Founders served all over" },
+  { icon: Shield, value: "700+", label: "Money-back guarantee" },
   { icon: Clock, value: "1–3 days", label: "Filed" },
   { icon: Users, value: "500+", label: "Founders served" },
   { icon: Star, value: "4.9/5", label: "Average rating" },
