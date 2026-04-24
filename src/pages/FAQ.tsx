@@ -71,7 +71,6 @@ const categories: Category[] = [
     faqs: [
       { q: "Do I need to file U.S. taxes?", a: "Most non-resident-owned LLCs need to file Form 5472 + 1120 annually, even with zero U.S. income. Our Annual Tax Filing add-on handles this end-to-end." },
       { q: "What is a Registered Agent and do I need one?", a: "A Registered Agent receives legal mail on behalf of your LLC. It's required in every state — and included free in your Foundo plan." },
-      { q: "What is the BOI report?", a: "The Beneficial Ownership Information report is a federal filing required for most U.S. LLCs. Foundo files it for you as part of compliance." },
       { q: "Will you remind me about deadlines?", a: "Yes. We track every annual report, franchise tax, and federal filing deadline and notify you well in advance." },
     ],
   },
