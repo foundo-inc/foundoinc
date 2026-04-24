@@ -23,6 +23,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
+const whatsappLink = "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?";
+
 type Category = {
   id: string;
   label: string;
@@ -239,11 +241,11 @@ const FAQPage = () => {
             <Button asChild size="lg" className="rounded-full text-base font-semibold px-8 h-14 shadow-xl shadow-primary/30">
               <a href="/dashboard">Start Your Business <ArrowRight className="ml-2 h-5 w-5" /></a>
             </Button>
-            <Link to="/contact">
-              <Button size="lg" variant="outline" className="rounded-full text-base font-semibold px-8 h-14 bg-transparent border-background/20 text-background hover:bg-background/10 hover:text-background">
+            <Button asChild size="lg" variant="outline" className="rounded-full text-base font-semibold px-8 h-14 bg-transparent border-background/20 text-background hover:bg-background/10 hover:text-background">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 Talk to Us
-              </Button>
-            </Link>
+              </a>
+            </Button>
           </div>
         </div>
       </section>
