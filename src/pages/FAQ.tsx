@@ -91,7 +91,7 @@ const categories: Category[] = [
     label: "Support",
     icon: MessageCircle,
     faqs: [
-      { q: "How do I contact support?", a: "Email us at hello@foundo.com or message us on WhatsApp 24/7. We respond within a few hours, usually faster." },
+      { q: "How do I contact support?", a: "Email us at info@foundo.co or message us on WhatsApp 24/7. We respond within a few hours, usually faster." },
       { q: "Do you offer 1-on-1 onboarding?", a: "Yes — every Foundo Complete customer gets a personal onboarding call with a U.S. business specialist." },
       { q: "Can you help after my LLC is formed?", a: "Definitely. Compliance, taxes, banking issues, Stripe setup, payroll — we're with you for the long haul." },
     ],

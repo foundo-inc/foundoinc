@@ -14,7 +14,7 @@ const contactSchema = z.object({
 
 const contactInfo = [
   { icon: MessageCircle, label: "WhatsApp", value: "Chat with us", href: "#" },
-  { icon: Mail, label: "Email", value: "info@foundo.com", href: "mailto:info@foundo.com" },
+  { icon: Mail, label: "Email", value: "info@foundo.co", href: "mailto:info@foundo.co" },
   { icon: MapPin, label: "Address", value: "Colorado, United States", href: "#" },
 ];
 

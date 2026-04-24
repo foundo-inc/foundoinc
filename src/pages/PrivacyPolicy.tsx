@@ -83,7 +83,7 @@ const PrivacyPolicy = () => {
             <section>
               <h2 className="text-2xl font-bold text-foreground mb-3">9. Contact Us</h2>
               <p className="text-muted-foreground leading-relaxed">
-                If you have questions about this Privacy Policy, please contact us at <a href="mailto:support@foundo.com" className="text-primary font-medium hover:underline">support@foundo.com</a>.
+                If you have questions about this Privacy Policy, please contact us at <a href="mailto:info@foundo.co" className="text-primary font-medium hover:underline">info@foundo.co</a>.
               </p>
             </section>
           </div>
