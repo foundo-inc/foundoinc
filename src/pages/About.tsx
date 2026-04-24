@@ -13,8 +13,8 @@ const values = [
 
 const stats = [
   { value: "700+", label: "Founders Served", icon: Trophy },
-  { value: "50+", label: "Countries Served", icon: Globe2 },
-  { value: "$2B+", label: "Revenue Processed", icon: TrendingUp },
+  { value: "35+", label: "Countries Served", icon: Globe2 },
+  { value: "300+", label: "ITINs Issued", icon: TrendingUp },
   { value: "98%", label: "Client Satisfaction", icon: Heart },
 ];
 
