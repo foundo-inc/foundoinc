@@ -57,15 +57,15 @@ const stats = [
 ];
 
 const optionalAddOns = [
-  { icon: Briefcase, title: "Premium NYC Address", price: "$350/yr", desc: "Prestigious Manhattan business address" },
-  { icon: Globe2, title: "Multi-state Expansion", price: "$499", desc: "Register your company in additional states" },
-  { icon: FileText, title: "Trademark Filing", price: "$299", desc: "Protect your brand with USPTO filing" },
-  { icon: Receipt, title: "Sales Tax Setup", price: "$249", desc: "Register for sales tax in any U.S. state" },
-  { icon: Scale, title: "Legal Document Pack", price: "$199", desc: "NDAs, contractor & client agreements" },
-  { icon: CreditCard, title: "Stripe Atlas Migration", price: "$399", desc: "Move from Atlas to Foundo, hassle-free" },
-  { icon: Building, title: "EIN-Only Service", price: "$149", desc: "Get your Tax ID without forming a company" },
-  { icon: BookOpen, title: "Bookkeeping Pro", price: "$1,890/yr", desc: "Monthly books, P&L and balance sheet" },
-  { icon: Landmark, title: "Annual Tax Filing", price: "$1,799/yr", desc: "Federal + state corporate tax returns" },
+  { icon: Briefcase, title: "Premium Address", price: "$99/yr", desc: "Unique suite for ecom businesses" },
+  { icon: FileText, title: "ITIN Application", price: "$349", desc: "" },
+  { icon: Scale, title: "Trademark", price: "$749", desc: "" },
+  { icon: Receipt, title: "Seller Permit", price: "$149", desc: "" },
+  { icon: Landmark, title: "State Annual Report", price: "$99 + State Fees", desc: "" },
+  { icon: Building, title: "DBA Name", price: "$149 + State Fees", desc: "" },
+  { icon: BookOpen, title: "Amendment", price: "$249 + State Fees", desc: "" },
+  { icon: Zap, title: "Reinstatement", price: "$249 + State Fees", desc: "" },
+  { icon: Globe2, title: "Dissolution", price: "$249 + State Fees", desc: "" },
 ];
 
 const faqs = [
