@@ -19,16 +19,16 @@ const GuaranteeSection = () => (
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <div className="bg-card rounded-xl border border-border px-6 py-4 text-center">
-            <p className="text-2xl font-extrabold font-display text-primary">Guaranteed Protection</p>
-            <p className="text-xs text-muted-foreground">Hassle-free refunds</p>
+            <p className="text-2xl font-extrabold font-display text-primary">30 Days</p>
+            <p className="text-xs text-muted-foreground">Full refund window</p>
           </div>
           <div className="bg-card rounded-xl border border-border px-6 py-4 text-center">
-            <p className="text-2xl font-extrabold font-display text-primary">Try Risk-Free</p>
-            <p className="text-xs text-muted-foreground">No commitments</p>
+            <p className="text-2xl font-extrabold font-display text-primary">Zero Risk</p>
+            <p className="text-xs text-muted-foreground">No questions asked</p>
           </div>
           <div className="bg-card rounded-xl border border-border px-6 py-4 text-center">
-            <p className="text-2xl font-extrabold font-display text-primary">100% Refund</p>
-            <p className="text-xs text-muted-foreground">If we fall short</p>
+            <p className="text-2xl font-extrabold font-display text-primary">100%</p>
+            <p className="text-xs text-muted-foreground">Money back guaranteed</p>
           </div>
         </div>
 
