@@ -57,15 +57,15 @@ const stats = [
 ];
 
 const optionalAddOns = [
-  { icon: Briefcase, title: "Premium Address", price: "$99/yr", desc: "Unique suite for ecom businesses" },
-  { icon: FileText, title: "ITIN Application", price: "$349", desc: "" },
-  { icon: Scale, title: "Trademark", price: "$749", desc: "" },
-  { icon: Receipt, title: "Seller Permit", price: "$149", desc: "" },
-  { icon: Landmark, title: "State Annual Report", price: "$99 + State Fees", desc: "" },
-  { icon: Building, title: "DBA Name", price: "$149 + State Fees", desc: "" },
-  { icon: BookOpen, title: "Amendment", price: "$249 + State Fees", desc: "" },
-  { icon: Zap, title: "Reinstatement", price: "$249 + State Fees", desc: "" },
-  { icon: Globe2, title: "Dissolution", price: "$249 + State Fees", desc: "" },
+  { icon: Briefcase, title: "Premium Address", price: "$99/yr", desc: "Unique suite address built for ecommerce stores, marketplaces, and online brands." },
+  { icon: FileText, title: "ITIN Application", price: "$349", desc: "Personal tax ID support for non-U.S. founders who need banking, tax, or compliance access." },
+  { icon: Scale, title: "Trademark", price: "$749", desc: "Brand protection filing support for your business name, logo, or product identity." },
+  { icon: Receipt, title: "Seller Permit", price: "$149", desc: "Sales permit registration support so you can legally collect and remit sales tax." },
+  { icon: Landmark, title: "State Annual Report", price: "$99 + State Fees", desc: "Annual state filing preparation and reminders to keep your company in good standing." },
+  { icon: Building, title: "DBA Name", price: "$149 + State Fees", desc: "Register an alternate business name when you want to operate under another brand." },
+  { icon: BookOpen, title: "Amendment", price: "$249 + State Fees", desc: "Update official company details such as name, address, members, or structure." },
+  { icon: Zap, title: "Reinstatement", price: "$249 + State Fees", desc: "Restore an inactive or dissolved company and bring state records back into compliance." },
+  { icon: Globe2, title: "Dissolution", price: "$249 + State Fees", desc: "Close your company properly with the required state dissolution paperwork." },
 ];
 
 const faqs = [
