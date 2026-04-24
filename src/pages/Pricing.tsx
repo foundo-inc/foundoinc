@@ -132,18 +132,18 @@ const Pricing = () => {
                     <div className="mb-2">
                       <div className="flex items-baseline gap-2">
                         <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
-                          $199
+                          $249
                         </span>
-                        <span className="text-primary-foreground/50 text-sm">/month</span>
+                        <span className="text-primary-foreground/50 text-sm">+ State Fees</span>
                       </div>
                       <div className="flex items-center gap-3 mt-3">
-                        <span className="text-sm line-through text-primary-foreground/30">$362/mo</span>
+                        <span className="text-sm line-through text-primary-foreground/30">$349 original</span>
                         <span className="text-xs font-extrabold text-primary-foreground bg-primary-foreground/15 px-2.5 py-1 rounded-full">
-                          SAVE 45%
+                          SAVE 29%
                         </span>
                       </div>
                       <p className="text-xs text-primary-foreground/40 mt-3">
-                        Billed yearly · One-time formation fee $399
+                        Billed $100 yearly for Registered Agent and Business Address Renewal
                       </p>
                     </div>
                   </div>
@@ -156,9 +156,6 @@ const Pricing = () => {
                       Get started
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
-                    <p className="text-center text-xs text-primary-foreground/40 mt-3">
-                      No credit card required to start
-                    </p>
                   </div>
                 </div>
 
