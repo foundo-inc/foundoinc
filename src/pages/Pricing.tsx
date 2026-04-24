@@ -57,15 +57,15 @@ const stats = [
 ];
 
 const optionalAddOns = [
-  { icon: Briefcase, title: "Premium Address", price: "$99/yr", desc: "Unique suite for ecom businesses" },
-  { icon: FileText, title: "ITIN Application", price: "$349", desc: "" },
-  { icon: Scale, title: "Trademark", price: "$749", desc: "" },
-  { icon: Receipt, title: "Seller Permit", price: "$149", desc: "" },
-  { icon: Landmark, title: "State Annual Report", price: "$99 + State Fees", desc: "" },
-  { icon: Building, title: "DBA Name", price: "$149 + State Fees", desc: "" },
-  { icon: BookOpen, title: "Amendment", price: "$249 + State Fees", desc: "" },
-  { icon: Zap, title: "Reinstatement", price: "$249 + State Fees", desc: "" },
-  { icon: Globe2, title: "Dissolution", price: "$249 + State Fees", desc: "" },
+  { icon: Briefcase, title: "Premium Address", price: "$99/yr", desc: "Unique suite address built for ecommerce stores, marketplaces, and online brands." },
+  { icon: FileText, title: "ITIN Application", price: "$349", desc: "Personal tax ID support for non-U.S. founders who need banking, tax, or compliance access." },
+  { icon: Scale, title: "Trademark", price: "$749", desc: "Brand protection filing support for your business name, logo, or product identity." },
+  { icon: Receipt, title: "Seller Permit", price: "$149", desc: "Sales permit registration support so you can legally collect and remit sales tax." },
+  { icon: Landmark, title: "State Annual Report", price: "$99 + State Fees", desc: "Annual state filing preparation and reminders to keep your company in good standing." },
+  { icon: Building, title: "DBA Name", price: "$149 + State Fees", desc: "Register an alternate business name when you want to operate under another brand." },
+  { icon: BookOpen, title: "Amendment", price: "$249 + State Fees", desc: "Update official company details such as name, address, members, or structure." },
+  { icon: Zap, title: "Reinstatement", price: "$249 + State Fees", desc: "Restore an inactive or dissolved company and bring state records back into compliance." },
+  { icon: Globe2, title: "Dissolution", price: "$249 + State Fees", desc: "Close your company properly with the required state dissolution paperwork." },
 ];
 
 const faqs = [
@@ -224,20 +224,20 @@ const Pricing = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
             {optionalAddOns.map((a, i) => (
               <div
                 key={i}
-                className="group bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
+                className="group bg-card border border-border rounded-2xl p-6 min-h-[220px] flex flex-col hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
                   <a.icon className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                <div className="flex items-baseline justify-between gap-2 mb-2">
-                  <h3 className="font-extrabold font-display text-lg">{a.title}</h3>
-                  <span className="text-sm font-bold text-primary whitespace-nowrap">{a.price}</span>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                  <h3 className="font-extrabold font-display text-lg leading-tight">{a.title}</h3>
+                  <span className="text-sm font-bold text-primary whitespace-normal sm:whitespace-nowrap leading-snug">{a.price}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{a.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{a.desc}</p>
               </div>
             ))}
           </div>
