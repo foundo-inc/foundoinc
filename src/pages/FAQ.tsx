@@ -61,7 +61,7 @@ const categories: Category[] = [
       { q: "Can I open a U.S. bank account remotely?", a: "Yes. We partner with Mercury, Airwallex, Payoneer, and other fintechs that allow non-residents to open U.S. business accounts 100% online." },
       { q: "Will I get a debit card?", a: "Yes — most of our banking partners ship physical and virtual debit cards internationally once your account is approved." },
       { q: "Can I accept Stripe payments?", a: "Absolutely. Once your LLC and EIN are ready, we guide you through activating Stripe, PayPal, and other payment processors for your U.S. entity." },
-      { q: "What if my bank application is rejected?", a: "Bank approvals are handled by our banking partners and depend on their internal compliance checks. If your application is not approved, we will guide you on the possible reasons and help you apply with another banking partner that better fits your business." },
+      { q: "What if my bank application is rejected?", a: "Approvals depend on our banking partners. If not approved, we will guide you and help you apply with a better-suited alternative." },
     ],
   },
   {
