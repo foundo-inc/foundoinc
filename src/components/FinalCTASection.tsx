@@ -20,7 +20,7 @@ const FinalCTASection = () => (
           </h2>
 
           <p className="text-base md:text-lg text-primary-foreground/65 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed">
-            We handle formation, banking setup, Stripe access, and compliance so you can focus on building and selling.
+            We handle formation, banking setup, and compliance so you can focus on building and selling.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-5 md:mb-6">
