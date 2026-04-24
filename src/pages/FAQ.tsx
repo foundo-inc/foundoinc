@@ -79,7 +79,7 @@ const categories: Category[] = [
     label: "Pricing & Billing",
     icon: CreditCard,
     faqs: [
-      { q: "How much does Foundo cost?", a: "Foundo Complete is $199/month billed yearly + a one-time $399 setup fee. State filing fees are passed through at cost." },
+      { q: "How much does Foundo cost?", a: "Foundo starts from $249 + state fees. The total cost depends on the state you choose." },
       { q: "Are there hidden fees?", a: "Never. The only additional cost is the state's official filing fee, which we show transparently before you check out." },
       { q: "Can I cancel anytime?", a: "Yes. You can cancel your renewal anytime. Your LLC stays active — we just stop providing renewal services." },
       { q: "Do you offer refunds?", a: "If we fail to form your LLC, you get a 100% refund. State fees are non-refundable once filed with the government." },
