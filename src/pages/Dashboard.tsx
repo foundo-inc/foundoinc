@@ -22,7 +22,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const WHATSAPP_CHAT_URL = "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?";
-const ORDER_EMAIL = "orders@foundoinc.com";
+const ORDER_EMAIL = "info@foundo.co";
 
 const emailSubject = encodeURIComponent("New Order Request — US LLC Formation");
 const emailBody = encodeURIComponent(
