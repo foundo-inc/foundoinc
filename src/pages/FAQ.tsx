@@ -69,7 +69,7 @@ const categories: Category[] = [
     label: "Compliance & Taxes",
     icon: ShieldCheck,
     faqs: [
-      { q: "Do I need to file U.S. taxes?", a: "Most non-resident-owned LLCs need to file Form 5472 + 1120 annually, even with zero U.S. income. Our Annual Tax Filing add-on handles this end-to-end." },
+      { q: "Do I need to file U.S. taxes?", a: "Yes, most U.S. companies have annual filing requirements. We will guide you and handle the process to keep your company compliant." },
       { q: "What is a Registered Agent and do I need one?", a: "A Registered Agent receives legal mail on behalf of your LLC. It's required in every state — and included free in your Foundo plan." },
       { q: "Will you remind me about deadlines?", a: "Yes. We track every annual report, franchise tax, and federal filing deadline and notify you well in advance." },
     ],
