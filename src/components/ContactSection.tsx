@@ -13,9 +13,9 @@ const contactSchema = z.object({
 });
 
 const contactInfo = [
-  { icon: MessageCircle, label: "WhatsApp", value: "Chat with us", href: "#" },
+  { icon: MessageCircle, label: "WhatsApp", value: "Chat with us", href: "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?" },
   { icon: Mail, label: "Email", value: "info@foundo.co", href: "mailto:info@foundo.co" },
-  { icon: MapPin, label: "Address", value: "Colorado, United States", href: "#" },
+  { icon: MapPin, label: "Address", value: "Colorado, United States" },
 ];
 
 const ContactSection = () => {
@@ -64,21 +64,38 @@ const ContactSection = () => {
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-10">
           {/* Contact info */}
           <div className="lg:col-span-2 flex flex-col gap-5">
-            {contactInfo.map(({ icon: Icon, label, value, href }) => (
-              <a
-                key={label}
-                href={href}
-                className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:-translate-y-1"
-              >
-                <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-300 shrink-0">
-                  <Icon className="h-6 w-6 text-primary" />
+            {contactInfo.map(({ icon: Icon, label, value, href }) => {
+              const content = (
+                <>
+                  <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors duration-300 shrink-0">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-0.5">{label}</p>
+                    <p className="text-base font-bold text-foreground">{value}</p>
+                  </div>
+                </>
+              );
+
+              return href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:-translate-y-1"
+                >
+                  {content}
+                </a>
+              ) : (
+                <div
+                  key={label}
+                  className="group flex items-center gap-4 rounded-2xl border border-border bg-card p-6"
+                >
+                  {content}
                 </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-0.5">{label}</p>
-                  <p className="text-base font-bold text-foreground">{value}</p>
-                </div>
-              </a>
-            ))}
+              );
+            })}
           </div>
 
           {/* Form */}
