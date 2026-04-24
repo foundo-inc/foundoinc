@@ -6,7 +6,7 @@ const services = [
   { icon: Landmark, title: "U.S. Business Banking", desc: "Open a U.S. business bank account remotely with top-tier banking partners." },
   { icon: CreditCard, title: "Payment Solutions", desc: "Unlock Stripe, PayPal, and global payment gateways for worldwide payments." },
   { icon: ShieldCheck, title: "Compliance & Agent", desc: "Stay compliant with annual reports, state filings, and dedicated registered agent." },
-  { icon: Calculator, title: "Bookkeeping & Tax", desc: "Professional bookkeeping and tax prep by international business experts." },
+  { icon: Calculator, title: "ITIN Assistance", desc: "Hassle-free ITIN registration for non-resident business owners." },
 ];
 
 const ServicesSection = () => (
