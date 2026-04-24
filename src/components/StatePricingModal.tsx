@@ -57,7 +57,7 @@ const states = [
   { name: "Wyoming", fee: 100 },
 ];
 
-const FOUNDO_FEE = 149;
+const FOUNDO_FEE = 249;
 
 interface StatePricingModalProps {
   open: boolean;
