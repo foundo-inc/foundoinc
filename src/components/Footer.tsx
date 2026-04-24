@@ -44,7 +44,7 @@ const Footer = () => (
           <img src={foundoLogoWhite} alt="Foundo" className="h-14 md:h-16 w-auto" />
         </div>
         <div className="flex items-center gap-3">
-          <a href="#" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">
+          <a href="https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">
             WhatsApp Support <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
