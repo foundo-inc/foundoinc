@@ -19,10 +19,10 @@ const stats = [
 ];
 
 const milestones = [
-  { year: "2020", title: "The Beginning", desc: "Founded with a mission to make U.S. company formation accessible to global founders." },
-  { year: "2021", title: "First 100 Founders", desc: "Helped our first 100 international founders launch their U.S. businesses." },
-  { year: "2023", title: "IRS Certified", desc: "Became an IRS Certified Acceptance Agent for ITIN applications." },
-  { year: "2024", title: "Global Expansion", desc: "Now serving founders in 50+ countries with a 98% satisfaction rate." },
+  { year: "2023", title: "The Beginning", desc: "Our founder set out to make U.S. company formation simple and accessible for global founders." },
+  { year: "2024", title: "First 100 Founders", desc: "Helped our first 100 international founders successfully launch their U.S. businesses." },
+  { year: "2025", title: "Foundo Launched", desc: "Introduced Foundo — a streamlined platform built to help founders start and manage U.S. companies with ease." },
+  { year: "2026", title: "Global Expansion", desc: "Now supporting founders in 35+ countries with a 98% satisfaction rate." },
 ];
 
 const About = () => {
