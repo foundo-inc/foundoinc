@@ -13,8 +13,8 @@ const trustItems = [
   },
   {
     icon: Award,
-    title: "Trusted by 1,000+ Founders",
-    desc: "Founders from 50+ countries have launched their US companies through Foundo.",
+    title: "Trusted by 700+ Founders",
+    desc: "Founders from 35+ countries have launched their US companies through Foundo.",
   },
   {
     icon: Clock,
