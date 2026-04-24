@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Globe, TrendingUp } from "lucide-react";
 
 const stats = [
-  { icon: Users, value: "1,200+", label: "Companies formed" },
-  { icon: Globe, value: "50+", label: "Countries served" },
-  { icon: TrendingUp, value: "$50M+", label: "Raised by our founders" },
+  { icon: Users, value: "700+", label: "Companies Formed" },
+  { icon: Globe, value: "35+", label: "Countries Served" },
+  { icon: TrendingUp, value: "98%", label: "Success Rate" },
 ];
 
 const UrgencyCTASection = () => (
@@ -37,8 +37,6 @@ const UrgencyCTASection = () => (
         <Button size="lg" className="w-full sm:w-auto rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold h-12 md:h-14 px-10 text-base shadow-lg transition-all duration-300 hover:-translate-y-0.5">
           Start my company now <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
-
-        <p className="text-xs text-primary-foreground/40 mt-4">No credit card required · 30-day money-back guarantee</p>
       </div>
     </div>
   </section>
