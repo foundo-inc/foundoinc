@@ -11,6 +11,7 @@ import Contact from "./pages/Contact.tsx";
 import Pricing from "./pages/Pricing.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Login from "./pages/Login.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 import DashboardOverview from "./pages/dashboard/Overview.tsx";
 import Documents from "./pages/dashboard/Documents.tsx";
 import Compliance from "./pages/dashboard/Compliance.tsx";
@@ -35,10 +36,11 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
-            <Route path="/dashboard/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
-            <Route path="/dashboard/compliance" element={<ProtectedRoute><Compliance /></ProtectedRoute>} />
-            <Route path="/dashboard/banking" element={<ProtectedRoute><Banking /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/app" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
+            <Route path="/app/documents" element={<ProtectedRoute><Documents /></ProtectedRoute>} />
+            <Route path="/app/compliance" element={<ProtectedRoute><Compliance /></ProtectedRoute>} />
+            <Route path="/app/banking" element={<ProtectedRoute><Banking /></ProtectedRoute>} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

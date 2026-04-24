@@ -109,7 +109,7 @@ const DashboardOverview = () => {
             <p className="text-sm text-muted-foreground">All filings up to date 🎉</p>
           )}
           <Button asChild variant="outline" className="w-full mt-6 rounded-xl">
-            <Link to="/dashboard/compliance">
+            <Link to="/app/compliance">
               View compliance <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
@@ -118,7 +118,7 @@ const DashboardOverview = () => {
 
       {/* Quick links */}
       <div className="grid gap-4 sm:grid-cols-2 mt-6">
-        <Link to="/dashboard/documents" className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 card-hover-glow transition-all group">
+        <Link to="/app/documents" className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 card-hover-glow transition-all group">
           <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:hero-gradient transition-all">
             <FileText className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
           </div>
@@ -128,7 +128,7 @@ const DashboardOverview = () => {
           </div>
           <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
         </Link>
-        <Link to="/dashboard/banking" className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 card-hover-glow transition-all group">
+        <Link to="/app/banking" className="rounded-2xl border border-border bg-card p-5 flex items-center gap-4 card-hover-glow transition-all group">
           <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:hero-gradient transition-all">
             <Building2 className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
           </div>
