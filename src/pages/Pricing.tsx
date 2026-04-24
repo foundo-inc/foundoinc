@@ -130,11 +130,13 @@ const Pricing = () => {
                     </p>
 
                     <div className="mb-2">
-                      <div className="flex items-baseline gap-2">
+                      <div className="flex flex-wrap items-center gap-3">
                         <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
                           $249
                         </span>
-                        <span className="text-primary-foreground/50 text-sm">+ State Fees</span>
+                        <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-foreground">
+                          + State Fees
+                        </span>
                       </div>
                       <div className="flex items-center gap-3 mt-3">
                         <span className="text-sm line-through text-primary-foreground/30">$349 original</span>
@@ -143,7 +145,7 @@ const Pricing = () => {
                         </span>
                       </div>
                       <p className="text-xs text-primary-foreground/40 mt-3">
-                        Billed $100 yearly for Registered Agent and Business Address Renewal
+                        Registered Agent and Business Address renew yearly at $100.
                       </p>
                     </div>
                   </div>

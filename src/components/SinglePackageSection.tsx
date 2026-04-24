@@ -67,11 +67,13 @@ const SinglePackageSection = () => (
 
                 {/* Price */}
                 <div className="mb-2">
-                  <div className="flex items-baseline gap-2">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display text-white leading-none">
                       $249
                     </span>
-                    <span className="text-white/50 text-sm">+ State Fees</span>
+                    <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                      + State Fees
+                    </span>
                   </div>
                   <div className="flex items-center gap-3 mt-3">
                     <span className="text-sm line-through text-white/30">$349 original</span>
@@ -80,7 +82,7 @@ const SinglePackageSection = () => (
                     </span>
                   </div>
                   <p className="text-xs text-white/40 mt-3">
-                    Billed $100 yearly for Registered Agent and Business Address Renewal
+                    Registered Agent and Business Address renew yearly at $100.
                   </p>
                 </div>
               </div>
