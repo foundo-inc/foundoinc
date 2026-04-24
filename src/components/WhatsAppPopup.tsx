@@ -19,7 +19,7 @@ const WhatsAppPopup = () => {
 
   const handleStartChat = () => {
     window.open(
-      "https://wa.me/1234567890?text=Hi%2C%20I%20need%20help%20with%20LLC%20formation",
+      "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?",
       "_blank"
     );
   };

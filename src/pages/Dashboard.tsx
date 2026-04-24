@@ -21,12 +21,9 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const WHATSAPP_NUMBER = "1234567890"; // TODO: replace with real number
+const WHATSAPP_CHAT_URL = "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?";
 const ORDER_EMAIL = "orders@foundoinc.com";
 
-const whatsappMessage = encodeURIComponent(
-  "Hi Foundo team! 👋 I'd like to place an order to start my US LLC formation. Can you guide me through the next steps?",
-);
 const emailSubject = encodeURIComponent("New Order Request — US LLC Formation");
 const emailBody = encodeURIComponent(
   `Hi Foundo team,
@@ -127,7 +124,7 @@ const Dashboard = () => {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 animate-fade-up-delay-2">
                 <Button asChild size="lg" className="rounded-full text-sm md:text-base font-semibold px-6 md:px-8 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12 md:h-14">
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer">
+                  <a href={WHATSAPP_CHAT_URL} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-1 h-4 md:h-5 w-4 md:w-5" /> Order via WhatsApp
                   </a>
                 </Button>
@@ -325,7 +322,7 @@ const Dashboard = () => {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4">
                 <Button asChild size="lg" className="rounded-full bg-background text-primary hover:bg-background/90 font-semibold h-12 md:h-14 px-6 md:px-8 shadow-xl">
-                  <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer">
+                  <a href={WHATSAPP_CHAT_URL} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-1 h-5 w-5" /> Chat on WhatsApp
                   </a>
                 </Button>
