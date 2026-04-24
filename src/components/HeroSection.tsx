@@ -17,9 +17,9 @@ const features = [
 ];
 
 const stats = [
-  { value: "500+", label: "Companies Formed" },
-  { value: "50+", label: "Countries" },
-  { value: "$2B+", label: "Revenue Processed" },
+  { value: "700+", label: "Companies Formed" },
+  { value: "35+", label: "Countries Served" },
+  { value: "98%", label: "Success Rate" },
 ];
 
 const partnerLogos = [
@@ -43,7 +43,7 @@ const HeroSection = () => {
           <div>
             <div className="inline-flex items-center gap-2 bg-primary/[0.06] border border-primary/10 rounded-full px-4 py-2 mb-6 md:mb-8 animate-fade-up">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-primary text-sm font-semibold tracking-wide">IRS Certified Acceptance Agent</span>
+              <span className="text-primary text-sm font-semibold tracking-wide">IRS Enrolled Agent</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] xl:text-[4rem] font-extrabold text-foreground leading-none mb-3 md:mb-4 tracking-tighter font-display animate-fade-up">
