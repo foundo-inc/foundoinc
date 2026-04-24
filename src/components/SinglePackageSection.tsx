@@ -76,7 +76,7 @@ const SinglePackageSection = () => (
                     </span>
                   </div>
                   <div className="flex items-center gap-3 mt-3">
-                    <span className="text-sm line-through text-white/30">$349 original</span>
+                    <span className="text-sm line-through text-white/30">$349 + State Fees</span>
                     <span className="text-xs font-bold text-white bg-white/15 px-2.5 py-1 rounded-full">
                       SAVE 29%
                     </span>
