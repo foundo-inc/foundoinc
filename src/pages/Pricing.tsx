@@ -50,9 +50,10 @@ const includedRight = [
 ];
 
 const stats = [
-  { icon: Users, value: "500+", label: "Founders trust us" },
-  { icon: Shield, value: "100%", label: "Compliance rate" },
-  { icon: Zap, value: "48hrs", label: "Avg. setup time" },
+  { icon: Shield, value: "700+", label: "Money-back guarantee" },
+  { icon: Clock, value: "1–3 days", label: "Filed" },
+  { icon: Users, value: "500+", label: "Founders served" },
+  { icon: Star, value: "4.9/5", label: "Average rating" },
 ];
 
 const optionalAddOns = [
@@ -176,7 +177,7 @@ const Pricing = () => {
                   </div>
 
                   <div className="mt-10 pt-8 border-t border-primary-foreground/10">
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       {stats.map((stat, i) => (
                         <div key={i} className="text-center">
                           <stat.icon className="h-5 w-5 text-primary-foreground/70 mx-auto mb-2" />
