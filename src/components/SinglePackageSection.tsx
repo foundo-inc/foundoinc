@@ -4,22 +4,22 @@ import { CheckCircle2, ArrowRight, Rocket, Zap, Shield, Users } from "lucide-rea
 const leftFeatures = [
   "Company formation (LLC or C-Corp)",
   "Expedited Tax ID (EIN) setup",
-  "Zero filing fees for all documents",
+  "All state filing fees included",
   "Business bank account setup",
-  "Mailroom Premium — address & mailbox",
-  "Agent Autopilot — compliance & filings",
+  "Registered U.S. business address",
+  "Registered agent service included",
 ];
 
 const rightFeatures = [
-  "Accounting & Tax Filing included",
+  "Free expert tax consultation",
   "All essential documents",
-  "Get discovered by VCs",
-  "More than $350K in deals",
+  "Operating Agreement / Corporate Bylaws",
+  "Annual compliance reminders",
   "Lifetime expert support",
 ];
 
 const stats = [
-  { icon: Users, value: "500+", label: "Founders trust us" },
+  { icon: Users, value: "700+", label: "Founders trust us" },
   { icon: Shield, value: "100%", label: "Compliance rate" },
   { icon: Zap, value: "48hrs", label: "Avg. setup time" },
 ];
