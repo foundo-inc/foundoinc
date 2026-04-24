@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Globe, TrendingUp } from "lucide-react";
 
 const stats = [
-  { icon: Users, value: "700+", label: "Companies Formed" },
+  { icon: Users, value: "700+", label: "Founders Served" },
   { icon: Globe, value: "35+", label: "Countries Served" },
   { icon: TrendingUp, value: "98%", label: "Success Rate" },
 ];

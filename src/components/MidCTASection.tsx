@@ -17,7 +17,7 @@ const MidCTASection = () => (
       </h2>
 
       <p className="text-primary-foreground/60 text-base md:text-lg max-w-lg mx-auto mb-8 md:mb-10">
-        Join 500+ founders who've launched their U.S. company with Foundo.
+        Join 700+ founders served who've launched their U.S. company with Foundo.
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">

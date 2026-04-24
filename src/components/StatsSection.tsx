@@ -1,7 +1,7 @@
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
 
 const stats = [
-  { icon: TrendingUp, value: "700+", label: "Companies Formed", desc: "Trusted by founders worldwide" },
+  { icon: TrendingUp, value: "700+", label: "Founders Served", desc: "Trusted by founders worldwide" },
   { icon: Users, value: "35+", label: "Countries Represented", desc: "Truly global reach" },
   { icon: Globe, value: "300+", label: "ITINs Issued", desc: "Trusted for ITIN processing" },
   { icon: Award, value: "98%", label: "Approval Rate", desc: "Near-perfect record" },

@@ -52,7 +52,7 @@ const includedRight = [
 const stats = [
   { icon: Shield, value: "700+", label: "Money-back guarantee" },
   { icon: Clock, value: "1–3 days", label: "Filed" },
-  { icon: Users, value: "500+", label: "Founders served" },
+  { icon: Users, value: "700+", label: "Founders served" },
   { icon: Star, value: "4.9/5", label: "Average rating" },
 ];
 
@@ -69,7 +69,7 @@ const optionalAddOns = [
 ];
 
 const faqs = [
-  { q: "Why just one package?", a: "Because choice paralysis kills momentum. After 500+ formations we know exactly what founders need on day one — so we put it all in a single, honest price." },
+  { q: "Why just one package?", a: "Because choice paralysis kills momentum. After serving 700+ founders we know exactly what founders need on day one — so we put it all in a single, honest price." },
   { q: "Are there any hidden fees?", a: "Never. The price you see includes state filing fees, registered agent, EIN, and every document required. No surprises." },
   { q: "What about state filing fees?", a: "Included. Whether you choose Delaware, Wyoming, or another state — we cover the filing fee in your package price." },
   { q: "Can I cancel later?", a: "Yes. Your formation is yours forever. The recurring services (mailroom, agent, accounting) can be cancelled anytime — no contracts." },
@@ -196,7 +196,7 @@ const Pricing = () => {
               {[
                 { icon: Shield, label: "Money-back guarantee" },
                 { icon: Clock, label: "Filed in 1–3 days" },
-                { icon: Users, label: "500+ founders served" },
+                { icon: Users, label: "700+ founders served" },
                 { icon: Star, label: "4.9/5 average rating" },
               ].map((t, i) => (
                 <div key={i} className="flex items-center gap-2.5 text-sm font-medium">
