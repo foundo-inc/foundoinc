@@ -14,6 +14,7 @@ const channels = [
     desc: "Fastest replies. Available 7 days a week.",
     value: "+91 95100 22071",
     action: "Chat now",
+    href: "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?",
     accent: true,
   },
   {
@@ -22,6 +23,7 @@ const channels = [
     desc: "We reply within 2 business hours.",
     value: "info@foundo.co",
     action: "Send email",
+    href: "mailto:info@foundo.co",
   },
   {
     icon: Phone,
@@ -29,6 +31,7 @@ const channels = [
     desc: "Mon–Fri, 9am to 6pm EST.",
     value: "+1 (983) 212-4409",
     action: "Call now",
+    href: "tel:+19832124409",
   },
 ];
 
@@ -85,8 +88,11 @@ const Contact = () => {
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-5">
             {channels.map((c, i) => (
-              <div
+              <a
                 key={i}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 className={`group relative rounded-2xl p-7 border transition-all duration-300 hover:-translate-y-1 ${
                   c.accent
                     ? "bg-foreground border-foreground text-background hover:shadow-2xl hover:shadow-primary/20"
@@ -104,7 +110,7 @@ const Contact = () => {
                 <div className={`inline-flex items-center gap-2 text-sm font-semibold ${c.accent ? "text-primary-foreground/90" : "text-primary"} group-hover:gap-3 transition-all`}>
                   {c.action} <ArrowRight className="h-4 w-4" />
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
