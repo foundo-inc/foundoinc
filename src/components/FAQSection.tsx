@@ -12,7 +12,7 @@ const faqs = [
   { q: "Can I open a U.S. bank account remotely?", a: "Yes! We partner with U.S. banks that allow remote account opening for international founders. No U.S. visit required." },
   { q: "What states do you offer for LLC formation?", a: "We offer LLC formation in all 50 U.S. states. The most popular choices for international founders are Wyoming, Delaware, and New Mexico." },
   { q: "Does Foundo help with ongoing compliance?", a: "Absolutely. We provide annual report reminders, registered agent services, and compliance guidance to keep your business in good standing year after year." },
-  { q: "Can Foundo help me set up Stripe or PayPal?", a: "Yes, once your LLC and EIN are set up, we guide you through activating payment processors like Stripe, PayPal, and other gateways." },
+  { q: "Which countries do you support?", a: "We support founders from 175+ countries worldwide. If you have a valid passport, we can help you launch a U.S. company." },
 ];
 
 const FAQSection = () => (
