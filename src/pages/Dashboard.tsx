@@ -138,7 +138,7 @@ const Dashboard = () => {
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-up-delay-3">
                 <span className="inline-flex items-center gap-1.5"><Clock className="h-4 w-4 text-primary" /> Reply in &lt; 1 hour</span>
                 <span className="inline-flex items-center gap-1.5"><Shield className="h-4 w-4 text-primary" /> 100% money-back</span>
-                <span className="inline-flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-primary" /> 2,000+ founders</span>
+                <span className="inline-flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-primary" /> 700+ founders</span>
               </div>
             </div>
 
