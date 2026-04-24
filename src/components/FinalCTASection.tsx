@@ -31,10 +31,6 @@ const FinalCTASection = () => (
               Talk to an Expert
             </Button>
           </div>
-
-          <p className="text-sm text-primary-foreground/40">
-            No upfront risk. Backed by our 100% money-back guarantee.
-          </p>
         </div>
       </div>
     </div>
