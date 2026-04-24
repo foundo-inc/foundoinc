@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
 import {
+  CheckCircle2,
+  Sparkles,
   ArrowRight,
   Shield,
+  Clock,
+  Users,
   FileText,
   Briefcase,
   Globe2,
@@ -11,7 +16,10 @@ import {
   BookOpen,
   Landmark,
   HelpCircle,
+  Star,
+  TrendingUp,
   Rocket,
+  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +30,30 @@ import {
 } from "@/components/ui/accordion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import PricingSection from "@/components/PricingSection";
+
+const includedLeft = [
+  "Company formation (LLC or C-Corp)",
+  "Expedited Tax ID (EIN) setup",
+  "Zero filing fees for all documents",
+  "Business bank account setup",
+  "Mailroom Premium — address & mailbox",
+  "Agent Autopilot — compliance & filings",
+];
+
+const includedRight = [
+  "Accounting & Tax Filing included",
+  "All essential legal documents",
+  "Get discovered by VCs",
+  "More than $350K in partner deals",
+  "Lifetime expert support",
+  "Stripe & Mercury fast-track",
+];
+
+const stats = [
+  { icon: Users, value: "500+", label: "Founders trust us" },
+  { icon: Shield, value: "100%", label: "Compliance rate" },
+  { icon: Zap, value: "48hrs", label: "Avg. setup time" },
+];
 
 const optionalAddOns = [
   { icon: Briefcase, title: "Premium NYC Address", price: "$350/yr", desc: "Prestigious Manhattan business address" },
@@ -74,7 +105,108 @@ const Pricing = () => {
         </div>
       </section>
 
-      <PricingSection />
+      {/* MAIN PACKAGE CARD */}
+      <section className="pb-20 md:pb-24">
+        <div className="container mx-auto px-5 md:px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/25 bg-primary">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.1)_0%,_transparent_60%)]" />
+              <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary-foreground/5 rounded-full blur-3xl" />
+
+              <div className="grid lg:grid-cols-5 relative z-10">
+                {/* LEFT — Pricing */}
+                <div className="lg:col-span-2 p-7 sm:p-9 md:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-primary-foreground/10">
+                  <div>
+                    <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-6">
+                      <Sparkles className="h-3 w-3" />
+                      Best Value
+                    </div>
+
+                    <h3 className="text-3xl md:text-4xl font-extrabold font-display mb-2 text-primary-foreground">
+                      Foundo Complete
+                    </h3>
+                    <p className="text-primary-foreground/60 text-sm mb-8">
+                      Everything to start & scale your U.S. business
+                    </p>
+
+                    <div className="mb-2">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
+                          $249
+                        </span>
+                        <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-primary-foreground">
+                          + State Fees
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-3 mt-3">
+                        <span className="text-sm line-through text-primary-foreground/30">$349 + State Fees</span>
+                        <span className="text-xs font-extrabold text-primary-foreground bg-primary-foreground/15 px-2.5 py-1 rounded-full">
+                          SAVE 29%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <Button
+                      size="lg"
+                      className="rounded-full w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold h-13 md:h-14 text-base shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                    >
+                      Get started
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* RIGHT — Features */}
+                <div className="lg:col-span-3 p-7 sm:p-9 md:p-12">
+                  <p className="text-xs font-extrabold uppercase tracking-widest text-primary-foreground/50 mb-6">
+                    What's included
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3.5">
+                    {[...includedLeft, ...includedRight].map((f, i) => (
+                      <div key={i} className="flex items-start gap-3">
+                        <div className="h-5 w-5 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-primary-foreground" />
+                        </div>
+                        <span className="text-sm text-primary-foreground/85 leading-snug">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-10 pt-8 border-t border-primary-foreground/10">
+                    <div className="grid grid-cols-3 gap-4">
+                      {stats.map((stat, i) => (
+                        <div key={i} className="text-center">
+                          <stat.icon className="h-5 w-5 text-primary-foreground/70 mx-auto mb-2" />
+                          <p className="text-lg md:text-xl font-extrabold font-display text-primary-foreground">{stat.value}</p>
+                          <p className="text-xs text-primary-foreground/50">{stat.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust strip */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 md:gap-10 text-muted-foreground">
+              {[
+                { icon: Shield, label: "Money-back guarantee" },
+                { icon: Clock, label: "Filed in 1–3 days" },
+                { icon: Users, label: "500+ founders served" },
+                { icon: Star, label: "4.9/5 average rating" },
+              ].map((t, i) => (
+                <div key={i} className="flex items-center gap-2.5 text-sm font-medium">
+                  <t.icon className="h-4 w-4 text-primary" />
+                  {t.label}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* OPTIONAL ADD-ONS */}
       <section className="py-20 md:py-28 bg-muted/30">
