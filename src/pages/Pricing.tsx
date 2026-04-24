@@ -144,9 +144,6 @@ const Pricing = () => {
                           SAVE 29%
                         </span>
                       </div>
-                      <p className="text-xs text-primary-foreground/40 mt-3">
-                        Registered Agent and Business Address renew yearly at $100.
-                      </p>
                     </div>
                   </div>
 

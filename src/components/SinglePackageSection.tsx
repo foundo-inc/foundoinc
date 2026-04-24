@@ -81,9 +81,6 @@ const SinglePackageSection = () => (
                       SAVE 29%
                     </span>
                   </div>
-                  <p className="text-xs text-white/40 mt-3">
-                    Registered Agent and Business Address renew yearly at $100.
-                  </p>
                 </div>
               </div>
 
