@@ -7,10 +7,10 @@ import foundoLogo from "@/assets/foundo-logo.svg";
 import { ReactNode } from "react";
 
 const nav = [
-  { to: "/dashboard", label: "Overview", icon: LayoutDashboard, end: true },
-  { to: "/dashboard/documents", label: "Documents", icon: FileText },
-  { to: "/dashboard/compliance", label: "Compliance", icon: Shield },
-  { to: "/dashboard/banking", label: "Banking & Support", icon: Building2 },
+  { to: "/app", label: "Overview", icon: LayoutDashboard, end: true },
+  { to: "/app/documents", label: "Documents", icon: FileText },
+  { to: "/app/compliance", label: "Compliance", icon: Shield },
+  { to: "/app/banking", label: "Banking & Support", icon: Building2 },
 ];
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
