@@ -19,7 +19,7 @@ const rightFeatures = [
 ];
 
 const stats = [
-  { icon: Users, value: "700+", label: "Founders trust us" },
+  { icon: Users, value: "700+", label: "Founders served" },
   { icon: Shield, value: "100%", label: "Compliance rate" },
   { icon: Zap, value: "48hrs", label: "Avg. setup time" },
 ];
