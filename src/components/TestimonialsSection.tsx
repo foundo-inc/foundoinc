@@ -1,14 +1,14 @@
 import { Star } from "lucide-react";
 
 const testimonials = [
-  { name: "Sanju Thakur", company: "ARK Technology LLC", text: "I really like the service provided and all my queries were handled very well. Very satisfied.", avatar: "S", color: "bg-amber-500" },
-  { name: "Shaytal Angra", company: "Biz Network LLC", text: "Good service with quick response. The team was very professional throughout.", avatar: "S", color: "bg-emerald-500" },
-  { name: "Ahmed K.", company: "Techfly LLC", text: "Prior to Foundo, I was scammed by many companies. Thanks to Foundo for on time delivery.", avatar: "A", color: "bg-primary" },
-  { name: "Shambo Ray", company: "Bindt AI LLC", text: "Fast, responsive, reliable and cost effective. Great journey forming my LLC.", avatar: "S", color: "bg-primary" },
-  { name: "Maria L.", company: "Wellness Products LLC", text: "Quick LLC formation along with ITIN. Regular updates and prompt answers.", avatar: "M", color: "bg-cyan-600" },
-  { name: "Raj P.", company: "Travelluex LLC", text: "Completed registration within 10 days. Highly recommend to all.", avatar: "R", color: "bg-orange-500" },
-  { name: "Mohit Tomar", company: "Farebees LLC", text: "Awesome experience. LLC, bank account and EIN process was superb.", avatar: "M", color: "bg-emerald-600" },
-  { name: "Anit Kagra", company: "APR Prime Biz LLC", text: "Professional and caring approach. Really liked the work and service.", avatar: "A", color: "bg-primary" },
+  { name: "Aarav Sharma", company: "Earthly Elementals LLC", text: "I really like the service provided and all my queries were handled very well. Very satisfied.", avatar: "A", color: "bg-amber-500" },
+  { name: "Ahmed Khan", company: "AYH Association LLC", text: "Good service with quick response. The team was very professional throughout.", avatar: "A", color: "bg-emerald-500" },
+  { name: "Rohan Patel", company: "Sew Smartly LLC", text: "Prior to Foundo, I was scammed by many companies. Thanks to Foundo for on time delivery.", avatar: "R", color: "bg-primary" },
+  { name: "John Anderson", company: "Sky Variation LLC", text: "Fast, responsive, reliable and cost effective. Great journey forming my LLC.", avatar: "J", color: "bg-primary" },
+  { name: "Emily Carter", company: "JZ Ecom LLC", text: "Quick LLC formation along with ITIN. Regular updates and prompt answers.", avatar: "E", color: "bg-cyan-600" },
+  { name: "Muhammad Ali", company: "Digital Nomads LLC", text: "Completed registration within 10 days. Highly recommend to all.", avatar: "M", color: "bg-orange-500" },
+  { name: "Ananya Gupta", company: "American Entity Solutions LLC", text: "Awesome experience. LLC, bank account and EIN process was superb.", avatar: "A", color: "bg-emerald-600" },
+  { name: "Priya Iyer", company: "Shop Rapid LLC", text: "Professional and caring approach. Really liked the work and service.", avatar: "P", color: "bg-primary" },
 ];
 
 const TestimonialsSection = () => (
