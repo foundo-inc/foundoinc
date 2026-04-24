@@ -36,10 +36,10 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-3">
           <Button variant="ghost" size="sm" className="text-sm font-medium rounded-xl" asChild>
-            <a href="/dashboard">Login</a>
+            <a href="/login">Login</a>
           </Button>
           <Button size="default" className="rounded-full px-6 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5" asChild>
-            <a href="/dashboard">Get Started</a>
+            <a href="/login">Get Started</a>
           </Button>
         </div>
 
@@ -57,10 +57,10 @@ const Navbar = () => {
           ))}
           <div className="pt-3 space-y-2">
             <Button variant="outline" className="w-full rounded-xl h-12 text-base" size="lg" asChild>
-              <a href="/dashboard">Login</a>
+              <a href="/login">Login</a>
             </Button>
             <Button className="w-full rounded-xl shadow-lg shadow-primary/20 h-12 text-base" size="lg" asChild>
-              <a href="/dashboard">Get Started</a>
+              <a href="/login">Get Started</a>
             </Button>
           </div>
         </div>
