@@ -1,10 +1,10 @@
 import { TrendingUp, Users, Globe, Award } from "lucide-react";
 
 const stats = [
-  { icon: TrendingUp, value: "500+", label: "Companies Formed", desc: "Trusted by founders worldwide" },
-  { icon: Users, value: "50+", label: "Countries Represented", desc: "Truly global reach" },
-  { icon: Globe, value: "$2B+", label: "Revenue Processed", desc: "Through businesses we launched" },
-  { icon: Award, value: "99.8%", label: "Approval Rate", desc: "Near-perfect record" },
+  { icon: TrendingUp, value: "700+", label: "Companies Formed", desc: "Trusted by founders worldwide" },
+  { icon: Users, value: "35+", label: "Countries Represented", desc: "Truly global reach" },
+  { icon: Globe, value: "300+", label: "ITINs Issued", desc: "Trusted for ITIN processing" },
+  { icon: Award, value: "98%", label: "Approval Rate", desc: "Near-perfect record" },
 ];
 
 const StatsSection = () => (
@@ -13,7 +13,7 @@ const StatsSection = () => (
     
     <div className="container mx-auto relative z-10">
       <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-        <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">By The Numbers</p>
+        <p className="text-sm font-bold uppercase tracking-[0.2em] text-primary mb-3 md:mb-4">Track Record</p>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold font-display text-primary-foreground leading-tight">
           Trusted by Founders <span className="text-primary">Worldwide</span>
         </h2>
