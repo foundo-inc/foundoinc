@@ -224,20 +224,20 @@ const Pricing = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
             {optionalAddOns.map((a, i) => (
               <div
                 key={i}
-                className="group bg-card border border-border rounded-2xl p-6 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
+                className="group bg-card border border-border rounded-2xl p-6 min-h-[220px] flex flex-col hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
                   <a.icon className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                <div className="flex items-baseline justify-between gap-2 mb-2">
-                  <h3 className="font-extrabold font-display text-lg">{a.title}</h3>
-                  <span className="text-sm font-bold text-primary whitespace-nowrap">{a.price}</span>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                  <h3 className="font-extrabold font-display text-lg leading-tight">{a.title}</h3>
+                  <span className="text-sm font-bold text-primary whitespace-normal sm:whitespace-nowrap leading-snug">{a.price}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">{a.desc}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{a.desc}</p>
               </div>
             ))}
           </div>
