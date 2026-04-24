@@ -69,18 +69,18 @@ const SinglePackageSection = () => (
                 <div className="mb-2">
                   <div className="flex items-baseline gap-2">
                     <span className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-display text-white leading-none">
-                      $199
+                      $249
                     </span>
-                    <span className="text-white/50 text-sm">/month</span>
+                    <span className="text-white/50 text-sm">+ State Fees</span>
                   </div>
                   <div className="flex items-center gap-3 mt-3">
-                    <span className="text-sm line-through text-white/30">$362/mo</span>
+                    <span className="text-sm line-through text-white/30">$349 original</span>
                     <span className="text-xs font-bold text-white bg-white/15 px-2.5 py-1 rounded-full">
-                      SAVE 45%
+                      SAVE 29%
                     </span>
                   </div>
                   <p className="text-xs text-white/40 mt-3">
-                    Billed yearly · One-time formation fee $399
+                    Billed $100 yearly for Registered Agent and Business Address Renewal
                   </p>
                 </div>
               </div>
@@ -93,9 +93,6 @@ const SinglePackageSection = () => (
                 >
                   <a href="/dashboard">Get started <ArrowRight className="ml-2 h-4 w-4" /></a>
                 </Button>
-                <p className="text-center text-xs text-white/40 mt-3">
-                  No credit card required to start
-                </p>
               </div>
             </div>
 
