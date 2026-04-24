@@ -2,7 +2,7 @@ import { ShieldCheck, RefreshCw, HeadphonesIcon } from "lucide-react";
 
 const promises = [
   { icon: ShieldCheck, title: "100% Acceptance Guarantee", desc: "If rejected due to our error, we refile at no cost." },
-  { icon: RefreshCw, title: "Full Refund Policy", desc: "Not satisfied? Full refund within 30 days, no questions." },
+  { icon: RefreshCw, title: "Full Refund Policy", desc: "Full refund if we’re unable to complete your formation." },
   { icon: HeadphonesIcon, title: "7-Day Support", desc: "Our team is available 7 days a week to guide you." },
 ];
 
