@@ -34,17 +34,17 @@ import Footer from "@/components/Footer";
 const includedLeft = [
   "Company formation (LLC or C-Corp)",
   "Expedited Tax ID (EIN) setup",
-  "Zero filing fees for all documents",
+  "All state filing fees included",
   "Business bank account setup",
-  "Mailroom Premium — address & mailbox",
-  "Agent Autopilot — compliance & filings",
+  "Registered U.S. business address",
+  "Registered agent service included",
 ];
 
 const includedRight = [
-  "Accounting & Tax Filing included",
+  "Free expert tax consultation",
   "All essential legal documents",
-  "Get discovered by VCs",
-  "More than $350K in partner deals",
+  "Operating Agreement / Corporate Bylaws",
+  "Annual compliance reminders",
   "Lifetime expert support",
   "Stripe & Mercury fast-track",
 ];
