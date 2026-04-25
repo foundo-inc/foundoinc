@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2, Tag, Users, Shield, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
   STATES, POPULAR_STATE_NAMES, COUNTRIES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  Coupon, findCoupon,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
@@ -34,6 +35,7 @@ const Checkout = () => {
     } catch { return initialData; }
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
 
   // Autosave
   useEffect(() => {
@@ -131,7 +133,7 @@ const Checkout = () => {
     setTimeout(() => navigate("/checkout/thank-you"), 600);
   };
 
-  const totals = computeTotals(data);
+  const totals = computeTotals(data, coupon);
 
   return (
     <div className="min-h-screen bg-background">
@@ -166,7 +168,7 @@ const Checkout = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="rounded-t-2xl">
-                  <div className="pt-6"><CheckoutSummary data={data} /></div>
+                  <div className="pt-6"><CheckoutSummary data={data} coupon={coupon} /></div>
                 </SheetContent>
               </Sheet>
             </div>
@@ -185,8 +187,8 @@ const Checkout = () => {
               {step === 4 && (
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
-              {step === 5 && <Step6 data={data} goTo={setStep} />}
-              {step === 6 && <Step7 data={data} onPay={handlePay} />}
+              {step === 5 && <Step6 data={data} goTo={setStep} coupon={coupon} />}
+              {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl">
@@ -208,7 +210,7 @@ const Checkout = () => {
           {/* Desktop sticky summary */}
           <aside className="hidden lg:block">
             <div className="sticky top-24">
-              <CheckoutSummary data={data} />
+              <CheckoutSummary data={data} coupon={coupon} />
             </div>
           </aside>
         </div>
@@ -257,55 +259,123 @@ const Step2 = ({ data, update, errors }: any) => {
   const stateFee = STATES.find((s) => s.name === data.state)?.fee ?? 0;
   const popularStates = STATES.filter((s) => POPULAR_STATE_NAMES.includes(s.name));
   const otherStates = STATES.filter((s) => !POPULAR_STATE_NAMES.includes(s.name));
-  const packageFeatures = [
+  const leftFeatures = [
     "Company formation (LLC or C-Corp)",
     "Expedited Tax ID (EIN) setup",
-    "Registered agent (1 year free)",
-    "Operating Agreement / Bylaws",
-    "Bank account intros (Mercury, Stripe)",
+    "All state filing fees included",
+    "Business bank account setup",
+    "Registered U.S. business address",
+    "Registered agent service included",
+  ];
+  const rightFeatures = [
+    "Free expert tax consultation",
+    "All essential documents",
+    "Operating Agreement / Corporate Bylaws",
+    "Annual compliance reminders",
     "Lifetime expert support",
+  ];
+  const stats = [
+    { icon: Users, value: "700+", label: "Founders served" },
+    { icon: Shield, value: "100%", label: "Compliance rate" },
+    { icon: Zap, value: "48hrs", label: "Avg. setup time" },
   ];
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Choose your package</h2>
       <p className="text-muted-foreground mb-6">Pick your state and entity type. You can change these later if needed.</p>
 
-      {/* Brand package card */}
-      <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-primary/20 mb-6 bg-primary">
+      {/* Brand package card — mirrors SinglePackageSection */}
+      <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/20 mb-6 bg-primary">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.08)_0%,_transparent_60%)]" />
-        <div className="relative z-10 p-6 md:p-7">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-              <Zap className="h-3 w-3" /> Best Value
-            </div>
-            <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-              + State Fees
-            </span>
-          </div>
-          <h3 className="text-xl md:text-2xl font-extrabold font-display text-primary-foreground mb-1">
-            Foundo Complete
-          </h3>
-          <p className="text-primary-foreground/60 text-sm mb-4">
-            Everything to start & scale your US business
-          </p>
-          <div className="flex flex-wrap items-end gap-3 mb-5">
-            <span className="text-4xl md:text-5xl font-extrabold font-display text-primary-foreground leading-none">
-              ${FOUNDO_FEE}
-            </span>
-            <span className="text-sm line-through text-primary-foreground/40 mb-1">$349</span>
-            <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full mb-1">
-              SAVE 29%
-            </span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 pt-4 border-t border-primary-foreground/10">
-            {packageFeatures.map((f) => (
-              <div key={f} className="flex items-start gap-2.5">
-                <div className="h-4 w-4 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
-                </div>
-                <span className="text-xs md:text-sm text-primary-foreground/80 leading-snug">{f}</span>
+        <div className="grid lg:grid-cols-5 relative z-10">
+          {/* Left — Pricing */}
+          <div className="lg:col-span-2 p-6 md:p-7 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-primary-foreground/10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-5">
+                <Zap className="h-3 w-3" /> Best Value
               </div>
-            ))}
+              <h3 className="text-2xl md:text-3xl font-extrabold font-display text-primary-foreground mb-1 leading-tight">
+                Foundo Complete
+              </h3>
+              <p className="text-primary-foreground/60 text-sm mb-6">
+                Everything to start & scale your US business
+              </p>
+
+              {/* Prominent price */}
+              <div className="mb-3">
+                <div className="flex flex-wrap items-end gap-2">
+                  <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
+                    ${FOUNDO_FEE}
+                  </span>
+                  <span className="rounded-full bg-primary-foreground/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-primary-foreground mb-1">
+                    + State Fee
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-3">
+                  <span className="text-sm line-through text-primary-foreground/30">$349 + State Fee</span>
+                  <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full uppercase tracking-wider">
+                    SAVE 29%
+                  </span>
+                </div>
+              </div>
+
+              {/* Live state-fee + total preview */}
+              <div className="mt-5 rounded-xl bg-primary-foreground/10 backdrop-blur p-3.5 border border-primary-foreground/10">
+                {data.state ? (
+                  <>
+                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-1">
+                      <span>{data.state} state fee</span>
+                      <span className="font-semibold text-primary-foreground">${stateFee}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-2 pb-2 border-b border-primary-foreground/10">
+                      <span>Foundo formation</span>
+                      <span className="font-semibold text-primary-foreground">${FOUNDO_FEE}</span>
+                    </div>
+                    <div className="flex items-end justify-between">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-primary-foreground/60">Your total today</span>
+                      <span className="text-2xl font-extrabold font-display text-primary-foreground leading-none">
+                        ${FOUNDO_FEE + stateFee}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-2 text-xs text-primary-foreground/70">
+                    <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+                    Select a state below to see your exact total.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-6 pt-5 border-t border-primary-foreground/10">
+              <div className="grid grid-cols-3 gap-3">
+                {stats.map((s) => (
+                  <div key={s.label} className="text-center">
+                    <s.icon className="h-4 w-4 text-primary-foreground/70 mx-auto mb-1.5" />
+                    <p className="text-base md:text-lg font-extrabold font-display text-primary-foreground leading-none">{s.value}</p>
+                    <p className="text-[10px] text-primary-foreground/50 mt-1">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right — Features */}
+          <div className="lg:col-span-3 p-6 md:p-7">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/40 mb-4">
+              What's included
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5">
+              {[...leftFeatures, ...rightFeatures].map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <div className="h-4 w-4 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
+                  </div>
+                  <span className="text-xs md:text-sm text-primary-foreground/80 leading-snug">{f}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -712,8 +782,8 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
 };
 
 /* ---------------- Step 6: Review ---------------- */
-const Step6 = ({ data, goTo }: any) => {
-  const t = computeTotals(data);
+const Step6 = ({ data, goTo, coupon }: any) => {
+  const t = computeTotals(data, coupon);
   const sec = (title: string, stepIdx: number, body: React.ReactNode) => (
     <div className="rounded-xl border border-border p-4 md:p-5">
       <div className="flex items-center justify-between mb-3">
@@ -774,17 +844,95 @@ const Step6 = ({ data, goTo }: any) => {
 };
 
 /* ---------------- Step 7: Payment ---------------- */
-const Step7 = ({ data, onPay }: any) => {
-  const t = computeTotals(data);
+const Step7 = ({ data, onPay, coupon, setCoupon }: any) => {
+  const t = computeTotals(data, coupon);
+  const [code, setCode] = useState(coupon?.code ?? "");
+  const [couponError, setCouponError] = useState<string>("");
+
+  const applyCoupon = () => {
+    setCouponError("");
+    const trimmed = code.trim();
+    if (!trimmed) {
+      setCouponError("Enter a coupon code");
+      return;
+    }
+    const found = findCoupon(trimmed);
+    if (!found) {
+      setCouponError("Invalid or expired coupon code");
+      setCoupon(null);
+      return;
+    }
+    setCoupon(found);
+    setCode(found.code);
+    toast({ title: "Coupon applied!", description: `${found.label} — you saved $${computeTotals(data, found).discount}.` });
+  };
+
+  const removeCoupon = () => {
+    setCoupon(null);
+    setCode("");
+    setCouponError("");
+  };
+
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Secure Payment</h2>
       <p className="text-muted-foreground mb-6">Powered by Stripe. Your details are encrypted end-to-end.</p>
 
+      {/* Coupon */}
+      <div className="rounded-xl border border-border p-4 md:p-5 mb-5 bg-card">
+        <div className="flex items-center gap-2 mb-3">
+          <Tag className="h-4 w-4 text-primary" />
+          <p className="font-bold font-display text-sm">Have a coupon code?</p>
+        </div>
+        {coupon ? (
+          <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-success/40 bg-success/5 p-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <FileCheck2 className="h-4 w-4 text-success shrink-0" />
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-foreground">{coupon.code}</p>
+                <p className="text-xs text-muted-foreground">{coupon.label} · You save ${t.discount}</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" onClick={removeCoupon} className="text-muted-foreground hover:text-destructive">
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2">
+              <Input
+                value={code}
+                onChange={(e) => { setCode(e.target.value.toUpperCase()); setCouponError(""); }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                placeholder="Enter code (e.g. WELCOME50)"
+                className="h-12 rounded-xl flex-1 uppercase tracking-wider font-semibold"
+                maxLength={20}
+              />
+              <Button onClick={applyCoupon} variant="outline" className="h-12 rounded-xl px-5 font-bold">
+                Apply
+              </Button>
+            </div>
+            {couponError && (
+              <p className="text-xs text-destructive mt-2 flex items-center gap-1"><AlertCircle className="h-3 w-3" /> {couponError}</p>
+            )}
+          </>
+        )}
+      </div>
+
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-bold font-display">Order Total</p>
-          <p className="text-2xl font-bold text-primary font-display">${t.total}</p>
+        <div className="flex items-end justify-between mb-4">
+          <div>
+            <p className="font-bold font-display">Order Total</p>
+            {t.discount > 0 && (
+              <p className="text-xs text-success font-semibold mt-0.5">You saved ${t.discount}</p>
+            )}
+          </div>
+          <div className="text-right">
+            <p className="text-2xl font-bold text-primary font-display leading-none">${t.total}</p>
+            {t.discount > 0 && (
+              <p className="text-xs text-muted-foreground line-through mt-1">${t.subtotal}</p>
+            )}
+          </div>
         </div>
         <div className="space-y-4">
           <Field label="Card Number"><Input placeholder="1234 1234 1234 1234" className="h-12 rounded-xl" /></Field>
