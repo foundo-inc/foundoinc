@@ -13,15 +13,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
-  STATES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  STATES, POPULAR_STATE_NAMES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { CheckCircle2, Rocket, Zap } from "lucide-react";
 
 const STORAGE_KEY = "foundo_checkout_v1";
-const STEPS = ["Your Info", "Package", "Business", "Members", "Add-ons", "Review", "Payment"];
+const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
 const Checkout = () => {
   const navigate = useNavigate();
