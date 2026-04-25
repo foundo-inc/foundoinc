@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2, Tag, Users, Shield, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
   STATES, POPULAR_STATE_NAMES, COUNTRIES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  Coupon, findCoupon,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
