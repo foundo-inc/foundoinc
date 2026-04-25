@@ -394,86 +394,242 @@ const Step3 = ({ data, update, errors }: any) => (
 );
 
 /* ---------------- Step 4: Members ---------------- */
-const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => (
-  <section>
-    <h2 className="text-2xl font-bold font-display mb-1">Members & Directors</h2>
-    <p className="text-muted-foreground mb-6">Add owners or directors of your company. You can add more later.</p>
+const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
+  const handleFile = (id: string, file: File | undefined) => {
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max 10MB. Please upload a smaller file.", variant: "destructive" });
+      return;
+    }
+    const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+    if (!allowed.includes(file.type)) {
+      toast({ title: "Invalid file type", description: "Upload a JPG, PNG, WEBP or PDF.", variant: "destructive" });
+      return;
+    }
+    updateMember(id, { idFile: { name: file.name, size: file.size, type: file.type } });
+  };
 
-    <div className="space-y-4">
-      {data.members.map((m: any, i: number) => (
-        <div key={m.id} className="rounded-xl border border-border p-4 md:p-5 bg-secondary/20">
-          <div className="flex items-center justify-between mb-3">
-            <p className="font-bold font-display">Member {i + 1}{m.isResponsible && <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">Responsible Party</span>}</p>
-            {data.members.length > 1 && (
-              <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => removeMember(m.id)}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Field label="First Name" error={errors[`m${i}-firstName`]}>
-              <Input value={m.firstName} onChange={(e) => updateMember(m.id, { firstName: e.target.value })} className="h-11 rounded-xl" />
-            </Field>
-            <Field label="Last Name" error={errors[`m${i}-lastName`]}>
-              <Input value={m.lastName} onChange={(e) => updateMember(m.id, { lastName: e.target.value })} className="h-11 rounded-xl" />
-            </Field>
-            <Field label="Residential Address" error={errors[`m${i}-address`]} className="md:col-span-2">
-              <Input value={m.address} onChange={(e) => updateMember(m.id, { address: e.target.value })} placeholder="Street, City, Country" className="h-11 rounded-xl" />
-            </Field>
-            <Field label="SSN or ITIN (optional)" hint="Skip if you don't have one — we'll suggest ITIN processing." className="md:col-span-2">
+  return (
+    <section>
+      <h2 className="text-2xl font-bold font-display mb-1">Members & Directors</h2>
+      <p className="text-muted-foreground mb-6">Add owners or directors of your company. We'll need a residential address & ID for KYC compliance.</p>
+
+      <div className="space-y-5">
+        {data.members.map((m: any, i: number) => (
+          <div key={m.id} className="rounded-xl border border-border p-4 md:p-5 bg-secondary/20">
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-bold font-display flex items-center gap-2">
+                Member {i + 1}
+                {m.isResponsible && <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary uppercase tracking-wider font-bold">Responsible Party</span>}
+              </p>
+              {data.members.length > 1 && (
+                <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => removeMember(m.id)}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+
+            {/* Name */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <Field label="First Name" error={errors[`m${i}-firstName`]}>
+                <Input value={m.firstName} onChange={(e) => updateMember(m.id, { firstName: e.target.value })} className="h-11 rounded-xl" />
+              </Field>
+              <Field label="Last Name" error={errors[`m${i}-lastName`]}>
+                <Input value={m.lastName} onChange={(e) => updateMember(m.id, { lastName: e.target.value })} className="h-11 rounded-xl" />
+              </Field>
+            </div>
+
+            {/* Residential address */}
+            <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mb-2">Residential Address</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <Field label="Street Address" error={errors[`m${i}-street`]} className="md:col-span-2">
+                <Input value={m.street} onChange={(e) => updateMember(m.id, { street: e.target.value })} placeholder="123 Main St, Apt 4B" className="h-11 rounded-xl" />
+              </Field>
+              <Field label="City" error={errors[`m${i}-city`]}>
+                <Input value={m.city} onChange={(e) => updateMember(m.id, { city: e.target.value })} placeholder="New York" className="h-11 rounded-xl" />
+              </Field>
+              <Field label="State / Province">
+                <Input value={m.stateProvince} onChange={(e) => updateMember(m.id, { stateProvince: e.target.value })} placeholder="NY" className="h-11 rounded-xl" />
+              </Field>
+              <Field label="Country" error={errors[`m${i}-country`]}>
+                <Select value={m.country} onValueChange={(v) => updateMember(m.id, { country: v })}>
+                  <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Select country" /></SelectTrigger>
+                  <SelectContent className="max-h-60">
+                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field label="ZIP / Postal Code" error={errors[`m${i}-zip`]}>
+                <Input value={m.zip} onChange={(e) => updateMember(m.id, { zip: e.target.value })} placeholder="10001" className="h-11 rounded-xl" />
+              </Field>
+            </div>
+
+            {/* SSN */}
+            <Field label="SSN or ITIN (optional)" hint="Skip if you don't have one — we'll suggest ITIN processing." className="mb-4">
               <Input value={m.ssn} onChange={(e) => updateMember(m.id, { ssn: e.target.value })} placeholder="XXX-XX-XXXX" className="h-11 rounded-xl" />
             </Field>
+
+            {/* ID Upload */}
+            <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mb-2">Identity Verification (KYC)</p>
+            <div className="rounded-xl border-2 border-dashed border-border bg-card p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <Field label="ID Document Type">
+                  <Select value={m.idType} onValueChange={(v) => updateMember(m.id, { idType: v })}>
+                    <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="passport">Passport</SelectItem>
+                      <SelectItem value="national_id">National ID Card</SelectItem>
+                      <SelectItem value="drivers_license">Driver's License</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
+                  {m.idFile ? (
+                    <div className="flex items-center justify-between gap-2 h-11 rounded-xl border border-border bg-secondary/40 px-3">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileCheck2 className="h-4 w-4 text-success shrink-0" />
+                        <span className="text-sm truncate">{m.idFile.name}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => updateMember(m.id, { idFile: null })}
+                        className="text-muted-foreground hover:text-destructive shrink-0"
+                        aria-label="Remove file"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex items-center justify-center gap-2 h-11 rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 cursor-pointer transition-colors text-sm font-semibold text-primary">
+                      <Upload className="h-4 w-4" />
+                      <span>Choose file</span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,application/pdf"
+                        className="hidden"
+                        onChange={(e) => handleFile(m.id, e.target.files?.[0])}
+                      />
+                    </label>
+                  )}
+                </Field>
+              </div>
+              <p className="text-xs text-muted-foreground flex items-start gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+                Required for EIN & bank account verification. JPG, PNG, WEBP or PDF · max 10MB · 256-bit encrypted.
+              </p>
+            </div>
+
+            {data.members.length > 1 && (
+              <label className="mt-4 flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="responsible"
+                  checked={m.isResponsible}
+                  onChange={() => setResponsible(m.id)}
+                  className="h-4 w-4 accent-primary"
+                />
+                <span className="text-sm">Set as Responsible Party / Authorized Person (required for EIN)</span>
+              </label>
+            )}
           </div>
-          {data.members.length > 1 && (
-            <label className="mt-3 flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="responsible"
-                checked={m.isResponsible}
-                onChange={() => setResponsible(m.id)}
-                className="h-4 w-4 accent-primary"
-              />
-              <span className="text-sm">Set as Responsible Party / Authorized Person (required for EIN)</span>
-            </label>
-          )}
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    {errors.responsible && (
-      <p className="text-sm text-destructive mt-2 flex items-center gap-1.5"><AlertCircle className="h-4 w-4" /> {errors.responsible}</p>
-    )}
+      {errors.responsible && (
+        <p className="text-sm text-destructive mt-2 flex items-center gap-1.5"><AlertCircle className="h-4 w-4" /> {errors.responsible}</p>
+      )}
 
-    <Button variant="outline" onClick={addMember} className="mt-4 rounded-xl h-11">
-      <Plus className="h-4 w-4 mr-2" /> Add Member / Director
-    </Button>
-  </section>
-);
+      <Button variant="outline" onClick={addMember} className="mt-4 rounded-xl h-11">
+        <Plus className="h-4 w-4 mr-2" /> Add Member / Director
+      </Button>
+    </section>
+  );
+};
 
 /* ---------------- Step 5: Upsells ---------------- */
 const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
-  const upsells = [
+  type Upsell = {
+    key: "addonItin" | "addonSellerPermit" | "addonPremiumAddress";
+    title: string;
+    tagline: string;
+    price: number;
+    originalPrice?: number;
+    value: boolean;
+    badge?: string;
+    badgeTone?: "warning" | "primary" | "success";
+    icon: any;
+    benefits: string[];
+    socialProof?: string;
+  };
+
+  const upsells: Upsell[] = [
     showItin && {
-      key: "addonItin", title: "Get Your ITIN",
-      tagline: "Required for US tax filing & opening Stripe / Mercury without an SSN.",
-      price: ADDON_PRICES.itin, urgent: true, value: data.addonItin,
+      key: "addonItin" as const,
+      title: "ITIN — Individual Taxpayer ID",
+      tagline: "Mandatory for non-US founders to file taxes & unlock payment processors.",
+      price: ADDON_PRICES.itin,
+      originalPrice: 299,
+      value: data.addonItin,
+      badge: "REQUIRED FOR NON-US FOUNDERS",
+      badgeTone: "warning" as const,
+      icon: Star,
+      benefits: [
+        "Required to file your annual US tax return",
+        "Required to verify PayPal, Stripe & Mercury accounts",
+        "Required for opening most US business bank accounts",
+        "Avoid 30% IRS withholding tax on your earnings",
+      ],
+      socialProof: "94% of our non-US founders add this",
     },
     isEcom && {
-      key: "addonSellerPermit", title: "Seller Permit",
-      tagline: "Sell legally in the US & collect sales tax in your state.",
-      price: ADDON_PRICES.sellerPermit, value: data.addonSellerPermit,
+      key: "addonSellerPermit" as const,
+      title: "Seller's Permit (Sales Tax License)",
+      tagline: "Required to legally sell products & collect sales tax in the US.",
+      price: ADDON_PRICES.sellerPermit,
+      originalPrice: 249,
+      value: data.addonSellerPermit,
+      badge: "RECOMMENDED FOR ECOMMERCE",
+      badgeTone: "primary" as const,
+      icon: TrendingUp,
+      benefits: [
+        "Sell legally across all 50 US states",
+        "Buy inventory wholesale tax-free",
+        "Avoid penalties from state tax authorities",
+        "Required by Shopify Payments & wholesale suppliers",
+      ],
+      socialProof: "Approved in 5–10 business days",
     },
     isMarketplace && {
-      key: "addonPremiumAddress", title: "Premium Address (Unique Suite #)",
-      tagline: "Required by Amazon, Walmart & eBay to verify your seller account.",
-      price: ADDON_PRICES.premiumAddress, value: data.addonPremiumAddress,
+      key: "addonPremiumAddress" as const,
+      title: "Premium US Address (Unique Suite #)",
+      tagline: "Pass Amazon, Walmart & eBay seller verification on the first try.",
+      price: ADDON_PRICES.premiumAddress,
+      originalPrice: 199,
+      value: data.addonPremiumAddress,
+      badge: "REQUIRED BY MARKETPLACES",
+      badgeTone: "warning" as const,
+      icon: Building2,
+      benefits: [
+        "Unique suite number — not flagged as virtual mailbox",
+        "Accepted by Amazon, Walmart, eBay, Etsy seller central",
+        "Mail scanning & forwarding worldwide",
+        "Use as your business address on filings",
+      ],
+      socialProof: "98% first-attempt approval rate",
     },
-  ].filter(Boolean) as any[];
+  ].filter(Boolean) as Upsell[];
+
+  const toneClasses = (tone?: string) =>
+    tone === "warning"
+      ? "bg-warning/15 text-warning"
+      : tone === "success"
+      ? "bg-success/15 text-success"
+      : "bg-primary/15 text-primary";
 
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Recommended add-ons</h2>
-      <p className="text-muted-foreground mb-6">Hand-picked based on your answers. Add only what you need.</p>
+      <p className="text-muted-foreground mb-6">Hand-picked based on your answers. Only what you actually need.</p>
 
       {upsells.length === 0 ? (
         <div className="rounded-xl border border-border bg-secondary/30 p-6 text-center">
@@ -482,22 +638,73 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
           <p className="text-sm text-muted-foreground mt-1">Continue to review your order.</p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {upsells.map((u) => (
-            <div key={u.key} className={cn("rounded-xl border-2 p-4 md:p-5 transition-all", u.value ? "border-primary bg-primary/5" : "border-border")}>
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-bold font-display">{u.title}</p>
-                    {u.urgent && <span className="text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full bg-warning/15 text-warning font-bold">Most Important</span>}
+        <div className="space-y-4">
+          {upsells.map((u) => {
+            const Icon = u.icon;
+            return (
+              <div
+                key={u.key}
+                className={cn(
+                  "relative rounded-2xl border-2 p-5 md:p-6 transition-all overflow-hidden",
+                  u.value
+                    ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
+                    : "border-border hover:border-primary/40 hover:shadow-md",
+                )}
+              >
+                {u.badge && (
+                  <div className={cn("absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider", toneClasses(u.badgeTone))}>
+                    {u.badge}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">{u.tagline}</p>
-                  <p className="text-sm font-bold text-primary mt-2">+ ${u.price}</p>
+                )}
+
+                <div className="flex items-start gap-4 mb-3">
+                  <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center shrink-0", u.value ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 flex-1 pr-16">
+                    <p className="font-bold font-display text-base md:text-lg leading-tight">{u.title}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{u.tagline}</p>
+                  </div>
                 </div>
-                <Switch checked={u.value} onCheckedChange={(v) => update(u.key, v)} />
+
+                <ul className="space-y-1.5 mb-4 pl-1">
+                  {u.benefits.map((b) => (
+                    <li key={b} className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
+                      <span className="text-foreground/85">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex items-end justify-between gap-3 pt-3 border-t border-border">
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-extrabold font-display text-primary">+${u.price}</span>
+                      {u.originalPrice && (
+                        <span className="text-sm line-through text-muted-foreground">${u.originalPrice}</span>
+                      )}
+                      {u.originalPrice && (
+                        <span className="text-[10px] font-bold bg-success/15 text-success px-2 py-0.5 rounded-full uppercase tracking-wider">
+                          Save ${u.originalPrice - u.price}
+                        </span>
+                      )}
+                    </div>
+                    {u.socialProof && (
+                      <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                        <Sparkles className="h-3 w-3 text-primary" /> {u.socialProof}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={cn("text-xs font-semibold", u.value ? "text-primary" : "text-muted-foreground")}>
+                      {u.value ? "Added" : "Add"}
+                    </span>
+                    <Switch checked={u.value} onCheckedChange={(v) => update(u.key, v)} />
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>
