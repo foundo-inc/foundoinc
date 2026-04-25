@@ -259,55 +259,123 @@ const Step2 = ({ data, update, errors }: any) => {
   const stateFee = STATES.find((s) => s.name === data.state)?.fee ?? 0;
   const popularStates = STATES.filter((s) => POPULAR_STATE_NAMES.includes(s.name));
   const otherStates = STATES.filter((s) => !POPULAR_STATE_NAMES.includes(s.name));
-  const packageFeatures = [
+  const leftFeatures = [
     "Company formation (LLC or C-Corp)",
     "Expedited Tax ID (EIN) setup",
-    "Registered agent (1 year free)",
-    "Operating Agreement / Bylaws",
-    "Bank account intros (Mercury, Stripe)",
+    "All state filing fees included",
+    "Business bank account setup",
+    "Registered U.S. business address",
+    "Registered agent service included",
+  ];
+  const rightFeatures = [
+    "Free expert tax consultation",
+    "All essential documents",
+    "Operating Agreement / Corporate Bylaws",
+    "Annual compliance reminders",
     "Lifetime expert support",
+  ];
+  const stats = [
+    { icon: Users, value: "700+", label: "Founders served" },
+    { icon: Shield, value: "100%", label: "Compliance rate" },
+    { icon: Zap, value: "48hrs", label: "Avg. setup time" },
   ];
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Choose your package</h2>
       <p className="text-muted-foreground mb-6">Pick your state and entity type. You can change these later if needed.</p>
 
-      {/* Brand package card */}
-      <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-primary/20 mb-6 bg-primary">
+      {/* Brand package card — mirrors SinglePackageSection */}
+      <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-primary/20 mb-6 bg-primary">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.08)_0%,_transparent_60%)]" />
-        <div className="relative z-10 p-6 md:p-7">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-              <Zap className="h-3 w-3" /> Best Value
-            </div>
-            <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-              + State Fees
-            </span>
-          </div>
-          <h3 className="text-xl md:text-2xl font-extrabold font-display text-primary-foreground mb-1">
-            Foundo Complete
-          </h3>
-          <p className="text-primary-foreground/60 text-sm mb-4">
-            Everything to start & scale your US business
-          </p>
-          <div className="flex flex-wrap items-end gap-3 mb-5">
-            <span className="text-4xl md:text-5xl font-extrabold font-display text-primary-foreground leading-none">
-              ${FOUNDO_FEE}
-            </span>
-            <span className="text-sm line-through text-primary-foreground/40 mb-1">$349</span>
-            <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full mb-1">
-              SAVE 29%
-            </span>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 pt-4 border-t border-primary-foreground/10">
-            {packageFeatures.map((f) => (
-              <div key={f} className="flex items-start gap-2.5">
-                <div className="h-4 w-4 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
-                </div>
-                <span className="text-xs md:text-sm text-primary-foreground/80 leading-snug">{f}</span>
+        <div className="grid lg:grid-cols-5 relative z-10">
+          {/* Left — Pricing */}
+          <div className="lg:col-span-2 p-6 md:p-7 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-primary-foreground/10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-5">
+                <Zap className="h-3 w-3" /> Best Value
               </div>
-            ))}
+              <h3 className="text-2xl md:text-3xl font-extrabold font-display text-primary-foreground mb-1 leading-tight">
+                Foundo Complete
+              </h3>
+              <p className="text-primary-foreground/60 text-sm mb-6">
+                Everything to start & scale your US business
+              </p>
+
+              {/* Prominent price */}
+              <div className="mb-3">
+                <div className="flex flex-wrap items-end gap-2">
+                  <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
+                    ${FOUNDO_FEE}
+                  </span>
+                  <span className="rounded-full bg-primary-foreground/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-primary-foreground mb-1">
+                    + State Fee
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-3">
+                  <span className="text-sm line-through text-primary-foreground/30">$349 + State Fee</span>
+                  <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full uppercase tracking-wider">
+                    SAVE 29%
+                  </span>
+                </div>
+              </div>
+
+              {/* Live state-fee + total preview */}
+              <div className="mt-5 rounded-xl bg-primary-foreground/10 backdrop-blur p-3.5 border border-primary-foreground/10">
+                {data.state ? (
+                  <>
+                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-1">
+                      <span>{data.state} state fee</span>
+                      <span className="font-semibold text-primary-foreground">${stateFee}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-2 pb-2 border-b border-primary-foreground/10">
+                      <span>Foundo formation</span>
+                      <span className="font-semibold text-primary-foreground">${FOUNDO_FEE}</span>
+                    </div>
+                    <div className="flex items-end justify-between">
+                      <span className="text-[10px] uppercase tracking-wider font-bold text-primary-foreground/60">Your total today</span>
+                      <span className="text-2xl font-extrabold font-display text-primary-foreground leading-none">
+                        ${FOUNDO_FEE + stateFee}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-center gap-2 text-xs text-primary-foreground/70">
+                    <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
+                    Select a state below to see your exact total.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="mt-6 pt-5 border-t border-primary-foreground/10">
+              <div className="grid grid-cols-3 gap-3">
+                {stats.map((s) => (
+                  <div key={s.label} className="text-center">
+                    <s.icon className="h-4 w-4 text-primary-foreground/70 mx-auto mb-1.5" />
+                    <p className="text-base md:text-lg font-extrabold font-display text-primary-foreground leading-none">{s.value}</p>
+                    <p className="text-[10px] text-primary-foreground/50 mt-1">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right — Features */}
+          <div className="lg:col-span-3 p-6 md:p-7">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/40 mb-4">
+              What's included
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5">
+              {[...leftFeatures, ...rightFeatures].map((f) => (
+                <div key={f} className="flex items-start gap-2.5">
+                  <div className="h-4 w-4 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
+                  </div>
+                  <span className="text-xs md:text-sm text-primary-foreground/80 leading-snug">{f}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
