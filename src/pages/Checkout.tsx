@@ -35,6 +35,7 @@ const Checkout = () => {
     } catch { return initialData; }
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
 
   // Autosave
   useEffect(() => {
@@ -132,7 +133,7 @@ const Checkout = () => {
     setTimeout(() => navigate("/checkout/thank-you"), 600);
   };
 
-  const totals = computeTotals(data);
+  const totals = computeTotals(data, coupon);
 
   return (
     <div className="min-h-screen bg-background">
@@ -167,7 +168,7 @@ const Checkout = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="rounded-t-2xl">
-                  <div className="pt-6"><CheckoutSummary data={data} /></div>
+                  <div className="pt-6"><CheckoutSummary data={data} coupon={coupon} /></div>
                 </SheetContent>
               </Sheet>
             </div>
@@ -187,7 +188,7 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 data={data} goTo={setStep} />}
-              {step === 6 && <Step7 data={data} onPay={handlePay} />}
+              {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl">
@@ -209,7 +210,7 @@ const Checkout = () => {
           {/* Desktop sticky summary */}
           <aside className="hidden lg:block">
             <div className="sticky top-24">
-              <CheckoutSummary data={data} />
+              <CheckoutSummary data={data} coupon={coupon} />
             </div>
           </aside>
         </div>
