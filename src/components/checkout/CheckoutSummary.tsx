@@ -1,22 +1,32 @@
-import { CheckoutData, FOUNDO_FEE, STATES, ADDON_PRICES } from "@/lib/checkout-data";
-import { Shield, Lock, CheckCircle2 } from "lucide-react";
+import { CheckoutData, FOUNDO_FEE, STATES, ADDON_PRICES, Coupon } from "@/lib/checkout-data";
+import { Shield, Lock, CheckCircle2, Tag } from "lucide-react";
 
 interface Props {
   data: CheckoutData;
+  coupon?: Coupon | null;
 }
 
-export const computeTotals = (data: CheckoutData) => {
+export const computeTotals = (data: CheckoutData, coupon?: Coupon | null) => {
   const stateFee = STATES.find((s) => s.name === data.state)?.fee ?? 0;
   const itin = data.addonItin ? ADDON_PRICES.itin : 0;
   const sellerPermit = data.addonSellerPermit ? ADDON_PRICES.sellerPermit : 0;
   const premiumAddress = data.addonPremiumAddress ? ADDON_PRICES.premiumAddress : 0;
   const addons = itin + sellerPermit + premiumAddress;
-  const total = FOUNDO_FEE + stateFee + addons;
-  return { stateFee, itin, sellerPermit, premiumAddress, addons, total };
+  const subtotal = FOUNDO_FEE + stateFee + addons;
+  let discount = 0;
+  if (coupon) {
+    if (coupon.type === "percent") {
+      discount = Math.round((FOUNDO_FEE * coupon.value) / 100);
+    } else {
+      discount = Math.min(coupon.value, subtotal);
+    }
+  }
+  const total = Math.max(0, subtotal - discount);
+  return { stateFee, itin, sellerPermit, premiumAddress, addons, subtotal, discount, total };
 };
 
-const CheckoutSummary = ({ data }: Props) => {
-  const t = computeTotals(data);
+const CheckoutSummary = ({ data, coupon }: Props) => {
+  const t = computeTotals(data, coupon);
   return (
     <div className="rounded-2xl border border-border bg-card p-5 md:p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
@@ -42,12 +52,30 @@ const CheckoutSummary = ({ data }: Props) => {
             {t.premiumAddress > 0 && <Row label="Premium Address" value={`$${t.premiumAddress}`} />}
           </div>
         ) : null}
+
+        {coupon && t.discount > 0 && (
+          <div className="pt-2 border-t border-border">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex items-center gap-2">
+                <Tag className="h-3.5 w-3.5 text-success shrink-0" />
+                <div>
+                  <p className="text-foreground font-medium">Coupon · {coupon.code}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{coupon.label}</p>
+                </div>
+              </div>
+              <p className="font-semibold text-success whitespace-nowrap">−${t.discount}</p>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-5 pt-4 border-t border-border flex items-end justify-between">
         <div>
           <p className="text-xs text-muted-foreground font-medium">Total</p>
           <p className="text-3xl font-bold text-primary font-display">${t.total}</p>
+          {t.discount > 0 && (
+            <p className="text-xs text-muted-foreground line-through">${t.subtotal}</p>
+          )}
         </div>
         <span className="text-xs text-muted-foreground">USD</span>
       </div>
