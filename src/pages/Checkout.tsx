@@ -470,10 +470,10 @@ const Step6 = ({ data, goTo }: any) => {
       <h2 className="text-2xl font-bold font-display mb-1">Review your order</h2>
       <p className="text-muted-foreground mb-6">Double-check everything before payment.</p>
       <div className="space-y-3">
-        {sec("Contact", 0, (
+        {sec("Contact", 1, (
           <p className="text-sm text-muted-foreground">{data.firstName} {data.lastName} · {data.email} · {data.countryCode} {data.phone}</p>
         ))}
-        {sec("Package", 1, (
+        {sec("Package", 0, (
           <p className="text-sm text-muted-foreground">{data.companyType} in {data.state}</p>
         ))}
         {sec("Business", 2, (
