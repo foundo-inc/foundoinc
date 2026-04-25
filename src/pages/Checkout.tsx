@@ -187,7 +187,7 @@ const Checkout = () => {
               {step === 4 && (
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
-              {step === 5 && <Step6 data={data} goTo={setStep} />}
+              {step === 5 && <Step6 data={data} goTo={setStep} coupon={coupon} />}
               {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
@@ -782,8 +782,8 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
 };
 
 /* ---------------- Step 6: Review ---------------- */
-const Step6 = ({ data, goTo }: any) => {
-  const t = computeTotals(data);
+const Step6 = ({ data, goTo, coupon }: any) => {
+  const t = computeTotals(data, coupon);
   const sec = (title: string, stepIdx: number, body: React.ReactNode) => (
     <div className="rounded-xl border border-border p-4 md:p-5">
       <div className="flex items-center justify-between mb-3">
