@@ -9,6 +9,8 @@ import Contact from "./pages/Contact.tsx";
 import Pricing from "./pages/Pricing.tsx";
 import FAQ from "./pages/FAQ.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import Checkout from "./pages/Checkout.tsx";
+import CheckoutThankYou from "./pages/CheckoutThankYou.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/thank-you" element={<CheckoutThankYou />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
