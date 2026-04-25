@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
-  STATES, POPULAR_STATE_NAMES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  STATES, POPULAR_STATE_NAMES, COUNTRIES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
@@ -108,7 +108,11 @@ const Checkout = () => {
       data.members.forEach((m, i) => {
         if (!m.firstName.trim()) e[`m${i}-firstName`] = "Required";
         if (!m.lastName.trim()) e[`m${i}-lastName`] = "Required";
-        if (!m.address.trim()) e[`m${i}-address`] = "Address required";
+        if (!m.street.trim()) e[`m${i}-street`] = "Street required";
+        if (!m.city.trim()) e[`m${i}-city`] = "City required";
+        if (!m.country.trim()) e[`m${i}-country`] = "Country required";
+        if (!m.zip.trim()) e[`m${i}-zip`] = "ZIP required";
+        if (!m.idFile) e[`m${i}-idFile`] = "Upload your passport or ID";
       });
       if (data.members.length > 1 && !data.members.some((m) => m.isResponsible)) {
         e["responsible"] = "Select Responsible Party";
