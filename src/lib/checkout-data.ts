@@ -55,51 +55,131 @@ export const COUNTRY_CODES = [
 ];
 
 export const INDUSTRIES = [
-  "Ecommerce — Own Store (Shopify, WooCommerce)",
+  // Ecommerce & Retail
+  "Ecommerce — Own Store (Shopify, WooCommerce, BigCommerce)",
   "Ecommerce — Marketplace (Amazon, Walmart, eBay, Etsy)",
-  "SaaS / Software",
-  "Consulting / Agency",
-  "Freelancing / Services",
-  "Digital Marketing",
-  "Content Creation / Influencer",
   "Dropshipping",
-  "Real Estate",
+  "Print on Demand",
+  "Wholesale / B2B Trading",
+  "Import / Export",
+  "Retail — Brick & Mortar",
+  // Tech & software
+  "SaaS / Software",
+  "Mobile App / Web App",
+  "AI / Machine Learning",
+  "Web3 / Crypto / Blockchain",
+  "Cybersecurity",
+  "IT Services / DevOps",
+  "Hardware / IoT",
+  // Services
+  "Consulting / Agency",
+  "Marketing / Advertising Agency",
+  "Digital Marketing / SEO",
+  "Freelancing / Professional Services",
+  "Legal Services",
+  "Accounting / Bookkeeping",
+  "HR / Recruiting",
+  "Translation / Localization",
+  // Creator economy
+  "Content Creation / Influencer",
+  "Media / Publishing",
+  "Photography / Videography",
+  "Music / Entertainment",
+  "Gaming / Esports",
+  "Podcasting",
+  // Finance & real estate
+  "Real Estate / Property Management",
   "Trading / Investments",
-  "Education / Coaching",
+  "Fintech / Payments",
+  "Insurance",
+  "Lending / Credit",
+  // Education
+  "Education / Online Courses",
+  "Coaching / Mentoring",
+  "EdTech",
+  "Tutoring",
+  // Health & wellness
+  "Health & Wellness",
+  "Beauty & Cosmetics",
+  "Fitness / Sports",
+  "Telemedicine / Healthcare",
+  "Mental Health",
+  "Pharmaceuticals / Supplements",
+  // Lifestyle
+  "Food & Beverage",
+  "Restaurant / Catering",
+  "Travel & Hospitality",
+  "Fashion / Apparel",
+  "Jewelry & Accessories",
+  "Home & Lifestyle",
+  "Pet Products / Services",
+  // Industry & operations
+  "Manufacturing",
+  "Construction",
+  "Logistics / Shipping",
+  "Automotive",
+  "Energy / Sustainability",
+  "Agriculture",
+  "Events / Weddings",
+  "Non-Profit / Charity",
   "Other",
 ];
 
 export const MARKETPLACE_KEYWORDS = ["Marketplace", "Amazon", "Walmart", "eBay", "Etsy"];
 
+export const COUNTRIES = [
+  "United States", "United Kingdom", "Canada", "Australia", "India", "Pakistan",
+  "Bangladesh", "United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain",
+  "Oman", "Egypt", "Turkey", "Germany", "France", "Spain", "Italy", "Netherlands",
+  "Belgium", "Switzerland", "Sweden", "Norway", "Denmark", "Finland", "Ireland",
+  "Portugal", "Poland", "Romania", "Greece", "Czech Republic", "Austria",
+  "Singapore", "Malaysia", "Indonesia", "Philippines", "Thailand", "Vietnam",
+  "Japan", "South Korea", "China", "Hong Kong", "Taiwan", "New Zealand",
+  "South Africa", "Nigeria", "Kenya", "Ghana", "Morocco",
+  "Brazil", "Mexico", "Argentina", "Chile", "Colombia", "Peru",
+  "Russia", "Ukraine", "Israel", "Other",
+];
+
 export type CompanyType = "LLC" | "C-Corp";
+
+export type IdDocType = "passport" | "national_id" | "drivers_license";
+
+export interface UploadedFile {
+  name: string;
+  size: number;
+  type: string;
+}
 
 export interface Member {
   id: string;
   firstName: string;
   lastName: string;
-  address: string;
+  // Residential address
+  street: string;
+  city: string;
+  stateProvince: string;
+  country: string;
+  zip: string;
   ssn: string;
   isResponsible: boolean;
+  // ID document
+  idType: IdDocType;
+  idFile: UploadedFile | null;
 }
 
 export interface CheckoutData {
-  // Step 1
   firstName: string;
   lastName: string;
   email: string;
   countryCode: string;
   phone: string;
-  // Step 2
   state: string;
   companyType: CompanyType;
-  // Step 3
   businessName: string;
   website: string;
   industry: string;
   description: string;
-  // Step 4
   members: Member[];
-  // Step 5
   addonItin: boolean;
   addonSellerPermit: boolean;
   addonPremiumAddress: boolean;
@@ -115,9 +195,15 @@ export const emptyMember = (): Member => ({
   id: crypto.randomUUID(),
   firstName: "",
   lastName: "",
-  address: "",
+  street: "",
+  city: "",
+  stateProvince: "",
+  country: "",
+  zip: "",
   ssn: "",
   isResponsible: true,
+  idType: "passport",
+  idFile: null,
 });
 
 export const initialData: CheckoutData = {
