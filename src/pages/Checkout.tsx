@@ -168,8 +168,8 @@ const Checkout = () => {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
-              {step === 0 && <Step1 data={data} update={update} errors={errors} />}
-              {step === 1 && <Step2 data={data} update={update} errors={errors} />}
+              {step === 0 && <Step2 data={data} update={update} errors={errors} />}
+              {step === 1 && <Step1 data={data} update={update} errors={errors} />}
               {step === 2 && <Step3 data={data} update={update} errors={errors} />}
               {step === 3 && (
                 <Step4
