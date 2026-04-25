@@ -19,7 +19,7 @@ import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle2, Rocket, Zap } from "lucide-react";
+import { CheckCircle2, Zap } from "lucide-react";
 
 const STORAGE_KEY = "foundo_checkout_v1";
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
