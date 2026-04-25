@@ -844,17 +844,95 @@ const Step6 = ({ data, goTo, coupon }: any) => {
 };
 
 /* ---------------- Step 7: Payment ---------------- */
-const Step7 = ({ data, onPay }: any) => {
-  const t = computeTotals(data);
+const Step7 = ({ data, onPay, coupon, setCoupon }: any) => {
+  const t = computeTotals(data, coupon);
+  const [code, setCode] = useState(coupon?.code ?? "");
+  const [couponError, setCouponError] = useState<string>("");
+
+  const applyCoupon = () => {
+    setCouponError("");
+    const trimmed = code.trim();
+    if (!trimmed) {
+      setCouponError("Enter a coupon code");
+      return;
+    }
+    const found = findCoupon(trimmed);
+    if (!found) {
+      setCouponError("Invalid or expired coupon code");
+      setCoupon(null);
+      return;
+    }
+    setCoupon(found);
+    setCode(found.code);
+    toast({ title: "Coupon applied!", description: `${found.label} — you saved $${computeTotals(data, found).discount}.` });
+  };
+
+  const removeCoupon = () => {
+    setCoupon(null);
+    setCode("");
+    setCouponError("");
+  };
+
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Secure Payment</h2>
       <p className="text-muted-foreground mb-6">Powered by Stripe. Your details are encrypted end-to-end.</p>
 
+      {/* Coupon */}
+      <div className="rounded-xl border border-border p-4 md:p-5 mb-5 bg-card">
+        <div className="flex items-center gap-2 mb-3">
+          <Tag className="h-4 w-4 text-primary" />
+          <p className="font-bold font-display text-sm">Have a coupon code?</p>
+        </div>
+        {coupon ? (
+          <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-success/40 bg-success/5 p-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <FileCheck2 className="h-4 w-4 text-success shrink-0" />
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-foreground">{coupon.code}</p>
+                <p className="text-xs text-muted-foreground">{coupon.label} · You save ${t.discount}</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" onClick={removeCoupon} className="text-muted-foreground hover:text-destructive">
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex gap-2">
+              <Input
+                value={code}
+                onChange={(e) => { setCode(e.target.value.toUpperCase()); setCouponError(""); }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
+                placeholder="Enter code (e.g. WELCOME50)"
+                className="h-12 rounded-xl flex-1 uppercase tracking-wider font-semibold"
+                maxLength={20}
+              />
+              <Button onClick={applyCoupon} variant="outline" className="h-12 rounded-xl px-5 font-bold">
+                Apply
+              </Button>
+            </div>
+            {couponError && (
+              <p className="text-xs text-destructive mt-2 flex items-center gap-1"><AlertCircle className="h-3 w-3" /> {couponError}</p>
+            )}
+          </>
+        )}
+      </div>
+
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
-        <div className="flex items-center justify-between mb-4">
-          <p className="font-bold font-display">Order Total</p>
-          <p className="text-2xl font-bold text-primary font-display">${t.total}</p>
+        <div className="flex items-end justify-between mb-4">
+          <div>
+            <p className="font-bold font-display">Order Total</p>
+            {t.discount > 0 && (
+              <p className="text-xs text-success font-semibold mt-0.5">You saved ${t.discount}</p>
+            )}
+          </div>
+          <div className="text-right">
+            <p className="text-2xl font-bold text-primary font-display leading-none">${t.total}</p>
+            {t.discount > 0 && (
+              <p className="text-xs text-muted-foreground line-through mt-1">${t.subtotal}</p>
+            )}
+          </div>
         </div>
         <div className="space-y-4">
           <Field label="Card Number"><Input placeholder="1234 1234 1234 1234" className="h-12 rounded-xl" /></Field>
