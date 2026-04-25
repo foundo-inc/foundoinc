@@ -28,7 +28,11 @@ const CheckoutSummary = ({ data }: Props) => {
 
       <div className="space-y-3 text-sm">
         <Row label={`Foundo ${data.companyType} Formation`} value={`$${FOUNDO_FEE}`} sub="Filing, Registered Agent (1yr), EIN" />
-        <Row label={`${data.state} State Fee`} value={`$${t.stateFee}`} />
+        {data.state ? (
+          <Row label={`${data.state} State Fee`} value={`$${t.stateFee}`} />
+        ) : (
+          <Row label="State Fee" value="—" sub="Select a state to see fee" />
+        )}
 
         {(t.itin || t.sellerPermit || t.premiumAddress) ? (
           <div className="pt-2 border-t border-border space-y-2">
