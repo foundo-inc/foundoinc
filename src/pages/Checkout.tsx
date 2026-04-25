@@ -13,15 +13,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
-  STATES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  STATES, POPULAR_STATE_NAMES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
+import { CheckCircle2, Zap } from "lucide-react";
 
 const STORAGE_KEY = "foundo_checkout_v1";
-const STEPS = ["Your Info", "Package", "Business", "Members", "Add-ons", "Review", "Payment"];
+const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -90,13 +91,13 @@ const Checkout = () => {
   const validate = (s: number): boolean => {
     const e: Record<string, string> = {};
     if (s === 0) {
+      if (!data.state) e.state = "Select a state";
+    }
+    if (s === 1) {
       if (!data.firstName.trim()) e.firstName = "First name required";
       if (!data.lastName.trim()) e.lastName = "Last name required";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Valid email required";
       if (!/^\d{6,15}$/.test(data.phone.replace(/\D/g, ""))) e.phone = "Valid phone required";
-    }
-    if (s === 1) {
-      if (!data.state) e.state = "Select a state";
     }
     if (s === 2) {
       if (!data.businessName.trim()) e.businessName = "Business name required";
@@ -167,8 +168,8 @@ const Checkout = () => {
             </div>
 
             <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
-              {step === 0 && <Step1 data={data} update={update} errors={errors} />}
-              {step === 1 && <Step2 data={data} update={update} errors={errors} />}
+              {step === 0 && <Step2 data={data} update={update} errors={errors} />}
+              {step === 1 && <Step1 data={data} update={update} errors={errors} />}
               {step === 2 && <Step3 data={data} update={update} errors={errors} />}
               {step === 3 && (
                 <Step4
@@ -250,33 +251,82 @@ const Step1 = ({ data, update, errors }: any) => (
 /* ---------------- Step 2: Package ---------------- */
 const Step2 = ({ data, update, errors }: any) => {
   const stateFee = STATES.find((s) => s.name === data.state)?.fee ?? 0;
+  const popularStates = STATES.filter((s) => POPULAR_STATE_NAMES.includes(s.name));
+  const otherStates = STATES.filter((s) => !POPULAR_STATE_NAMES.includes(s.name));
+  const packageFeatures = [
+    "Company formation (LLC or C-Corp)",
+    "Expedited Tax ID (EIN) setup",
+    "Registered agent (1 year free)",
+    "Operating Agreement / Bylaws",
+    "Bank account intros (Mercury, Stripe)",
+    "Lifetime expert support",
+  ];
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Choose your package</h2>
       <p className="text-muted-foreground mb-6">Pick your state and entity type. You can change these later if needed.</p>
 
-      <div className="rounded-xl border border-primary/20 bg-primary/5 p-5 mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <p className="font-bold font-display text-lg">Foundo Formation Package</p>
-          <span className="text-2xl font-bold text-primary font-display">${FOUNDO_FEE}</span>
+      {/* Brand package card */}
+      <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-primary/20 mb-6 bg-primary">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsla(0,0%,100%,0.08)_0%,_transparent_60%)]" />
+        <div className="relative z-10 p-6 md:p-7">
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <div className="inline-flex items-center gap-2 bg-primary-foreground text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+              <Zap className="h-3 w-3" /> Best Value
+            </div>
+            <span className="rounded-full bg-primary-foreground/15 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+              + State Fees
+            </span>
+          </div>
+          <h3 className="text-xl md:text-2xl font-extrabold font-display text-primary-foreground mb-1">
+            Foundo Complete
+          </h3>
+          <p className="text-primary-foreground/60 text-sm mb-4">
+            Everything to start & scale your US business
+          </p>
+          <div className="flex flex-wrap items-end gap-3 mb-5">
+            <span className="text-4xl md:text-5xl font-extrabold font-display text-primary-foreground leading-none">
+              ${FOUNDO_FEE}
+            </span>
+            <span className="text-sm line-through text-primary-foreground/40 mb-1">$349</span>
+            <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full mb-1">
+              SAVE 29%
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 pt-4 border-t border-primary-foreground/10">
+            {packageFeatures.map((f) => (
+              <div key={f} className="flex items-start gap-2.5">
+                <div className="h-4 w-4 rounded-full bg-primary-foreground/15 flex items-center justify-center shrink-0 mt-0.5">
+                  <CheckCircle2 className="h-3 w-3 text-primary-foreground" />
+                </div>
+                <span className="text-xs md:text-sm text-primary-foreground/80 leading-snug">{f}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <ul className="text-sm text-muted-foreground space-y-1.5">
-          {["State filing & Articles of Organization", "Registered Agent (1 year free)", "EIN application support", "Operating Agreement template", "Bank account intros (Mercury, Stripe)"].map((f) => (
-            <li key={f} className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" /> {f}</li>
-          ))}
-        </ul>
       </div>
 
-      <Field label="State of Formation" error={errors.state}>
+      <Field label="State of Formation" error={errors.state} hint="Most founders choose Wyoming or Delaware for low fees & strong privacy.">
         <Select value={data.state} onValueChange={(v) => update("state", v)}>
-          <SelectTrigger className="h-12 rounded-xl"><SelectValue /></SelectTrigger>
-          <SelectContent className="max-h-60">
-            {STATES.map((s) => (
+          <SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="Select your state" /></SelectTrigger>
+          <SelectContent className="max-h-72">
+            <div className="px-2 py-1.5 text-[10px] uppercase tracking-wider font-bold text-primary">
+              ⭐ Most Popular
+            </div>
+            {popularStates.map((s) => (
+              <SelectItem key={s.name} value={s.name}>{s.name} — ${s.fee} state fee</SelectItem>
+            ))}
+            <div className="px-2 py-1.5 mt-1 border-t border-border text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
+              All States (A–Z)
+            </div>
+            {otherStates.map((s) => (
               <SelectItem key={s.name} value={s.name}>{s.name} — ${s.fee} state fee</SelectItem>
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-muted-foreground mt-1">Selected state fee: <span className="font-semibold text-foreground">${stateFee}</span></p>
+        {data.state && (
+          <p className="text-xs text-muted-foreground mt-1">Selected state fee: <span className="font-semibold text-foreground">${stateFee}</span></p>
+        )}
       </Field>
 
       <Label className="block mt-6 mb-3 text-sm font-semibold">Company Type</Label>
@@ -469,10 +519,10 @@ const Step6 = ({ data, goTo }: any) => {
       <h2 className="text-2xl font-bold font-display mb-1">Review your order</h2>
       <p className="text-muted-foreground mb-6">Double-check everything before payment.</p>
       <div className="space-y-3">
-        {sec("Contact", 0, (
+        {sec("Contact", 1, (
           <p className="text-sm text-muted-foreground">{data.firstName} {data.lastName} · {data.email} · {data.countryCode} {data.phone}</p>
         ))}
-        {sec("Package", 1, (
+        {sec("Package", 0, (
           <p className="text-sm text-muted-foreground">{data.companyType} in {data.state}</p>
         ))}
         {sec("Business", 2, (
