@@ -91,13 +91,13 @@ const Checkout = () => {
   const validate = (s: number): boolean => {
     const e: Record<string, string> = {};
     if (s === 0) {
+      if (!data.state) e.state = "Select a state";
+    }
+    if (s === 1) {
       if (!data.firstName.trim()) e.firstName = "First name required";
       if (!data.lastName.trim()) e.lastName = "Last name required";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Valid email required";
       if (!/^\d{6,15}$/.test(data.phone.replace(/\D/g, ""))) e.phone = "Valid phone required";
-    }
-    if (s === 1) {
-      if (!data.state) e.state = "Select a state";
     }
     if (s === 2) {
       if (!data.businessName.trim()) e.businessName = "Business name required";
