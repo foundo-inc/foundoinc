@@ -1,4 +1,4 @@
-export const STATES = [
+const ALL_STATES = [
   { name: "Alabama", fee: 200 }, { name: "Alaska", fee: 250 }, { name: "Arizona", fee: 50 },
   { name: "Arkansas", fee: 45 }, { name: "California", fee: 70 }, { name: "Colorado", fee: 50 },
   { name: "Connecticut", fee: 120 }, { name: "Delaware", fee: 90 }, { name: "Florida", fee: 125 },
@@ -17,6 +17,17 @@ export const STATES = [
   { name: "Virginia", fee: 100 }, { name: "Washington", fee: 180 }, { name: "West Virginia", fee: 100 },
   { name: "Wisconsin", fee: 130 }, { name: "Wyoming", fee: 100 },
 ];
+
+export const POPULAR_STATE_NAMES = ["Wyoming", "Delaware", "New Mexico", "Montana"];
+
+const popular = POPULAR_STATE_NAMES
+  .map((n) => ALL_STATES.find((s) => s.name === n)!)
+  .filter(Boolean);
+const rest = ALL_STATES
+  .filter((s) => !POPULAR_STATE_NAMES.includes(s.name))
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+export const STATES = [...popular, ...rest];
 
 export const FOUNDO_FEE = 249;
 
@@ -111,7 +122,7 @@ export const emptyMember = (): Member => ({
 
 export const initialData: CheckoutData = {
   firstName: "", lastName: "", email: "", countryCode: "+1", phone: "",
-  state: "Wyoming", companyType: "LLC",
+  state: "", companyType: "LLC",
   businessName: "", website: "", industry: "", description: "",
   members: [emptyMember()],
   addonItin: false, addonSellerPermit: false, addonPremiumAddress: false,
