@@ -305,39 +305,32 @@ const Step2 = ({ data, update, errors }: any) => {
               <div className="mb-3">
                 <div className="flex flex-wrap items-end gap-2">
                   <span className="text-5xl md:text-6xl font-extrabold font-display text-primary-foreground leading-none">
-                    ${FOUNDO_FEE}
+                    ${FOUNDO_FEE}+
                   </span>
                   <span className="rounded-full bg-primary-foreground/15 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider text-primary-foreground mb-1">
-                    + State Fee
+                    All-Inclusive
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mt-3">
-                  <span className="text-sm line-through text-primary-foreground/30">$349 + State Fee</span>
+                  <span className="text-sm line-through text-primary-foreground/30">$349</span>
                   <span className="text-[10px] font-bold text-primary-foreground bg-primary-foreground/15 px-2 py-1 rounded-full uppercase tracking-wider">
                     SAVE 29%
                   </span>
                 </div>
               </div>
 
-              {/* Live state-fee + total preview */}
+              {/* Live total preview */}
               <div className="mt-5 rounded-xl bg-primary-foreground/10 backdrop-blur p-3.5 border border-primary-foreground/10">
                 {data.state ? (
-                  <>
-                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-1">
-                      <span>{data.state} state fee</span>
-                      <span className="font-semibold text-primary-foreground">${stateFee}</span>
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <span className="block text-[10px] uppercase tracking-wider font-bold text-primary-foreground/60">Your total today</span>
+                      <span className="block text-[11px] text-primary-foreground/60 mt-0.5">{data.state} · all-inclusive</span>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-primary-foreground/70 mb-2 pb-2 border-b border-primary-foreground/10">
-                      <span>Foundo formation</span>
-                      <span className="font-semibold text-primary-foreground">${FOUNDO_FEE}</span>
-                    </div>
-                    <div className="flex items-end justify-between">
-                      <span className="text-[10px] uppercase tracking-wider font-bold text-primary-foreground/60">Your total today</span>
-                      <span className="text-2xl font-extrabold font-display text-primary-foreground leading-none">
-                        ${FOUNDO_FEE + stateFee}
-                      </span>
-                    </div>
-                  </>
+                    <span className="text-2xl font-extrabold font-display text-primary-foreground leading-none">
+                      ${FOUNDO_FEE + stateFee}
+                    </span>
+                  </div>
                 ) : (
                   <div className="flex items-center gap-2 text-xs text-primary-foreground/70">
                     <Sparkles className="h-3.5 w-3.5 text-primary-foreground" />
