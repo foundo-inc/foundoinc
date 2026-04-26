@@ -635,7 +635,7 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
     showItin && {
       key: "addonItin" as const,
       title: "ITIN — Individual Taxpayer ID",
-      tagline: "Mandatory for non-US founders to file taxes & unlock payment processors.",
+      tagline: "Required for non-US founders to file US taxes & verify payment processors.",
       price: ADDON_PRICES.itin,
       originalPrice: 299,
       value: data.addonItin,
@@ -644,9 +644,9 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
       icon: Star,
       benefits: [
         "Required to file your annual US tax return",
-        "Required to verify PayPal, Stripe & Mercury accounts",
-        "Required for opening most US business bank accounts",
+        "Required to verify PayPal & most payment processors",
         "Avoid 30% IRS withholding tax on your earnings",
+        "Build your US tax & business credit history",
       ],
       socialProof: "94% of our non-US founders add this",
     },
