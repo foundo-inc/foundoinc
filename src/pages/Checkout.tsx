@@ -173,7 +173,7 @@ const Checkout = () => {
               </Sheet>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 md:p-8 shadow-sm">
               {step === 0 && <Step2 data={data} update={update} errors={errors} />}
               {step === 1 && <Step1 data={data} update={update} errors={errors} />}
               {step === 2 && <Step3 data={data} update={update} errors={errors} />}
@@ -191,16 +191,16 @@ const Checkout = () => {
               {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
-                <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl">
-                  <ArrowLeft className="h-4 w-4 mr-2" /> Back
+                <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
+                  <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
                 {step < STEPS.length - 1 ? (
-                  <Button onClick={next} size="lg" className="rounded-xl px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
                     Continue <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 ) : (
-                  <Button onClick={handlePay} size="lg" className="rounded-xl px-6 h-12 font-bold shadow-lg shadow-primary/20">
-                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} Securely
+                  <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
+                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} <span className="hidden sm:inline ml-1">Securely</span>
                   </Button>
                 )}
               </div>
