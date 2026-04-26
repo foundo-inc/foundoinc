@@ -141,22 +141,22 @@ const Checkout = () => {
       <div className="h-16 md:h-20" />
 
       <header className="border-b border-border bg-gradient-to-b from-secondary/40 to-background">
-        <div className="container py-8 md:py-10">
+        <div className="container py-6 md:py-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
               <Sparkles className="h-3.5 w-3.5" /> Place Your Order
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold font-display mb-2">Launch your US company in minutes</h1>
-            <p className="text-muted-foreground text-base md:text-lg">Simple, guided checkout. Your progress is auto-saved.</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display mb-2 leading-tight">Launch your US company in minutes</h1>
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Simple, guided checkout. Your progress is auto-saved.</p>
           </div>
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <StepIndicator steps={STEPS} current={step} />
           </div>
         </div>
       </header>
 
-      <main className="container py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
+      <main className="container py-6 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8">
           <div className="min-w-0">
             {/* Mobile summary */}
             <div className="lg:hidden mb-4">
