@@ -745,9 +745,9 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
                   ))}
                 </ul>
 
-                <div className="flex items-end justify-between gap-3 pt-3 border-t border-border">
-                  <div>
-                    <div className="flex items-baseline gap-2">
+                <div className="flex flex-wrap items-end justify-between gap-3 pt-3 border-t border-border">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                       <span className="text-2xl font-extrabold font-display text-primary">+${u.price}</span>
                       {u.originalPrice && (
                         <span className="text-sm line-through text-muted-foreground">${u.originalPrice}</span>
@@ -764,7 +764,7 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     <span className={cn("text-xs font-semibold", u.value ? "text-primary" : "text-muted-foreground")}>
                       {u.value ? "Added" : "Add"}
                     </span>
