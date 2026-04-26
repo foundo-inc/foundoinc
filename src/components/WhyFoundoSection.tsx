@@ -24,7 +24,7 @@ const WhyFoundoSection = () => (
             See how Foundo stacks up against doing it yourself or using traditional legal firms.
           </p>
           <Button size="lg" className="rounded-full shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:-translate-y-0.5 h-12 md:h-14 px-7 md:px-8 text-sm md:text-base font-semibold" asChild>
-            <a href="/dashboard">Get Started Today <ArrowRight className="ml-2 h-5 w-5" /></a>
+            <a href="/checkout">Get Started Today <ArrowRight className="ml-2 h-5 w-5" /></a>
           </Button>
         </div>
 

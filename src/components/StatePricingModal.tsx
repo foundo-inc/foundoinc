@@ -128,7 +128,7 @@ const StatePricingModal = ({ open, onOpenChange }: StatePricingModalProps) => {
 
           {/* CTA */}
           <Button asChild className="w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 hover:shadow-xl transition-all duration-300">
-            <Link to="/dashboard" onClick={() => onOpenChange(false)}>
+            <Link to="/checkout" onClick={() => onOpenChange(false)}>
               <Rocket className="mr-2 h-4 w-4" /> Start Your Business <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
