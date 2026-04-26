@@ -549,7 +549,6 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                     <SelectContent>
                       <SelectItem value="passport">Passport</SelectItem>
                       <SelectItem value="national_id">National ID Card</SelectItem>
-                      <SelectItem value="drivers_license">Driver's License</SelectItem>
                     </SelectContent>
                   </Select>
                 </Field>
