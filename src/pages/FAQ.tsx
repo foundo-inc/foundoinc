@@ -239,7 +239,7 @@ const FAQPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full text-base font-semibold px-8 h-14 shadow-xl shadow-primary/30">
-              <a href="/dashboard">Start Your Business <ArrowRight className="ml-2 h-5 w-5" /></a>
+              <a href="/checkout">Start Your Business <ArrowRight className="ml-2 h-5 w-5" /></a>
             </Button>
             <Button asChild size="lg" variant="outline" className="rounded-full text-base font-semibold px-8 h-14 bg-transparent border-background/20 text-background hover:bg-background/10 hover:text-background">
               <a href={whatsappLink} target="_blank" rel="noopener noreferrer">

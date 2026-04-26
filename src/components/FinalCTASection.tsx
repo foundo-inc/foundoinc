@@ -25,7 +25,7 @@ const FinalCTASection = () => (
 
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-5 md:mb-6">
             <Button size="lg" className="w-full sm:w-auto rounded-full text-sm md:text-base px-7 md:px-8 shadow-xl shadow-primary/25 h-12 md:h-14 font-semibold transition-all duration-300 hover:-translate-y-0.5" asChild>
-              <a href="/dashboard">Get Started for Free <ArrowRight className="ml-2 h-5 w-5" /></a>
+              <a href="/checkout">Get Started for Free <ArrowRight className="ml-2 h-5 w-5" /></a>
             </Button>
             <Button variant="outline" size="lg" className="w-full sm:w-auto rounded-full text-sm md:text-base border-primary-foreground/15 text-primary-foreground/75 hover:bg-primary-foreground/5 bg-transparent h-12 md:h-14 transition-all duration-300">
               Talk to an Expert
