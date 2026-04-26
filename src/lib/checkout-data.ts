@@ -142,7 +142,7 @@ export const COUNTRIES = [
 
 export type CompanyType = "LLC" | "C-Corp";
 
-export type IdDocType = "passport" | "national_id" | "drivers_license";
+export type IdDocType = "passport" | "national_id";
 
 export interface UploadedFile {
   name: string;

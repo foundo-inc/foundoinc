@@ -141,22 +141,22 @@ const Checkout = () => {
       <div className="h-16 md:h-20" />
 
       <header className="border-b border-border bg-gradient-to-b from-secondary/40 to-background">
-        <div className="container py-8 md:py-10">
+        <div className="container py-6 md:py-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
               <Sparkles className="h-3.5 w-3.5" /> Place Your Order
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold font-display mb-2">Launch your US company in minutes</h1>
-            <p className="text-muted-foreground text-base md:text-lg">Simple, guided checkout. Your progress is auto-saved.</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-display mb-2 leading-tight">Launch your US company in minutes</h1>
+            <p className="text-muted-foreground text-sm sm:text-base md:text-lg">Simple, guided checkout. Your progress is auto-saved.</p>
           </div>
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <StepIndicator steps={STEPS} current={step} />
           </div>
         </div>
       </header>
 
-      <main className="container py-8 md:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
+      <main className="container py-6 md:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8">
           <div className="min-w-0">
             {/* Mobile summary */}
             <div className="lg:hidden mb-4">
@@ -173,7 +173,7 @@ const Checkout = () => {
               </Sheet>
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-4 sm:p-6 md:p-8 shadow-sm">
               {step === 0 && <Step2 data={data} update={update} errors={errors} />}
               {step === 1 && <Step1 data={data} update={update} errors={errors} />}
               {step === 2 && <Step3 data={data} update={update} errors={errors} />}
@@ -191,16 +191,16 @@ const Checkout = () => {
               {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
-                <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl">
-                  <ArrowLeft className="h-4 w-4 mr-2" /> Back
+                <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
+                  <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
                 {step < STEPS.length - 1 ? (
-                  <Button onClick={next} size="lg" className="rounded-xl px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
                     Continue <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 ) : (
-                  <Button onClick={handlePay} size="lg" className="rounded-xl px-6 h-12 font-bold shadow-lg shadow-primary/20">
-                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} Securely
+                  <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
+                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} <span className="hidden sm:inline ml-1">Securely</span>
                   </Button>
                 )}
               </div>
@@ -549,7 +549,6 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                     <SelectContent>
                       <SelectItem value="passport">Passport</SelectItem>
                       <SelectItem value="national_id">National ID Card</SelectItem>
-                      <SelectItem value="drivers_license">Driver's License</SelectItem>
                     </SelectContent>
                   </Select>
                 </Field>
@@ -636,7 +635,7 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
     showItin && {
       key: "addonItin" as const,
       title: "ITIN — Individual Taxpayer ID",
-      tagline: "Mandatory for non-US founders to file taxes & unlock payment processors.",
+      tagline: "Required for non-US founders to file US taxes & verify payment processors.",
       price: ADDON_PRICES.itin,
       originalPrice: 299,
       value: data.addonItin,
@@ -645,9 +644,9 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
       icon: Star,
       benefits: [
         "Required to file your annual US tax return",
-        "Required to verify PayPal, Stripe & Mercury accounts",
-        "Required for opening most US business bank accounts",
+        "Required to verify PayPal & most payment processors",
         "Avoid 30% IRS withholding tax on your earnings",
+        "Build your US tax & business credit history",
       ],
       socialProof: "94% of our non-US founders add this",
     },
@@ -715,23 +714,23 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
               <div
                 key={u.key}
                 className={cn(
-                  "relative rounded-2xl border-2 p-5 md:p-6 transition-all overflow-hidden",
+                  "relative rounded-2xl border-2 p-4 sm:p-5 md:p-6 transition-all overflow-hidden",
                   u.value
                     ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
                     : "border-border hover:border-primary/40 hover:shadow-md",
                 )}
               >
                 {u.badge && (
-                  <div className={cn("absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider", toneClasses(u.badgeTone))}>
+                  <div className={cn("inline-flex sm:absolute sm:top-0 sm:right-0 mb-3 sm:mb-0 px-2.5 py-1 rounded-md sm:rounded-bl-xl sm:rounded-tl-none sm:rounded-tr-none sm:rounded-br-none text-[10px] font-extrabold uppercase tracking-wider", toneClasses(u.badgeTone))}>
                     {u.badge}
                   </div>
                 )}
 
-                <div className="flex items-start gap-4 mb-3">
-                  <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center shrink-0", u.value ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}>
+                <div className="flex items-start gap-3 sm:gap-4 mb-3">
+                  <div className={cn("h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex items-center justify-center shrink-0", u.value ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}>
                     <Icon className="h-5 w-5" />
                   </div>
-                  <div className="min-w-0 flex-1 pr-16">
+                  <div className="min-w-0 flex-1 sm:pr-16">
                     <p className="font-bold font-display text-base md:text-lg leading-tight">{u.title}</p>
                     <p className="text-sm text-muted-foreground mt-1">{u.tagline}</p>
                   </div>
@@ -746,9 +745,9 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
                   ))}
                 </ul>
 
-                <div className="flex items-end justify-between gap-3 pt-3 border-t border-border">
-                  <div>
-                    <div className="flex items-baseline gap-2">
+                <div className="flex flex-wrap items-end justify-between gap-3 pt-3 border-t border-border">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                       <span className="text-2xl font-extrabold font-display text-primary">+${u.price}</span>
                       {u.originalPrice && (
                         <span className="text-sm line-through text-muted-foreground">${u.originalPrice}</span>
@@ -765,7 +764,7 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     <span className={cn("text-xs font-semibold", u.value ? "text-primary" : "text-muted-foreground")}>
                       {u.value ? "Added" : "Add"}
                     </span>
