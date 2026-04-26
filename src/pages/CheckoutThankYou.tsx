@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle2, MessageCircle, Mail, ArrowRight, FileText, Bell, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -7,7 +8,12 @@ import { Button } from "@/components/ui/button";
 const WHATSAPP = "https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20I%20just%20placed%20my%20Foundo%20order%20%F0%9F%9A%80";
 const EMAIL = "info@foundo.co";
 
-const ThankYou = () => (
+const ThankYou = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
+  return (
   <div className="min-h-screen bg-background">
     <Navbar />
     <div className="h-16 md:h-20" />
