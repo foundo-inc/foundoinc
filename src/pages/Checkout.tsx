@@ -381,18 +381,18 @@ const Step2 = ({ data, update, errors }: any) => {
               ⭐ Most Popular
             </div>
             {popularStates.map((s) => (
-              <SelectItem key={s.name} value={s.name}>{s.name} — ${s.fee} state fee</SelectItem>
+              <SelectItem key={s.name} value={s.name}>{s.name} — ${FOUNDO_FEE + s.fee} all-inclusive</SelectItem>
             ))}
             <div className="px-2 py-1.5 mt-1 border-t border-border text-[10px] uppercase tracking-wider font-bold text-muted-foreground">
               All States (A–Z)
             </div>
             {otherStates.map((s) => (
-              <SelectItem key={s.name} value={s.name}>{s.name} — ${s.fee} state fee</SelectItem>
+              <SelectItem key={s.name} value={s.name}>{s.name} — ${FOUNDO_FEE + s.fee} all-inclusive</SelectItem>
             ))}
           </SelectContent>
         </Select>
         {data.state && (
-          <p className="text-xs text-muted-foreground mt-1">Selected state fee: <span className="font-semibold text-foreground">${stateFee}</span></p>
+          <p className="text-xs text-muted-foreground mt-1">Total for {data.state}: <span className="font-semibold text-foreground">${FOUNDO_FEE + stateFee}</span> · all-inclusive</p>
         )}
       </Field>
 
