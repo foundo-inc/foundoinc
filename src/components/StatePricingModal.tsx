@@ -114,23 +114,12 @@ const StatePricingModal = ({ open, onOpenChange }: StatePricingModalProps) => {
             </Select>
           </div>
 
-          {/* State Fee */}
-          <div className="rounded-xl border border-border bg-muted/30 p-4 flex items-center justify-between">
-            <div>
-              <p className="text-xs text-muted-foreground font-medium">State Fee</p>
-              <p className="text-2xl font-bold text-foreground font-display">${stateData.fee}</p>
-            </div>
-            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Flag className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-
           {/* Total Cost */}
           <div className="rounded-xl border border-primary/20 bg-primary/[0.04] p-4 flex items-center justify-between">
             <div>
               <p className="text-xs text-primary font-semibold">Total Cost</p>
               <p className="text-3xl font-bold text-primary font-display">${totalCost}</p>
-              <p className="text-xs text-primary/60 mt-0.5">Foundo + State Fee</p>
+              <p className="text-xs text-primary/60 mt-0.5">All-inclusive · No hidden fees</p>
             </div>
             <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
               <Rocket className="h-5 w-5 text-primary" />
@@ -149,7 +138,7 @@ const StatePricingModal = ({ open, onOpenChange }: StatePricingModalProps) => {
             <div className="inline-flex items-center gap-1.5 bg-muted/50 border border-border rounded-full px-4 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
               <span className="text-xs font-medium text-muted-foreground">
-                Starts at <span className="text-foreground font-bold">${FOUNDO_FEE}</span> + State Fees
+                All-inclusive pricing · State fees included
               </span>
             </div>
             <p className="text-xs text-muted-foreground flex items-center justify-center gap-2">
