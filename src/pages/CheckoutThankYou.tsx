@@ -69,6 +69,7 @@ const ThankYou = () => {
     </main>
     <Footer />
   </div>
-);
+  );
+};
 
 export default ThankYou;
