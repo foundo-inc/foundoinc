@@ -714,23 +714,23 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
               <div
                 key={u.key}
                 className={cn(
-                  "relative rounded-2xl border-2 p-5 md:p-6 transition-all overflow-hidden",
+                  "relative rounded-2xl border-2 p-4 sm:p-5 md:p-6 transition-all overflow-hidden",
                   u.value
                     ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
                     : "border-border hover:border-primary/40 hover:shadow-md",
                 )}
               >
                 {u.badge && (
-                  <div className={cn("absolute top-0 right-0 px-3 py-1 rounded-bl-xl text-[10px] font-extrabold uppercase tracking-wider", toneClasses(u.badgeTone))}>
+                  <div className={cn("inline-flex sm:absolute sm:top-0 sm:right-0 mb-3 sm:mb-0 px-2.5 py-1 rounded-md sm:rounded-bl-xl sm:rounded-tl-none sm:rounded-tr-none sm:rounded-br-none text-[10px] font-extrabold uppercase tracking-wider", toneClasses(u.badgeTone))}>
                     {u.badge}
                   </div>
                 )}
 
-                <div className="flex items-start gap-4 mb-3">
-                  <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center shrink-0", u.value ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}>
+                <div className="flex items-start gap-3 sm:gap-4 mb-3">
+                  <div className={cn("h-10 w-10 sm:h-11 sm:w-11 rounded-xl flex items-center justify-center shrink-0", u.value ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary")}>
                     <Icon className="h-5 w-5" />
                   </div>
-                  <div className="min-w-0 flex-1 pr-16">
+                  <div className="min-w-0 flex-1 sm:pr-16">
                     <p className="font-bold font-display text-base md:text-lg leading-tight">{u.title}</p>
                     <p className="text-sm text-muted-foreground mt-1">{u.tagline}</p>
                   </div>
