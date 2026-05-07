@@ -14,16 +14,176 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      order_milestones: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          milestone: Database["public"]["Enums"]["order_milestone"]
+          note: string | null
+          order_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          milestone: Database["public"]["Enums"]["order_milestone"]
+          note?: string | null
+          order_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          milestone?: Database["public"]["Enums"]["order_milestone"]
+          note?: string | null
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_milestones_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          addon_itin: boolean
+          addon_premium_address: boolean
+          addon_seller_permit: boolean
+          addons_total: number
+          business_name: string
+          company_type: string
+          country_code: string | null
+          coupon_code: string | null
+          created_at: string
+          current_milestone: Database["public"]["Enums"]["order_milestone"]
+          description: string | null
+          discount: number
+          email: string
+          first_name: string
+          foundo_fee: number
+          id: string
+          industry: string | null
+          last_name: string
+          members: Json
+          notes: string | null
+          order_number: string
+          phone: string | null
+          state: string
+          state_fee: number
+          subtotal: number
+          total: number
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          addon_itin?: boolean
+          addon_premium_address?: boolean
+          addon_seller_permit?: boolean
+          addons_total?: number
+          business_name: string
+          company_type: string
+          country_code?: string | null
+          coupon_code?: string | null
+          created_at?: string
+          current_milestone?: Database["public"]["Enums"]["order_milestone"]
+          description?: string | null
+          discount?: number
+          email: string
+          first_name: string
+          foundo_fee: number
+          id?: string
+          industry?: string | null
+          last_name: string
+          members?: Json
+          notes?: string | null
+          order_number?: string
+          phone?: string | null
+          state: string
+          state_fee: number
+          subtotal: number
+          total: number
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          addon_itin?: boolean
+          addon_premium_address?: boolean
+          addon_seller_permit?: boolean
+          addons_total?: number
+          business_name?: string
+          company_type?: string
+          country_code?: string | null
+          coupon_code?: string | null
+          created_at?: string
+          current_milestone?: Database["public"]["Enums"]["order_milestone"]
+          description?: string | null
+          discount?: number
+          email?: string
+          first_name?: string
+          foundo_fee?: number
+          id?: string
+          industry?: string | null
+          last_name?: string
+          members?: Json
+          notes?: string | null
+          order_number?: string
+          phone?: string | null
+          state?: string
+          state_fee?: number
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      order_milestone:
+        | "received"
+        | "filing"
+        | "ein"
+        | "documents_ready"
+        | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +310,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      order_milestone: [
+        "received",
+        "filing",
+        "ein",
+        "documents_ready",
+        "completed",
+      ],
+    },
   },
 } as const
