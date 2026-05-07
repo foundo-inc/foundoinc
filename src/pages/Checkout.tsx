@@ -127,7 +127,25 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = () => {
+  const handlePay = async () => {
+    const t = computeTotals(data, coupon);
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("orders").insert({
+      first_name: data.firstName, last_name: data.lastName, email: data.email,
+      country_code: data.countryCode, phone: data.phone,
+      state: data.state, company_type: data.companyType, business_name: data.businessName,
+      website: data.website || null, industry: data.industry || null, description: data.description || null,
+      members: data.members as any,
+      addon_itin: data.addonItin, addon_seller_permit: data.addonSellerPermit, addon_premium_address: data.addonPremiumAddress,
+      foundo_fee: FOUNDO_FEE, state_fee: t.stateFee, addons_total: t.addons,
+      subtotal: t.subtotal, discount: t.discount, total: t.total,
+      coupon_code: coupon?.code ?? null,
+      current_milestone: "received",
+    });
+    if (error) {
+      toast({ title: "Could not place order", description: error.message, variant: "destructive" });
+      return;
+    }
     toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
     localStorage.removeItem(STORAGE_KEY);
     setTimeout(() => navigate("/checkout/thank-you"), 600);
