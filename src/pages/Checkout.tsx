@@ -69,9 +69,9 @@ const Checkout = () => {
   // Auto-assign responsible if 1 member
   useEffect(() => {
     if (data.members.length === 1 && !data.members[0].isResponsible) {
-      setData((d) => ({ ...d, members: [{ ...d.members[0], isResponsible: true }] }));
+      dispatch(setResponsibleAction(data.members[0].id));
     }
-  }, [data.members.length]);
+  }, [data.members.length, data.members, dispatch]);
 
   // Smart upsell visibility
   const showItin = useMemo(() => data.members.every((m) => !m.ssn.trim()), [data.members]);
@@ -123,8 +123,9 @@ const Checkout = () => {
 
   const handlePay = async () => {
     const t = computeTotals(data, coupon);
+    dispatch(setPaymentStatus({ status: "processing", error: null }));
     const { supabase } = await import("@/integrations/supabase/client");
-    const { error } = await supabase.from("orders").insert({
+    const { data: inserted, error } = await supabase.from("orders").insert({
       first_name: data.firstName, last_name: data.lastName, email: data.email,
       country_code: data.countryCode, phone: data.phone,
       state: data.state, company_type: data.companyType, business_name: data.businessName,
@@ -135,13 +136,15 @@ const Checkout = () => {
       subtotal: t.subtotal, discount: t.discount, total: t.total,
       coupon_code: coupon?.code ?? null,
       current_milestone: "received",
-    });
+    }).select("id").maybeSingle();
     if (error) {
+      dispatch(setPaymentStatus({ status: "failed", error: error.message }));
       toast({ title: "Could not place order", description: error.message, variant: "destructive" });
       return;
     }
+    dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: inserted?.id ?? null }));
     toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
-    localStorage.removeItem(STORAGE_KEY);
+    dispatch(resetCheckout());
     setTimeout(() => navigate("/checkout/thank-you"), 600);
   };
 
