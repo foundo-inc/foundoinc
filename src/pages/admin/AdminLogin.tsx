@@ -20,7 +20,7 @@ const AdminLogin = () => {
     setLoading(true);
     const result = signInAdmin(email, password);
     setLoading(false);
-    if (!result.ok) {
+    if (result.ok === false) {
       toast({ title: "Login failed", description: result.error, variant: "destructive" });
       return;
     }
