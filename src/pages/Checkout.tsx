@@ -543,9 +543,11 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
               </Field>
               <Field label="Country" error={errors[`m${i}-country`]}>
                 <Select value={m.country} onValueChange={(v) => updateMember(m.id, { country: v })}>
-                  <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Select country" /></SelectTrigger>
+                  <SelectTrigger className="h-11 rounded-xl">
+                    <SelectValue placeholder={countriesLoading ? "Loading countries…" : "Select country"} />
+                  </SelectTrigger>
                   <SelectContent className="max-h-60">
-                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    {countries.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
