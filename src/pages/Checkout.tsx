@@ -471,7 +471,7 @@ const Step3 = ({ data, update, errors }: any) => (
 );
 
 /* ---------------- Step 4: Members ---------------- */
-const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
+const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible, setMemberUploading }: any) => {
   const { countries, loading: countriesLoading } = useCountries();
 
   return (
