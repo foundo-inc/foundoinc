@@ -199,11 +199,7 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 goTo={setStep} />}
-              {step === 6 && (
-                <Elements stripe={stripePromise}>
-                  <Step7 onPay={handlePay} />
-                </Elements>
-              )}
+              {step === 6 && <Step7Wrapper onPay={handlePay} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
