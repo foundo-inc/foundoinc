@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2, Tag, Users, Shield, Rocket } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -18,9 +18,10 @@ import {
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
+import { FileUpload } from "@/components/FileUpload";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle2, Zap } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useCountries } from "@/hooks/use-countries";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
@@ -37,6 +38,7 @@ import {
   selectStep,
   selectCoupon,
 } from "@/store/checkoutSlice";
+import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -459,29 +461,6 @@ const Step3 = ({ data, update, errors }: any) => (
 /* ---------------- Step 4: Members ---------------- */
 const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
   const { countries, loading: countriesLoading } = useCountries();
-  const handleFile = async (id: string, file: File | undefined) => {
-    if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Max 10MB. Please upload a smaller file.", variant: "destructive" });
-      return;
-    }
-    const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-    if (!allowed.includes(file.type)) {
-      toast({ title: "Invalid file type", description: "Upload a JPG, PNG, WEBP or PDF.", variant: "destructive" });
-      return;
-    }
-    const { saveFileToIDB } = await import("@/lib/idb-storage");
-    const meta = await saveFileToIDB(file);
-    updateMember(id, { idFile: meta });
-  };
-
-  const handleRemoveFile = async (id: string, key?: string) => {
-    if (key) {
-      const { deleteFileFromIDB } = await import("@/lib/idb-storage");
-      await deleteFileFromIDB(key);
-    }
-    updateMember(id, { idFile: null });
-  };
 
   return (
     <section>
@@ -547,57 +526,32 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
 
             {/* ID Upload */}
             <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mb-2">Identity Verification (KYC)</p>
-            <div className="rounded-xl border-2 border-dashed border-border bg-card p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                <Field label="ID Document Type">
-                  <Select value={m.idType} onValueChange={(v) => updateMember(m.id, { idType: v })}>
-                    <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="passport">Passport</SelectItem>
-                      <SelectItem value="national_id">National ID Card</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
-                <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
-                  {m.idFile ? (
-                    <div className="flex items-center justify-between gap-2 h-11 rounded-xl border border-border bg-secondary/40 px-3">
-                      <a
-                        href={m.idFile.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 min-w-0 hover:underline"
-                      >
-                        <FileCheck2 className="h-4 w-4 text-success shrink-0" />
-                        <span className="text-sm truncate">{m.idFile.name}</span>
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFile(m.id, m.idFile?.key)}
-                        className="text-muted-foreground hover:text-destructive shrink-0"
-                        aria-label="Remove file"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="flex items-center justify-center gap-2 h-11 rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 cursor-pointer transition-colors text-sm font-semibold text-primary">
-                      <Upload className="h-4 w-4" />
-                      <span>Choose file</span>
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,application/pdf"
-                        className="hidden"
-                        onChange={(e) => handleFile(m.id, e.target.files?.[0])}
-                      />
-                    </label>
-                  )}
-                </Field>
-              </div>
-              <p className="text-xs text-muted-foreground flex items-start gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
-                Required for EIN & bank account verification. JPG, PNG, WEBP or PDF · max 10MB · 256-bit encrypted.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <Field label="ID Document Type">
+                <Select value={m.idType} onValueChange={(v) => updateMember(m.id, { idType: v })}>
+                  <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="passport">Passport</SelectItem>
+                    <SelectItem value="national_id">National ID Card</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
             </div>
+            <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
+              <FileUpload
+                value={m.idFile}
+                onChange={(meta) => updateMember(m.id, { idFile: meta })}
+                onFileSelect={saveFileToIDB}
+                onRemove={() => {
+                  if (m.idFile?.key) deleteFileFromIDB(m.idFile.key);
+                }}
+                error={errors[`m${i}-idFile`]}
+              />
+            </Field>
+            <p className="text-xs text-muted-foreground flex items-start gap-1.5 mt-2">
+              <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+              Required for EIN & bank account verification. JPG, PNG, WEBP or PDF · max 10MB · 256-bit encrypted.
+            </p>
 
             {data.members.length > 1 && (
               <label className="mt-4 flex items-center gap-2 cursor-pointer">
