@@ -27,7 +27,7 @@ function formatBytes(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
-export function FileUpload({ value, onChange, onFileSelect, onRemove, error }: FileUploadProps) {
+export function FileUpload({ value, onChange, onFileSelect, onRemove, onUploadingChange, error }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -45,6 +45,7 @@ export function FileUpload({ value, onChange, onFileSelect, onRemove, error }: F
         return { error: "Invalid file type. Use JPG, PNG, WEBP or PDF." };
       }
       setIsUploading(true);
+      onUploadingChange?.(true);
       try {
         const meta = await onFileSelect(file);
         onChange(meta);
@@ -52,10 +53,11 @@ export function FileUpload({ value, onChange, onFileSelect, onRemove, error }: F
         return { error: "Upload failed. Please try again." };
       } finally {
         setIsUploading(false);
+        onUploadingChange?.(false);
       }
       return { error: null };
     },
-    [onChange, onFileSelect]
+    [onChange, onFileSelect, onUploadingChange]
   );
 
   const onDrop = useCallback(
