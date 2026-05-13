@@ -545,6 +545,8 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
             {/* SSN */}
             <Field label="SSN or ITIN (optional)" hint="Skip if you don't have one — we'll suggest ITIN processing." className="mb-4">
               <Input value={m.ssn} onChange={(e) => updateMember(m.id, { ssn: e.target.value })} placeholder="XXX-XX-XXXX" className="h-11 rounded-xl" />
+            </Field>
+
             {/* ID Upload */}
             <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mb-2">Identity Verification (KYC)</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
