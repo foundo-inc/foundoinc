@@ -54,6 +54,10 @@ const Checkout = () => {
   };
   const setCoupon = (c: Coupon | null) => dispatch(setCouponAction(c));
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [uploadingMembers, setUploadingMembers] = useState<Record<string, boolean>>({});
+  const isUploading = Object.values(uploadingMembers).some(Boolean);
+  const setMemberUploading = (id: string, uploading: boolean) =>
+    setUploadingMembers((prev) => ({ ...prev, [id]: uploading }));
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
@@ -184,6 +188,7 @@ const Checkout = () => {
                   data={data} errors={errors}
                   addMember={addMember} removeMember={removeMember}
                   updateMember={updateMember} setResponsible={setResponsible}
+                  setMemberUploading={setMemberUploading}
                 />
               )}
               {step === 4 && (
@@ -197,8 +202,15 @@ const Checkout = () => {
                   <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
                 {step < STEPS.length - 1 ? (
-                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
-                    Continue <ArrowRight className="h-4 w-4 ml-2" />
+                  <Button onClick={next} size="lg" disabled={isUploading} className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                    {isUploading ? (
+                      <>
+                        <span className="w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                        Uploading…
+                      </>
+                    ) : (
+                      <>Continue <ArrowRight className="h-4 w-4 ml-2" /></>
+                    )}
                   </Button>
                 ) : (
                   <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
@@ -459,7 +471,7 @@ const Step3 = ({ data, update, errors }: any) => (
 );
 
 /* ---------------- Step 4: Members ---------------- */
-const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
+const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible, setMemberUploading }: any) => {
   const { countries, loading: countriesLoading } = useCountries();
 
   return (
@@ -542,6 +554,7 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                 value={m.idFile}
                 onChange={(meta) => updateMember(m.id, { idFile: meta })}
                 onFileSelect={saveFileToIDB}
+                onUploadingChange={(u) => setMemberUploading?.(m.id, u)}
                 onRemove={() => {
                   if (m.idFile?.key) deleteFileFromIDB(m.idFile.key);
                 }}
@@ -780,7 +793,7 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
         {sec("Package", 0, (
           <div className="text-sm text-muted-foreground space-y-1">
             <p><span className="text-foreground font-medium">{data.companyType}</span> in <span className="text-foreground font-medium">{data.state}</span></p>
-            <p>Foundo fee ${FOUNDO_FEE} · State fee ${stateFee}</p>
+            <p>Foundo {data.companyType} Formation — <span className="text-foreground font-semibold">${FOUNDO_FEE + stateFee}</span> · all-inclusive (state fees included)</p>
           </div>
         ))}
         {sec("Business", 2, (
