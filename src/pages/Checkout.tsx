@@ -461,29 +461,6 @@ const Step3 = ({ data, update, errors }: any) => (
 /* ---------------- Step 4: Members ---------------- */
 const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
   const { countries, loading: countriesLoading } = useCountries();
-  const handleFile = async (id: string, file: File | undefined) => {
-    if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Max 10MB. Please upload a smaller file.", variant: "destructive" });
-      return;
-    }
-    const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-    if (!allowed.includes(file.type)) {
-      toast({ title: "Invalid file type", description: "Upload a JPG, PNG, WEBP or PDF.", variant: "destructive" });
-      return;
-    }
-    const { saveFileToIDB } = await import("@/lib/idb-storage");
-    const meta = await saveFileToIDB(file);
-    updateMember(id, { idFile: meta });
-  };
-
-  const handleRemoveFile = async (id: string, key?: string) => {
-    if (key) {
-      const { deleteFileFromIDB } = await import("@/lib/idb-storage");
-      await deleteFileFromIDB(key);
-    }
-    updateMember(id, { idFile: null });
-  };
 
   return (
     <section>
