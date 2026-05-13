@@ -202,8 +202,12 @@ const Checkout = () => {
                   <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
                 {step < STEPS.length - 1 ? (
-                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
-                    Continue <ArrowRight className="h-4 w-4 ml-2" />
+                  <Button onClick={next} size="lg" disabled={isUploading} className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                    {isUploading ? (
+                      <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Uploading…</>
+                    ) : (
+                      <>Continue <ArrowRight className="h-4 w-4 ml-2" /></>
+                    )}
                   </Button>
                 ) : (
                   <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
