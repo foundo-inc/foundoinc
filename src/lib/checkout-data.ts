@@ -145,9 +145,13 @@ export type CompanyType = "LLC" | "C-Corp";
 export type IdDocType = "passport" | "national_id";
 
 export interface UploadedFile {
+  /** IndexedDB key — the file blob lives in IDB, not in Redux. */
+  key: string;
   name: string;
   size: number;
   type: string;
+  /** Blob URL for previewing the file. Recreated after rehydration. */
+  url: string;
 }
 
 export interface Member {
