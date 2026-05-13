@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
-  STATES, POPULAR_STATE_NAMES, COUNTRIES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  STATES, POPULAR_STATE_NAMES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
   Coupon, findCoupon,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
@@ -21,6 +21,7 @@ import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSu
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { CheckCircle2, Zap } from "lucide-react";
+import { useCountries } from "@/hooks/use-countries";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   setStep as setStepAction,
@@ -122,27 +123,11 @@ const Checkout = () => {
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
   const handlePay = async () => {
-    const t = computeTotals(data, coupon);
     dispatch(setPaymentStatus({ status: "processing", error: null }));
-    const { supabase } = await import("@/integrations/supabase/client");
-    const { data: inserted, error } = await supabase.from("orders").insert({
-      first_name: data.firstName, last_name: data.lastName, email: data.email,
-      country_code: data.countryCode, phone: data.phone,
-      state: data.state, company_type: data.companyType, business_name: data.businessName,
-      website: data.website || null, industry: data.industry || null, description: data.description || null,
-      members: data.members as any,
-      addon_itin: data.addonItin, addon_seller_permit: data.addonSellerPermit, addon_premium_address: data.addonPremiumAddress,
-      foundo_fee: FOUNDO_FEE, state_fee: t.stateFee, addons_total: t.addons,
-      subtotal: t.subtotal, discount: t.discount, total: t.total,
-      coupon_code: coupon?.code ?? null,
-      current_milestone: "received",
-    }).select("id").maybeSingle();
-    if (error) {
-      dispatch(setPaymentStatus({ status: "failed", error: error.message }));
-      toast({ title: "Could not place order", description: error.message, variant: "destructive" });
-      return;
-    }
-    dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: inserted?.id ?? null }));
+    // Backend in progress — simulate a successful order locally.
+    await new Promise((r) => setTimeout(r, 600));
+    const mockOrderId = `local_${Date.now()}`;
+    dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: mockOrderId }));
     toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
     dispatch(resetCheckout());
     setTimeout(() => navigate("/checkout/thank-you"), 600);
@@ -473,6 +458,7 @@ const Step3 = ({ data, update, errors }: any) => (
 
 /* ---------------- Step 4: Members ---------------- */
 const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
+  const { countries, loading: countriesLoading } = useCountries();
   const handleFile = async (id: string, file: File | undefined) => {
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
@@ -541,9 +527,11 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
               </Field>
               <Field label="Country" error={errors[`m${i}-country`]}>
                 <Select value={m.country} onValueChange={(v) => updateMember(m.id, { country: v })}>
-                  <SelectTrigger className="h-11 rounded-xl"><SelectValue placeholder="Select country" /></SelectTrigger>
+                  <SelectTrigger className="h-11 rounded-xl">
+                    <SelectValue placeholder={countriesLoading ? "Loading countries…" : "Select country"} />
+                  </SelectTrigger>
                   <SelectContent className="max-h-60">
-                    {COUNTRIES.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                    {countries.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </Field>
