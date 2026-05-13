@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -199,11 +199,7 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 goTo={setStep} />}
-              {step === 6 && (
-                <Elements stripe={stripePromise}>
-                  <Step7 onPay={handlePay} />
-                </Elements>
-              )}
+              {step === 6 && <Step7Wrapper onPay={handlePay} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
@@ -849,20 +845,64 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Payment with Stripe CardElement ---------------- */
-const CARD_ELEMENT_OPTIONS = {
-  style: {
-    base: {
-      fontSize: "16px",
-      color: "#32325d",
-      "::placeholder": { color: "#aab7c4" },
-      iconColor: "#666ee8",
+/* ---------------- Step 7: Payment with Stripe PaymentElement (custom UI) ---------------- */
+const PAYMENT_ELEMENT_APPEARANCE = {
+  theme: "stripe" as const,
+  variables: {
+    colorPrimary: "#0436E3",
+    colorBackground: "#ffffff",
+    colorText: "#0f172a",
+    colorDanger: "#ef4444",
+    fontFamily: "Inter, system-ui, sans-serif",
+    fontSizeBase: "15px",
+    spacingUnit: "4px",
+    borderRadius: "12px",
+  },
+  rules: {
+    ".Input": {
+      border: "1px solid hsl(var(--border))",
+      boxShadow: "none",
+      padding: "12px 14px",
     },
-    invalid: {
-      color: "#fa755a",
-      iconColor: "#fa755a",
+    ".Input:focus": {
+      border: "1px solid #0436E3",
+      boxShadow: "0 0 0 3px rgba(4, 54, 227, 0.1)",
+    },
+    ".Label": {
+      fontWeight: "600",
+      fontSize: "13px",
+      marginBottom: "6px",
+    },
+    ".Tab": {
+      border: "1px solid hsl(var(--border))",
+      padding: "10px 12px",
+    },
+    ".Tab--selected": {
+      border: "1px solid #0436E3",
+      backgroundColor: "rgba(4, 54, 227, 0.04)",
     },
   },
+};
+
+const Step7Wrapper = ({ onPay }: { onPay: () => void }) => {
+  const data = useAppSelector(selectCheckoutData);
+  const coupon = useAppSelector(selectCoupon);
+  const t = computeTotals(data, coupon);
+  const options = useMemo(
+    () => ({
+      mode: "payment" as const,
+      amount: Math.max(50, Math.round(t.total * 100)),
+      currency: "usd",
+      appearance: PAYMENT_ELEMENT_APPEARANCE,
+      paymentMethodCreation: "manual" as const,
+    }),
+    [t.total],
+  );
+  return (
+    <Elements stripe={stripePromise} options={options}>
+      <Step7 onPay={onPay} />
+    </Elements>
+  );
 };
 
 const Step7 = ({ onPay }: { onPay: () => void }) => {
@@ -873,30 +913,38 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [cardError, setCardError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   const handleSubmit = async () => {
     if (!stripe || !elements) return;
     setLoading(true);
     setCardError(null);
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement)!,
-      billing_details: {
-        name: `${data.firstName} ${data.lastName}`,
-        email: data.email,
-        phone: data.phone,
-      },
-    });
-
-    if (error) {
-      setCardError(error.message || "Card validation failed");
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      setCardError(submitError.message || "Please check your payment details");
       setLoading(false);
       return;
     }
 
-    // Payment method created successfully — proceed with backend order
-    console.log("PaymentMethod:", paymentMethod.id);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      elements,
+      params: {
+        billing_details: {
+          name: `${data.firstName} ${data.lastName}`.trim(),
+          email: data.email,
+          phone: data.phone,
+        },
+      },
+    });
+
+    if (error) {
+      setCardError(error.message || "Payment validation failed");
+      setLoading(false);
+      return;
+    }
+
+    console.log("PaymentMethod:", paymentMethod?.id);
     onPay();
     setLoading(false);
   };
@@ -907,7 +955,7 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
       <p className="text-muted-foreground mb-6">Powered by Stripe. Your details are encrypted end-to-end.</p>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
-        <div className="flex items-end justify-between mb-4">
+        <div className="flex items-end justify-between mb-5 pb-5 border-b border-border">
           <div>
             <p className="font-bold font-display">Order Total</p>
             {t.discount > 0 && (
@@ -923,11 +971,20 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
         </div>
 
         <div className="space-y-4">
-          <Field label="Card Details">
-            <div className="h-12 rounded-xl border border-input bg-background px-3 py-2.5 flex items-center">
-              <CardElement options={CARD_ELEMENT_OPTIONS} className="w-full" />
+          {!ready && (
+            <div className="h-40 flex items-center justify-center">
+              <span className="inline-block w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
-          </Field>
+          )}
+          <div className={cn(!ready && "hidden")}>
+            <PaymentElement
+              onReady={() => setReady(true)}
+              options={{
+                layout: { type: "tabs", defaultCollapsed: false },
+                fields: { billingDetails: { name: "never", email: "never", phone: "never" } },
+              }}
+            />
+          </div>
           {cardError && (
             <p className="text-xs text-destructive flex items-center gap-1">
               <AlertCircle className="h-3 w-3" /> {cardError}
@@ -942,7 +999,7 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
         <Trust icon={CreditCard} text="Money-back assurance" />
       </div>
 
-      <Button onClick={handleSubmit} size="lg" disabled={!stripe || loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
+      <Button onClick={handleSubmit} size="lg" disabled={!stripe || !ready || loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
         {loading ? (
           <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
         ) : (
