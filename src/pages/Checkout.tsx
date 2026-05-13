@@ -54,6 +54,10 @@ const Checkout = () => {
   };
   const setCoupon = (c: Coupon | null) => dispatch(setCouponAction(c));
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [uploadingMembers, setUploadingMembers] = useState<Record<string, boolean>>({});
+  const isUploading = Object.values(uploadingMembers).some(Boolean);
+  const setMemberUploading = (id: string, uploading: boolean) =>
+    setUploadingMembers((prev) => ({ ...prev, [id]: uploading }));
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
