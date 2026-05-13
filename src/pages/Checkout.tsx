@@ -188,6 +188,7 @@ const Checkout = () => {
                   data={data} errors={errors}
                   addMember={addMember} removeMember={removeMember}
                   updateMember={updateMember} setResponsible={setResponsible}
+                  onUploadingChange={handleUploadingChange}
                 />
               )}
               {step === 4 && (
