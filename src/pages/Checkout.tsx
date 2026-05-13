@@ -554,6 +554,7 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                 value={m.idFile}
                 onChange={(meta) => updateMember(m.id, { idFile: meta })}
                 onFileSelect={saveFileToIDB}
+                onUploadingChange={(u) => setMemberUploading?.(m.id, u)}
                 onRemove={() => {
                   if (m.idFile?.key) deleteFileFromIDB(m.idFile.key);
                 }}
