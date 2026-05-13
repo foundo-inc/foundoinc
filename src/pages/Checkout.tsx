@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, Upload, FileText, X, FileCheck2, TrendingUp, Star, Building2, Tag, Users, Shield, Rocket } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, FileCheck2, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -18,9 +18,10 @@ import {
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
 import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSummary";
+import { FileUpload } from "@/components/FileUpload";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import { CheckCircle2, Zap } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useCountries } from "@/hooks/use-countries";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
@@ -37,6 +38,7 @@ import {
   selectStep,
   selectCoupon,
 } from "@/store/checkoutSlice";
+import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
