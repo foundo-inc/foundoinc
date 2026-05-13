@@ -545,61 +545,34 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
             {/* SSN */}
             <Field label="SSN or ITIN (optional)" hint="Skip if you don't have one — we'll suggest ITIN processing." className="mb-4">
               <Input value={m.ssn} onChange={(e) => updateMember(m.id, { ssn: e.target.value })} placeholder="XXX-XX-XXXX" className="h-11 rounded-xl" />
-            </Field>
-
             {/* ID Upload */}
             <p className="text-xs uppercase tracking-wider font-bold text-muted-foreground mb-2">Identity Verification (KYC)</p>
-            <div className="rounded-xl border-2 border-dashed border-border bg-card p-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                <Field label="ID Document Type">
-                  <Select value={m.idType} onValueChange={(v) => updateMember(m.id, { idType: v })}>
-                    <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="passport">Passport</SelectItem>
-                      <SelectItem value="national_id">National ID Card</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
-                <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
-                  {m.idFile ? (
-                    <div className="flex items-center justify-between gap-2 h-11 rounded-xl border border-border bg-secondary/40 px-3">
-                      <a
-                        href={m.idFile.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 min-w-0 hover:underline"
-                      >
-                        <FileCheck2 className="h-4 w-4 text-success shrink-0" />
-                        <span className="text-sm truncate">{m.idFile.name}</span>
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveFile(m.id, m.idFile?.key)}
-                        className="text-muted-foreground hover:text-destructive shrink-0"
-                        aria-label="Remove file"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  ) : (
-                    <label className="flex items-center justify-center gap-2 h-11 rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 hover:bg-primary/10 cursor-pointer transition-colors text-sm font-semibold text-primary">
-                      <Upload className="h-4 w-4" />
-                      <span>Choose file</span>
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp,application/pdf"
-                        className="hidden"
-                        onChange={(e) => handleFile(m.id, e.target.files?.[0])}
-                      />
-                    </label>
-                  )}
-                </Field>
-              </div>
-              <p className="text-xs text-muted-foreground flex items-start gap-1.5">
-                <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
-                Required for EIN & bank account verification. JPG, PNG, WEBP or PDF · max 10MB · 256-bit encrypted.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+              <Field label="ID Document Type">
+                <Select value={m.idType} onValueChange={(v) => updateMember(m.id, { idType: v })}>
+                  <SelectTrigger className="h-11 rounded-xl"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="passport">Passport</SelectItem>
+                    <SelectItem value="national_id">National ID Card</SelectItem>
+                  </SelectContent>
+                </Select>
+              </Field>
             </div>
+            <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
+              <FileUpload
+                value={m.idFile}
+                onChange={(meta) => updateMember(m.id, { idFile: meta })}
+                onFileSelect={saveFileToIDB}
+                onRemove={() => {
+                  if (m.idFile?.key) deleteFileFromIDB(m.idFile.key);
+                }}
+                error={errors[`m${i}-idFile`]}
+              />
+            </Field>
+            <p className="text-xs text-muted-foreground flex items-start gap-1.5 mt-2">
+              <ShieldCheck className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+              Required for EIN & bank account verification. JPG, PNG, WEBP or PDF · max 10MB · 256-bit encrypted.
+            </p>
 
             {data.members.length > 1 && (
               <label className="mt-4 flex items-center gap-2 cursor-pointer">
