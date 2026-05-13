@@ -474,6 +474,7 @@ const Step3 = ({ data, update, errors }: any) => (
 
 /* ---------------- Step 4: Members ---------------- */
 const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
+  const { countries, loading: countriesLoading } = useCountries();
   const handleFile = async (id: string, file: File | undefined) => {
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
