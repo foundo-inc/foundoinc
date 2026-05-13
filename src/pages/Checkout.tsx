@@ -21,63 +21,57 @@ import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSu
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { CheckCircle2, Zap } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/store";
+import {
+  setStep as setStepAction,
+  updateField,
+  addMember as addMemberAction,
+  removeMember as removeMemberAction,
+  updateMember as updateMemberAction,
+  setResponsible as setResponsibleAction,
+  setCoupon as setCouponAction,
+  setPaymentStatus,
+  resetCheckout,
+  selectCheckoutData,
+  selectStep,
+  selectCoupon,
+} from "@/store/checkoutSlice";
 
-const STORAGE_KEY = "foundo_checkout_v1";
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
-  const [data, setData] = useState<CheckoutData>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? { ...initialData, ...JSON.parse(saved) } : initialData;
-    } catch { return initialData; }
-  });
+  const dispatch = useAppDispatch();
+  const data = useAppSelector(selectCheckoutData);
+  const step = useAppSelector(selectStep);
+  const coupon = useAppSelector(selectCoupon);
+  const setStep = (updater: number | ((s: number) => number)) => {
+    const next = typeof updater === "function" ? (updater as (s: number) => number)(step) : updater;
+    dispatch(setStepAction(next));
+  };
+  const setCoupon = (c: Coupon | null) => dispatch(setCouponAction(c));
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [coupon, setCoupon] = useState<Coupon | null>(null);
-
-  // Autosave
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data]);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
   const update = <K extends keyof CheckoutData>(k: K, v: CheckoutData[K]) => {
-    setData((d) => ({ ...d, [k]: v }));
+    dispatch(updateField({ key: k, value: v }));
     setErrors((e) => { const { [k as string]: _, ...rest } = e; return rest; });
   };
 
   // Members helpers
-  const addMember = () => {
-    setData((d) => {
-      const next = [...d.members, { ...emptyMember(), isResponsible: false }];
-      return { ...d, members: next };
-    });
-  };
-  const removeMember = (id: string) => {
-    setData((d) => {
-      const filtered = d.members.filter((m) => m.id !== id);
-      // ensure 1 responsible
-      if (filtered.length === 1) filtered[0].isResponsible = true;
-      else if (!filtered.some((m) => m.isResponsible) && filtered[0]) filtered[0].isResponsible = true;
-      return { ...d, members: filtered };
-    });
-  };
-  const updateMember = (id: string, patch: Partial<CheckoutData["members"][number]>) => {
-    setData((d) => ({ ...d, members: d.members.map((m) => (m.id === id ? { ...m, ...patch } : m)) }));
-  };
-  const setResponsible = (id: string) => {
-    setData((d) => ({ ...d, members: d.members.map((m) => ({ ...m, isResponsible: m.id === id })) }));
-  };
+  const addMember = () => dispatch(addMemberAction());
+  const removeMember = (id: string) => dispatch(removeMemberAction(id));
+  const updateMember = (id: string, patch: Partial<CheckoutData["members"][number]>) =>
+    dispatch(updateMemberAction({ id, patch }));
+  const setResponsible = (id: string) => dispatch(setResponsibleAction(id));
 
   // Auto-assign responsible if 1 member
   useEffect(() => {
     if (data.members.length === 1 && !data.members[0].isResponsible) {
-      setData((d) => ({ ...d, members: [{ ...d.members[0], isResponsible: true }] }));
+      dispatch(setResponsibleAction(data.members[0].id));
     }
-  }, [data.members.length]);
+  }, [data.members.length, data.members, dispatch]);
 
   // Smart upsell visibility
   const showItin = useMemo(() => data.members.every((m) => !m.ssn.trim()), [data.members]);
@@ -129,8 +123,9 @@ const Checkout = () => {
 
   const handlePay = async () => {
     const t = computeTotals(data, coupon);
+    dispatch(setPaymentStatus({ status: "processing", error: null }));
     const { supabase } = await import("@/integrations/supabase/client");
-    const { error } = await supabase.from("orders").insert({
+    const { data: inserted, error } = await supabase.from("orders").insert({
       first_name: data.firstName, last_name: data.lastName, email: data.email,
       country_code: data.countryCode, phone: data.phone,
       state: data.state, company_type: data.companyType, business_name: data.businessName,
@@ -141,13 +136,15 @@ const Checkout = () => {
       subtotal: t.subtotal, discount: t.discount, total: t.total,
       coupon_code: coupon?.code ?? null,
       current_milestone: "received",
-    });
+    }).select("id").maybeSingle();
     if (error) {
+      dispatch(setPaymentStatus({ status: "failed", error: error.message }));
       toast({ title: "Could not place order", description: error.message, variant: "destructive" });
       return;
     }
+    dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: inserted?.id ?? null }));
     toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
-    localStorage.removeItem(STORAGE_KEY);
+    dispatch(resetCheckout());
     setTimeout(() => navigate("/checkout/thank-you"), 600);
   };
 
