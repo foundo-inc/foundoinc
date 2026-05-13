@@ -54,6 +54,10 @@ const Checkout = () => {
   };
   const setCoupon = (c: Coupon | null) => dispatch(setCouponAction(c));
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const isUploading = uploadingCount > 0;
+  const handleUploadingChange = (u: boolean) =>
+    setUploadingCount((c) => Math.max(0, c + (u ? 1 : -1)));
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
