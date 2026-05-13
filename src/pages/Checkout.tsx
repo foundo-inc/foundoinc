@@ -42,6 +42,8 @@ import {
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
 
+const stripePromise = loadStripe("pk_test_51QFmWYG24hgFt3aLgor26H6xvWOssioBhX3Cm8ZahEzuATGXXujLfiXUK0texYwRlzYNY5v4XDAtXyfg2fZhbnt100v3KnvSMa");
+
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
 const Checkout = () => {
