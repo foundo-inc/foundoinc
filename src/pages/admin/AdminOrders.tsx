@@ -1,25 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import AdminShell from "./AdminShell";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MILESTONES, milestoneLabel } from "@/lib/admin-data";
 import { Search, ChevronRight } from "lucide-react";
+import { listOrders, MockOrder } from "@/lib/mock-orders";
 
-interface Order {
-  id: string;
-  order_number: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  business_name: string;
-  state: string;
-  company_type: string;
-  total: number;
-  current_milestone: string;
-  created_at: string;
-}
+type Order = MockOrder;
 
 const milestoneTone: Record<string, string> = {
   received: "bg-muted text-foreground",
@@ -36,15 +24,8 @@ const AdminOrders = () => {
   const [filter, setFilter] = useState<string>("all");
 
   useEffect(() => {
-    const load = async () => {
-      const { data, error } = await supabase
-        .from("orders")
-        .select("id, order_number, first_name, last_name, email, business_name, state, company_type, total, current_milestone, created_at")
-        .order("created_at", { ascending: false });
-      if (!error && data) setOrders(data as Order[]);
-      setLoading(false);
-    };
-    load();
+    setOrders(listOrders());
+    setLoading(false);
   }, []);
 
   const filtered = orders.filter((o) => {
