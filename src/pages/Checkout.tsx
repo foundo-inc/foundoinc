@@ -573,13 +573,18 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                 <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
                   {m.idFile ? (
                     <div className="flex items-center justify-between gap-2 h-11 rounded-xl border border-border bg-secondary/40 px-3">
-                      <div className="flex items-center gap-2 min-w-0">
+                      <a
+                        href={m.idFile.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 min-w-0 hover:underline"
+                      >
                         <FileCheck2 className="h-4 w-4 text-success shrink-0" />
                         <span className="text-sm truncate">{m.idFile.name}</span>
-                      </div>
+                      </a>
                       <button
                         type="button"
-                        onClick={() => updateMember(m.id, { idFile: null })}
+                        onClick={() => handleRemoveFile(m.id, m.idFile?.key)}
                         className="text-muted-foreground hover:text-destructive shrink-0"
                         aria-label="Remove file"
                       >
