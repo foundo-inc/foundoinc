@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -39,6 +41,8 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
+
+const stripePromise = loadStripe("pk_test_51QFmWYG24hgFt3aLgor26H6xvWOssioBhX3Cm8ZahEzuATGXXujLfiXUK0texYwRlzYNY5v4XDAtXyfg2fZhbnt100v3KnvSMa");
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -195,13 +199,17 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 goTo={setStep} />}
-              {step === 6 && <Step7 onPay={handlePay} />}
+              {step === 6 && (
+                <Elements stripe={stripePromise}>
+                  <Step7 onPay={handlePay} />
+                </Elements>
+              )}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
                   <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
-                {step < STEPS.length - 1 ? (
+                {step < STEPS.length - 2 ? (
                   <Button onClick={next} size="lg" disabled={isUploading} className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
                     {isUploading ? (
                       <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Uploading…</>
@@ -209,11 +217,11 @@ const Checkout = () => {
                       <>Continue <ArrowRight className="h-4 w-4 ml-2" /></>
                     )}
                   </Button>
-                ) : (
-                  <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
-                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} <span className="hidden sm:inline ml-1">Securely</span>
+                ) : step === 5 ? (
+                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                    Review & Pay <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
@@ -841,11 +849,57 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Payment (reads from Redux, no coupon UI) ---------------- */
+/* ---------------- Step 7: Payment with Stripe CardElement ---------------- */
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      fontSize: "16px",
+      color: "#32325d",
+      "::placeholder": { color: "#aab7c4" },
+      iconColor: "#666ee8",
+    },
+    invalid: {
+      color: "#fa755a",
+      iconColor: "#fa755a",
+    },
+  },
+};
+
 const Step7 = ({ onPay }: { onPay: () => void }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [cardError, setCardError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    if (!stripe || !elements) return;
+    setLoading(true);
+    setCardError(null);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement)!,
+      billing_details: {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.phone,
+      },
+    });
+
+    if (error) {
+      setCardError(error.message || "Card validation failed");
+      setLoading(false);
+      return;
+    }
+
+    // Payment method created successfully — proceed with backend order
+    console.log("PaymentMethod:", paymentMethod.id);
+    onPay();
+    setLoading(false);
+  };
 
   return (
     <section>
@@ -867,13 +921,18 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
             )}
           </div>
         </div>
+
         <div className="space-y-4">
-          <Field label="Card Number"><Input placeholder="1234 1234 1234 1234" className="h-12 rounded-xl" /></Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Expiry"><Input placeholder="MM / YY" className="h-12 rounded-xl" /></Field>
-            <Field label="CVC"><Input placeholder="123" className="h-12 rounded-xl" /></Field>
-          </div>
-          <Field label="Name on Card"><Input defaultValue={`${data.firstName} ${data.lastName}`} className="h-12 rounded-xl" /></Field>
+          <Field label="Card Details">
+            <div className="h-12 rounded-xl border border-input bg-background px-3 py-2.5 flex items-center">
+              <CardElement options={CARD_ELEMENT_OPTIONS} className="w-full" />
+            </div>
+          </Field>
+          {cardError && (
+            <p className="text-xs text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" /> {cardError}
+            </p>
+          )}
         </div>
       </div>
 
@@ -883,8 +942,12 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
         <Trust icon={CreditCard} text="Money-back assurance" />
       </div>
 
-      <Button onClick={onPay} size="lg" className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
-        <Lock className="h-4 w-4 mr-2" /> Pay ${t.total} Securely
+      <Button onClick={handleSubmit} size="lg" disabled={!stripe || loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
+        {loading ? (
+          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+        ) : (
+          <><Lock className="h-4 w-4 mr-2" /> Pay ${t.total} Securely</>
+        )}
       </Button>
       <p className="text-xs text-muted-foreground text-center mt-3">
         By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
