@@ -849,11 +849,57 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Payment (reads from Redux, no coupon UI) ---------------- */
+/* ---------------- Step 7: Payment with Stripe CardElement ---------------- */
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      fontSize: "16px",
+      color: "#32325d",
+      "::placeholder": { color: "#aab7c4" },
+      iconColor: "#666ee8",
+    },
+    invalid: {
+      color: "#fa755a",
+      iconColor: "#fa755a",
+    },
+  },
+};
+
 const Step7 = ({ onPay }: { onPay: () => void }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
+  const [cardError, setCardError] = useState<string | null>(null);
+
+  const handleSubmit = async () => {
+    if (!stripe || !elements) return;
+    setLoading(true);
+    setCardError(null);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: elements.getElement(CardElement)!,
+      billing_details: {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.phone,
+      },
+    });
+
+    if (error) {
+      setCardError(error.message || "Card validation failed");
+      setLoading(false);
+      return;
+    }
+
+    // Payment method created successfully — proceed with backend order
+    console.log("PaymentMethod:", paymentMethod.id);
+    onPay();
+    setLoading(false);
+  };
 
   return (
     <section>
@@ -875,13 +921,18 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
             )}
           </div>
         </div>
+
         <div className="space-y-4">
-          <Field label="Card Number"><Input placeholder="1234 1234 1234 1234" className="h-12 rounded-xl" /></Field>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Expiry"><Input placeholder="MM / YY" className="h-12 rounded-xl" /></Field>
-            <Field label="CVC"><Input placeholder="123" className="h-12 rounded-xl" /></Field>
-          </div>
-          <Field label="Name on Card"><Input defaultValue={`${data.firstName} ${data.lastName}`} className="h-12 rounded-xl" /></Field>
+          <Field label="Card Details">
+            <div className="h-12 rounded-xl border border-input bg-background px-3 py-2.5 flex items-center">
+              <CardElement options={CARD_ELEMENT_OPTIONS} className="w-full" />
+            </div>
+          </Field>
+          {cardError && (
+            <p className="text-xs text-destructive flex items-center gap-1">
+              <AlertCircle className="h-3 w-3" /> {cardError}
+            </p>
+          )}
         </div>
       </div>
 
@@ -891,8 +942,12 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
         <Trust icon={CreditCard} text="Money-back assurance" />
       </div>
 
-      <Button onClick={onPay} size="lg" className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
-        <Lock className="h-4 w-4 mr-2" /> Pay ${t.total} Securely
+      <Button onClick={handleSubmit} size="lg" disabled={!stripe || loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
+        {loading ? (
+          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+        ) : (
+          <><Lock className="h-4 w-4 mr-2" /> Pay ${t.total} Securely</>
+        )}
       </Button>
       <p className="text-xs text-muted-foreground text-center mt-3">
         By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
