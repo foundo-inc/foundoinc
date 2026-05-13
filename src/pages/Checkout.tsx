@@ -895,6 +895,7 @@ const Step7Wrapper = ({ onPay }: { onPay: () => void }) => {
       currency: "usd",
       appearance: PAYMENT_ELEMENT_APPEARANCE,
       paymentMethodCreation: "manual" as const,
+      paymentMethodTypes: ["card", "cashapp"],
     }),
     [t.total],
   );
