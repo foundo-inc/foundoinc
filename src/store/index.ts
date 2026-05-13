@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "foundo_checkout_v1",
   version: 1,
-  storage,
+  storage: idbReduxStorage,
   whitelist: ["checkout"],
 };
 
