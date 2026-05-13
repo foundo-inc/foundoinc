@@ -790,7 +790,7 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
         {sec("Package", 0, (
           <div className="text-sm text-muted-foreground space-y-1">
             <p><span className="text-foreground font-medium">{data.companyType}</span> in <span className="text-foreground font-medium">{data.state}</span></p>
-            <p>Foundo fee ${FOUNDO_FEE} · State fee ${stateFee}</p>
+            <p>Package &amp; state fee <span className="text-foreground font-medium">${FOUNDO_FEE + stateFee}</span> · all-inclusive</p>
           </div>
         ))}
         {sec("Business", 2, (
