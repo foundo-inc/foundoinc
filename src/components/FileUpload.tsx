@@ -15,6 +15,7 @@ interface FileUploadProps {
   onChange: (meta: FileMeta | null) => void;
   onFileSelect: (file: File) => Promise<FileMeta>;
   onRemove?: () => void;
+  onUploadingChange?: (uploading: boolean) => void;
   error?: string;
 }
 
@@ -26,13 +27,18 @@ function formatBytes(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
 }
 
-export function FileUpload({ value, onChange, onFileSelect, onRemove, error }: FileUploadProps) {
+export function FileUpload({ value, onChange, onFileSelect, onRemove, onUploadingChange, error }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const isImage = value?.type.startsWith("image/");
   const isPdf = value?.type === "application/pdf";
+
+  const setUploading = useCallback((u: boolean) => {
+    setIsUploading(u);
+    onUploadingChange?.(u);
+  }, [onUploadingChange]);
 
   const handleFiles = useCallback(
     async (file: File) => {
@@ -43,18 +49,18 @@ export function FileUpload({ value, onChange, onFileSelect, onRemove, error }: F
       if (!allowed.includes(file.type)) {
         return { error: "Invalid file type. Use JPG, PNG, WEBP or PDF." };
       }
-      setIsUploading(true);
+      setUploading(true);
       try {
         const meta = await onFileSelect(file);
         onChange(meta);
       } catch {
         return { error: "Upload failed. Please try again." };
       } finally {
-        setIsUploading(false);
+        setUploading(false);
       }
       return { error: null };
     },
-    [onChange, onFileSelect]
+    [onChange, onFileSelect, setUploading]
   );
 
   const onDrop = useCallback(

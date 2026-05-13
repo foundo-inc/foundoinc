@@ -1,37 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { Lock } from "lucide-react";
+import { signInAdmin, getAdminSession } from "@/lib/admin-auth";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [checking, setChecking] = useState(true);
-  const [hasSession, setHasSession] = useState(false);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setHasSession(!!data.session);
-      setChecking(false);
-    });
-  }, []);
+  if (getAdminSession()) return <Navigate to="/admin" replace />;
 
-  if (checking) return null;
-  if (hasSession) return <Navigate to="/admin" replace />;
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const result = signInAdmin(email, password);
     setLoading(false);
-    if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+    if (result.ok === false) {
+      toast({ title: "Login failed", description: result.error, variant: "destructive" });
       return;
     }
     navigate("/admin");

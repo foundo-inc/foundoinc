@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import AdminShell from "./AdminShell";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,42 +7,18 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { MILESTONES, milestoneIndex, milestoneLabel } from "@/lib/admin-data";
 import { ArrowLeft, CheckCircle2, Circle, Mail, Loader2 } from "lucide-react";
-
-interface OrderRow {
-  id: string;
-  order_number: string;
-  first_name: string; last_name: string; email: string;
-  country_code: string | null; phone: string | null;
-  state: string; company_type: string; business_name: string;
-  website: string | null; industry: string | null; description: string | null;
-  members: any[];
-  addon_itin: boolean; addon_seller_permit: boolean; addon_premium_address: boolean;
-  foundo_fee: number; state_fee: number; addons_total: number;
-  subtotal: number; discount: number; total: number; coupon_code: string | null;
-  current_milestone: string; notes: string | null;
-  created_at: string;
-}
-
-interface Milestone {
-  id: string; milestone: string; note: string | null; created_at: string;
-}
+import { getOrder, updateOrderMilestone, MockOrder } from "@/lib/mock-orders";
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
-  const [order, setOrder] = useState<OrderRow | null>(null);
-  const [history, setHistory] = useState<Milestone[]>([]);
+  const [order, setOrder] = useState<MockOrder | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const [note, setNote] = useState("");
 
-  const load = async () => {
+  const load = () => {
     if (!id) return;
-    const [{ data: o }, { data: h }] = await Promise.all([
-      supabase.from("orders").select("*").eq("id", id).single(),
-      supabase.from("order_milestones").select("*").eq("order_id", id).order("created_at", { ascending: false }),
-    ]);
-    setOrder(o as OrderRow);
-    setHistory((h ?? []) as Milestone[]);
+    setOrder(getOrder(id));
     setLoading(false);
   };
 
@@ -52,44 +27,24 @@ const AdminOrderDetail = () => {
   const updateMilestone = async (next: string) => {
     if (!order) return;
     setUpdating(next);
-    const { error } = await supabase
-      .from("orders")
-      .update({ current_milestone: next as any })
-      .eq("id", order.id);
-    if (error) {
-      toast({ title: "Update failed", description: error.message, variant: "destructive" });
+    await new Promise((r) => setTimeout(r, 400));
+    const updated = updateOrderMilestone(order.id, next, note.trim() || null);
+    if (!updated) {
+      toast({ title: "Update failed", variant: "destructive" });
       setUpdating(null);
       return;
     }
-    const { data: { user } } = await supabase.auth.getUser();
-    await supabase.from("order_milestones").insert({
-      order_id: order.id,
-      milestone: next as any,
-      note: note.trim() || null,
-      changed_by: user?.id,
-    });
-
-    // Send email
-    const { error: fnErr } = await supabase.functions.invoke("send-milestone-email", {
-      body: { orderId: order.id, milestone: next, note: note.trim() || null },
-    });
-    if (fnErr) {
-      toast({
-        title: "Status updated, but email failed",
-        description: "Set up an email domain in Cloud → Emails to enable client notifications.",
-      });
-    } else {
-      toast({ title: "Milestone updated", description: `Notification sent to ${order.email}` });
-    }
+    toast({ title: "Milestone updated", description: `Notification queued for ${order.email}` });
     setNote("");
     setUpdating(null);
-    await load();
+    load();
   };
 
   if (loading) return <AdminShell><div className="text-muted-foreground text-sm">Loading…</div></AdminShell>;
   if (!order) return <AdminShell><div>Order not found.</div></AdminShell>;
 
   const currentIdx = milestoneIndex(order.current_milestone);
+  const history = order.history;
 
   return (
     <AdminShell>
@@ -109,7 +64,6 @@ const AdminOrderDetail = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left col: details */}
         <div className="lg:col-span-2 space-y-6">
           <Card title="Customer">
             <Row label="Name" value={`${order.first_name} ${order.last_name}`} />
@@ -127,7 +81,7 @@ const AdminOrderDetail = () => {
           </Card>
 
           <Card title={`Members (${order.members?.length ?? 0})`}>
-            {(order.members ?? []).map((m: any, i: number) => (
+            {(order.members ?? []).map((m, i) => (
               <div key={i} className="border border-border rounded-xl p-3 mb-2 last:mb-0">
                 <div className="flex items-center justify-between mb-1">
                   <div className="font-semibold text-sm">
@@ -145,8 +99,7 @@ const AdminOrderDetail = () => {
           </Card>
 
           <Card title="Pricing">
-            <Row label="Foundo fee" value={`$${order.foundo_fee}`} />
-            <Row label="State fee" value={`$${order.state_fee}`} />
+            <Row label="Package & state fee" value={`$${order.foundo_fee + order.state_fee}`} />
             <Row label="Add-ons" value={`$${order.addons_total}`} />
             {order.discount > 0 && (
               <Row label={`Discount${order.coupon_code ? ` (${order.coupon_code})` : ""}`} value={`−$${order.discount}`} />
@@ -165,7 +118,6 @@ const AdminOrderDetail = () => {
           </Card>
         </div>
 
-        {/* Right col: milestone control */}
         <div className="space-y-6">
           <Card title="Milestone Status">
             <div className="space-y-2">
