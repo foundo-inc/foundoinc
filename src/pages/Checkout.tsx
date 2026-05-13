@@ -202,8 +202,8 @@ const Checkout = () => {
               {step === 4 && (
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
-              {step === 5 && <Step6 data={data} goTo={setStep} coupon={coupon} />}
-              {step === 6 && <Step7 data={data} onPay={handlePay} coupon={coupon} setCoupon={setCoupon} />}
+              {step === 5 && <Step6 goTo={setStep} />}
+              {step === 6 && <Step7 onPay={handlePay} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
@@ -473,7 +473,7 @@ const Step3 = ({ data, update, errors }: any) => (
 
 /* ---------------- Step 4: Members ---------------- */
 const Step4 = ({ data, errors, addMember, removeMember, updateMember, setResponsible }: any) => {
-  const handleFile = (id: string, file: File | undefined) => {
+  const handleFile = async (id: string, file: File | undefined) => {
     if (!file) return;
     if (file.size > 10 * 1024 * 1024) {
       toast({ title: "File too large", description: "Max 10MB. Please upload a smaller file.", variant: "destructive" });
@@ -484,7 +484,17 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
       toast({ title: "Invalid file type", description: "Upload a JPG, PNG, WEBP or PDF.", variant: "destructive" });
       return;
     }
-    updateMember(id, { idFile: { name: file.name, size: file.size, type: file.type } });
+    const { saveFileToIDB } = await import("@/lib/idb-storage");
+    const meta = await saveFileToIDB(file);
+    updateMember(id, { idFile: meta });
+  };
+
+  const handleRemoveFile = async (id: string, key?: string) => {
+    if (key) {
+      const { deleteFileFromIDB } = await import("@/lib/idb-storage");
+      await deleteFileFromIDB(key);
+    }
+    updateMember(id, { idFile: null });
   };
 
   return (
@@ -563,13 +573,18 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
                 <Field label="Upload Document" error={errors[`m${i}-idFile`]}>
                   {m.idFile ? (
                     <div className="flex items-center justify-between gap-2 h-11 rounded-xl border border-border bg-secondary/40 px-3">
-                      <div className="flex items-center gap-2 min-w-0">
+                      <a
+                        href={m.idFile.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 min-w-0 hover:underline"
+                      >
                         <FileCheck2 className="h-4 w-4 text-success shrink-0" />
                         <span className="text-sm truncate">{m.idFile.name}</span>
-                      </div>
+                      </a>
                       <button
                         type="button"
-                        onClick={() => updateMember(m.id, { idFile: null })}
+                        onClick={() => handleRemoveFile(m.id, m.idFile?.key)}
                         className="text-muted-foreground hover:text-destructive shrink-0"
                         aria-label="Remove file"
                       >
@@ -788,9 +803,12 @@ const Step5 = ({ data, update, showItin, isEcom, isMarketplace }: any) => {
   );
 };
 
-/* ---------------- Step 6: Review ---------------- */
-const Step6 = ({ data, goTo, coupon }: any) => {
+/* ---------------- Step 6: Review (reads from Redux) ---------------- */
+const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
+  const data = useAppSelector(selectCheckoutData);
+  const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
+
   const sec = (title: string, stepIdx: number, body: React.ReactNode) => (
     <div className="rounded-xl border border-border p-4 md:p-5">
       <div className="flex items-center justify-between mb-3">
@@ -802,29 +820,50 @@ const Step6 = ({ data, goTo, coupon }: any) => {
       {body}
     </div>
   );
+
+  const stateFee = STATES.find((s) => s.name === data.state)?.fee ?? 0;
+
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Review your order</h2>
       <p className="text-muted-foreground mb-6">Double-check everything before payment.</p>
       <div className="space-y-3">
         {sec("Contact", 1, (
-          <p className="text-sm text-muted-foreground">{data.firstName} {data.lastName} · {data.email} · {data.countryCode} {data.phone}</p>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p><span className="text-foreground font-medium">{data.firstName} {data.lastName}</span></p>
+            <p>{data.email}</p>
+            <p>{data.countryCode} {data.phone}</p>
+          </div>
         ))}
         {sec("Package", 0, (
-          <p className="text-sm text-muted-foreground">{data.companyType} in {data.state}</p>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p><span className="text-foreground font-medium">{data.companyType}</span> in <span className="text-foreground font-medium">{data.state}</span></p>
+            <p>Foundo fee ${FOUNDO_FEE} · State fee ${stateFee}</p>
+          </div>
         ))}
         {sec("Business", 2, (
           <div className="text-sm text-muted-foreground space-y-1">
             <p><span className="text-foreground font-medium">{data.businessName}</span>{data.website && ` · ${data.website}`}</p>
             <p>{data.industry}</p>
-            <p className="line-clamp-2">{data.description}</p>
+            <p className="line-clamp-3">{data.description}</p>
           </div>
         ))}
         {sec("Members", 3, (
-          <ul className="text-sm text-muted-foreground space-y-1">
-            {data.members.map((m: any) => (
-              <li key={m.id}>
-                {m.firstName} {m.lastName}{m.isResponsible && <span className="ml-2 text-xs text-primary font-semibold">(Responsible Party)</span>}
+          <ul className="text-sm text-muted-foreground space-y-2">
+            {data.members.map((m) => (
+              <li key={m.id} className="rounded-lg bg-secondary/30 p-3">
+                <p className="text-foreground font-medium">
+                  {m.firstName} {m.lastName}
+                  {m.isResponsible && <span className="ml-2 text-[10px] text-primary font-bold uppercase tracking-wider">Responsible Party</span>}
+                </p>
+                <p className="text-xs mt-0.5">{m.street}, {m.city} {m.stateProvince} {m.zip}, {m.country}</p>
+                <p className="text-xs mt-0.5 capitalize">ID: {m.idType.replace("_", " ")}{m.idFile && ` · `}
+                  {m.idFile && (
+                    <a href={m.idFile.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {m.idFile.name}
+                    </a>
+                  )}
+                </p>
               </li>
             ))}
           </ul>
@@ -850,81 +889,16 @@ const Step6 = ({ data, goTo, coupon }: any) => {
   );
 };
 
-/* ---------------- Step 7: Payment ---------------- */
-const Step7 = ({ data, onPay, coupon, setCoupon }: any) => {
+/* ---------------- Step 7: Payment (reads from Redux, no coupon UI) ---------------- */
+const Step7 = ({ onPay }: { onPay: () => void }) => {
+  const data = useAppSelector(selectCheckoutData);
+  const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
-  const [code, setCode] = useState(coupon?.code ?? "");
-  const [couponError, setCouponError] = useState<string>("");
-
-  const applyCoupon = () => {
-    setCouponError("");
-    const trimmed = code.trim();
-    if (!trimmed) {
-      setCouponError("Enter a coupon code");
-      return;
-    }
-    const found = findCoupon(trimmed);
-    if (!found) {
-      setCouponError("Invalid or expired coupon code");
-      setCoupon(null);
-      return;
-    }
-    setCoupon(found);
-    setCode(found.code);
-    toast({ title: "Coupon applied!", description: `${found.label} — you saved $${computeTotals(data, found).discount}.` });
-  };
-
-  const removeCoupon = () => {
-    setCoupon(null);
-    setCode("");
-    setCouponError("");
-  };
 
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Secure Payment</h2>
       <p className="text-muted-foreground mb-6">Powered by Stripe. Your details are encrypted end-to-end.</p>
-
-      {/* Coupon */}
-      <div className="rounded-xl border border-border p-4 md:p-5 mb-5 bg-card">
-        <div className="flex items-center gap-2 mb-3">
-          <Tag className="h-4 w-4 text-primary" />
-          <p className="font-bold font-display text-sm">Have a coupon code?</p>
-        </div>
-        {coupon ? (
-          <div className="flex items-center justify-between gap-3 rounded-xl border-2 border-success/40 bg-success/5 p-3">
-            <div className="flex items-center gap-2 min-w-0">
-              <FileCheck2 className="h-4 w-4 text-success shrink-0" />
-              <div className="min-w-0">
-                <p className="text-sm font-bold text-foreground">{coupon.code}</p>
-                <p className="text-xs text-muted-foreground">{coupon.label} · You save ${t.discount}</p>
-              </div>
-            </div>
-            <Button variant="ghost" size="sm" onClick={removeCoupon} className="text-muted-foreground hover:text-destructive">
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        ) : (
-          <>
-            <div className="flex gap-2">
-              <Input
-                value={code}
-                onChange={(e) => { setCode(e.target.value.toUpperCase()); setCouponError(""); }}
-                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCoupon(); } }}
-                placeholder="Enter code (e.g. WELCOME50)"
-                className="h-12 rounded-xl flex-1 uppercase tracking-wider font-semibold"
-                maxLength={20}
-              />
-              <Button onClick={applyCoupon} variant="outline" className="h-12 rounded-xl px-5 font-bold">
-                Apply
-              </Button>
-            </div>
-            {couponError && (
-              <p className="text-xs text-destructive mt-2 flex items-center gap-1"><AlertCircle className="h-3 w-3" /> {couponError}</p>
-            )}
-          </>
-        )}
-      </div>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
         <div className="flex items-end justify-between mb-4">

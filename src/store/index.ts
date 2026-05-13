@@ -9,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { idbReduxStorage } from "@/lib/idb-storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import checkoutReducer from "./checkoutSlice";
 
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "foundo_checkout_v1",
   version: 1,
-  storage,
+  storage: idbReduxStorage,
   whitelist: ["checkout"],
 };
 
