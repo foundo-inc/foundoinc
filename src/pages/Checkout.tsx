@@ -21,6 +21,7 @@ import CheckoutSummary, { computeTotals } from "@/components/checkout/CheckoutSu
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import { CheckCircle2, Zap } from "lucide-react";
+import { useCountries } from "@/hooks/use-countries";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   setStep as setStepAction,
