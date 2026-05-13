@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CheckoutData, COUNTRY_CODES, INDUSTRIES, MARKETPLACE_KEYWORDS,
-  STATES, POPULAR_STATE_NAMES, COUNTRIES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
+  STATES, POPULAR_STATE_NAMES, emptyMember, initialData, ADDON_PRICES, FOUNDO_FEE,
   Coupon, findCoupon,
 } from "@/lib/checkout-data";
 import StepIndicator from "@/components/checkout/StepIndicator";
