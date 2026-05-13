@@ -199,13 +199,17 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 goTo={setStep} />}
-              {step === 6 && <Step7 onPay={handlePay} />}
+              {step === 6 && (
+                <Elements stripe={stripePromise}>
+                  <Step7 onPay={handlePay} />
+                </Elements>
+              )}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
                   <ArrowLeft className="h-4 w-4 sm:mr-2" /> <span className="hidden sm:inline">Back</span>
                 </Button>
-                {step < STEPS.length - 1 ? (
+                {step < STEPS.length - 2 ? (
                   <Button onClick={next} size="lg" disabled={isUploading} className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
                     {isUploading ? (
                       <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Uploading…</>
@@ -213,11 +217,11 @@ const Checkout = () => {
                       <>Continue <ArrowRight className="h-4 w-4 ml-2" /></>
                     )}
                   </Button>
-                ) : (
-                  <Button onClick={handlePay} size="lg" className="rounded-xl px-4 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20 text-sm sm:text-base">
-                    <Lock className="h-4 w-4 mr-2" /> Pay ${totals.total} <span className="hidden sm:inline ml-1">Securely</span>
+                ) : step === 5 ? (
+                  <Button onClick={next} size="lg" className="rounded-xl px-5 sm:px-6 h-12 font-bold shadow-lg shadow-primary/20">
+                    Review & Pay <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
