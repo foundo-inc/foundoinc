@@ -497,10 +497,10 @@ const Step4 = ({ data, errors, addMember, removeMember, updateMember, setRespons
             {/* Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
               <Field label="First Name" error={errors[`m${i}-firstName`]}>
-                <Input value={m.firstName} onChange={(e) => updateMember(m.id, { firstName: e.target.value })} className="h-11 rounded-xl" />
+                <Input value={m.firstName} onChange={(e) => updateMember(m.id, { firstName: e.target.value })} placeholder="John" className="h-11 rounded-xl" />
               </Field>
               <Field label="Last Name" error={errors[`m${i}-lastName`]}>
-                <Input value={m.lastName} onChange={(e) => updateMember(m.id, { lastName: e.target.value })} className="h-11 rounded-xl" />
+                <Input value={m.lastName} onChange={(e) => updateMember(m.id, { lastName: e.target.value })} placeholder="Doe" className="h-11 rounded-xl" />
               </Field>
             </div>
 
