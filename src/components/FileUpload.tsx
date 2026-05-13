@@ -15,6 +15,7 @@ interface FileUploadProps {
   onChange: (meta: FileMeta | null) => void;
   onFileSelect: (file: File) => Promise<FileMeta>;
   onRemove?: () => void;
+  onUploadingChange?: (uploading: boolean) => void;
   error?: string;
 }
 
