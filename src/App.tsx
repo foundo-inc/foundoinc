@@ -17,9 +17,6 @@ import CheckoutThankYou from "./pages/CheckoutThankYou.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import AdminLogin from "./pages/admin/AdminLogin.tsx";
-import AdminOrders from "./pages/admin/AdminOrders.tsx";
-import AdminOrderDetail from "./pages/admin/AdminOrderDetail.tsx";
 
 const queryClient = new QueryClient();
 
