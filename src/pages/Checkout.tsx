@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
