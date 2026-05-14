@@ -3,25 +3,15 @@ import { Link } from "react-router-dom";
 import AdminShell from "./AdminShell";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { MILESTONES, milestoneLabel } from "@/lib/admin-data";
 import { Search, ChevronRight } from "lucide-react";
 import { listOrders, MockOrder } from "@/lib/mock-orders";
 
 type Order = MockOrder;
 
-const milestoneTone: Record<string, string> = {
-  received: "bg-muted text-foreground",
-  filing: "bg-blue-100 text-blue-700",
-  ein: "bg-amber-100 text-amber-800",
-  documents_ready: "bg-purple-100 text-purple-800",
-  completed: "bg-green-100 text-green-800",
-};
-
 const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<string>("all");
 
   useEffect(() => {
     setOrders(listOrders());
@@ -29,7 +19,6 @@ const AdminOrders = () => {
   }, []);
 
   const filtered = orders.filter((o) => {
-    if (filter !== "all" && o.current_milestone !== filter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
     return (
@@ -40,36 +29,11 @@ const AdminOrders = () => {
     );
   });
 
-  const counts = MILESTONES.reduce<Record<string, number>>((acc, m) => {
-    acc[m.key] = orders.filter((o) => o.current_milestone === m.key).length;
-    return acc;
-  }, {});
-
   return (
     <AdminShell>
       <div className="mb-6">
         <h1 className="text-2xl font-bold font-display">Orders</h1>
         <p className="text-sm text-muted-foreground">All checkout submissions and their formation milestones.</p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-        <button
-          onClick={() => setFilter("all")}
-          className={`text-left p-3 rounded-xl border ${filter === "all" ? "border-primary bg-primary/5" : "border-border bg-card"}`}
-        >
-          <div className="text-xs text-muted-foreground">All</div>
-          <div className="text-xl font-bold font-display">{orders.length}</div>
-        </button>
-        {MILESTONES.map((m) => (
-          <button
-            key={m.key}
-            onClick={() => setFilter(m.key)}
-            className={`text-left p-3 rounded-xl border ${filter === m.key ? "border-primary bg-primary/5" : "border-border bg-card"}`}
-          >
-            <div className="text-xs text-muted-foreground">{m.label}</div>
-            <div className="text-xl font-bold font-display">{counts[m.key] ?? 0}</div>
-          </button>
-        ))}
       </div>
 
       <div className="relative mb-4">
@@ -111,9 +75,6 @@ const AdminOrders = () => {
                     {new Date(o.created_at).toLocaleDateString()}
                   </div>
                 </div>
-                <span className={`text-[11px] font-semibold px-2 py-1 rounded-full ${milestoneTone[o.current_milestone] ?? "bg-muted"}`}>
-                  {milestoneLabel(o.current_milestone)}
-                </span>
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
               </Link>
             ))}
