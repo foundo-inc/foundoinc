@@ -131,18 +131,18 @@ const Checkout = () => {
 
   const handlePay = async () => {
     dispatch(setPaymentStatus({ status: "processing", error: null }));
-    await new Promise((r) => setTimeout(r, 600));
     const t = computeTotals(data, coupon);
     try {
-      const saved = await createOrder({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        country_code: data.countryCode,
-        phone: data.phone,
+      const { url } = await createCheckoutSession({
+        origin: window.location.origin,
         state: data.state,
         company_type: data.companyType,
         business_name: data.businessName,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        country_code: data.countryCode,
         website: data.website || null,
         industry: data.industry || null,
         description: data.description || null,
@@ -157,9 +157,6 @@ const Checkout = () => {
           idType: m.idType,
           ssn: m.ssn || undefined,
           isResponsible: m.isResponsible,
-          idFile: m.idFile
-            ? { name: m.idFile.name, size: m.idFile.size, type: m.idFile.type, key: m.idFile.key }
-            : undefined,
         })),
         addon_itin: data.addonItin,
         addon_seller_permit: data.addonSellerPermit,
@@ -167,20 +164,13 @@ const Checkout = () => {
         foundo_fee: FOUNDO_FEE,
         state_fee: t.stateFee,
         addons_total: t.addons,
-        subtotal: t.subtotal,
-        discount: t.discount,
         total: t.total,
-        coupon_code: coupon?.code ?? null,
-        notes: null,
       });
-      dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: saved.id }));
-      toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
-      dispatch(resetCheckout());
-      setTimeout(() => navigate("/checkout/thank-you"), 600);
+      window.location.href = url;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Could not save order";
+      const msg = err instanceof Error ? err.message : "Could not start checkout";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Order failed", description: msg, variant: "destructive" });
+      toast({ title: "Checkout failed", description: msg, variant: "destructive" });
     }
   };
 
