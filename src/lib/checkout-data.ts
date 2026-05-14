@@ -226,11 +226,7 @@ export interface Coupon {
   label: string;
 }
 
-export const COUPONS: Coupon[] = [
-  { code: "FOUNDO20", type: "percent", value: 20, label: "20% off Foundo fee" },
-  { code: "WELCOME50", type: "fixed", value: 50, label: "$50 off your order" },
-  { code: "LAUNCH100", type: "fixed", value: 100, label: "$100 off your order" },
-];
+export const COUPONS: Coupon[] = [];
 
 export const findCoupon = (code: string): Coupon | null => {
   const c = code.trim().toUpperCase();
