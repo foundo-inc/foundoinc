@@ -19,7 +19,6 @@ const AdminOrders = () => {
   }, []);
 
   const filtered = orders.filter((o) => {
-    if (filter !== "all" && o.current_milestone !== filter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
     return (
