@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Plus, Trash2, Sparkles, ShieldCheck, CreditCard, Lock, Pencil, AlertCircle, TrendingUp, Star, Building2, Tag, Users, Shield, Zap, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -41,9 +39,7 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
-import { createOrder } from "@/lib/orders-api";
-
-const stripePromise = loadStripe("pk_test_51QFmWYG24hgFt3aLgor26H6xvWOssioBhX3Cm8ZahEzuATGXXujLfiXUK0texYwRlzYNY5v4XDAtXyfg2fZhbnt100v3KnvSMa");
+import { createCheckoutSession } from "@/lib/orders-api";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -135,18 +131,18 @@ const Checkout = () => {
 
   const handlePay = async () => {
     dispatch(setPaymentStatus({ status: "processing", error: null }));
-    await new Promise((r) => setTimeout(r, 600));
     const t = computeTotals(data, coupon);
     try {
-      const saved = await createOrder({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        country_code: data.countryCode,
-        phone: data.phone,
+      const { url } = await createCheckoutSession({
+        origin: window.location.origin,
         state: data.state,
         company_type: data.companyType,
         business_name: data.businessName,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone: data.phone,
+        country_code: data.countryCode,
         website: data.website || null,
         industry: data.industry || null,
         description: data.description || null,
@@ -161,9 +157,6 @@ const Checkout = () => {
           idType: m.idType,
           ssn: m.ssn || undefined,
           isResponsible: m.isResponsible,
-          idFile: m.idFile
-            ? { name: m.idFile.name, size: m.idFile.size, type: m.idFile.type, key: m.idFile.key }
-            : undefined,
         })),
         addon_itin: data.addonItin,
         addon_seller_permit: data.addonSellerPermit,
@@ -171,20 +164,13 @@ const Checkout = () => {
         foundo_fee: FOUNDO_FEE,
         state_fee: t.stateFee,
         addons_total: t.addons,
-        subtotal: t.subtotal,
-        discount: t.discount,
         total: t.total,
-        coupon_code: coupon?.code ?? null,
-        notes: null,
       });
-      dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: saved.id }));
-      toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
-      dispatch(resetCheckout());
-      setTimeout(() => navigate("/checkout/thank-you"), 600);
+      window.location.href = url;
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Could not save order";
+      const msg = err instanceof Error ? err.message : "Could not start checkout";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Order failed", description: msg, variant: "destructive" });
+      toast({ title: "Checkout failed", description: msg, variant: "destructive" });
     }
   };
 
@@ -244,7 +230,7 @@ const Checkout = () => {
                 <Step5 data={data} update={update} showItin={showItin} isEcom={isEcom} isMarketplace={isMarketplace} />
               )}
               {step === 5 && <Step6 goTo={setStep} />}
-              {step === 6 && <Step7Wrapper onPay={handlePay} />}
+              {step === 6 && <Step7 onPay={handlePay} />}
 
               <div className="mt-8 pt-6 border-t border-border flex items-center justify-between gap-3">
                 <Button variant="ghost" onClick={back} disabled={step === 0} className="rounded-xl px-3 sm:px-4">
@@ -890,115 +876,25 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Payment with Stripe PaymentElement (custom UI) ---------------- */
-const PAYMENT_ELEMENT_APPEARANCE = {
-  theme: "stripe" as const,
-  variables: {
-    colorPrimary: "#0436E3",
-    colorBackground: "#ffffff",
-    colorText: "#0f172a",
-    colorDanger: "#ef4444",
-    fontFamily: "Inter, system-ui, sans-serif",
-    fontSizeBase: "15px",
-    spacingUnit: "4px",
-    borderRadius: "12px",
-  },
-  rules: {
-    ".Input": {
-      border: "1px solid hsl(var(--border))",
-      boxShadow: "none",
-      padding: "12px 14px",
-    },
-    ".Input:focus": {
-      border: "1px solid #0436E3",
-      boxShadow: "0 0 0 3px rgba(4, 54, 227, 0.1)",
-    },
-    ".Label": {
-      fontWeight: "600",
-      fontSize: "13px",
-      marginBottom: "6px",
-    },
-    ".Tab": {
-      border: "1px solid hsl(var(--border))",
-      padding: "10px 12px",
-    },
-    ".Tab--selected": {
-      border: "1px solid #0436E3",
-      backgroundColor: "rgba(4, 54, 227, 0.04)",
-    },
-  },
-};
-
-const Step7Wrapper = ({ onPay }: { onPay: () => void }) => {
-  const data = useAppSelector(selectCheckoutData);
-  const coupon = useAppSelector(selectCoupon);
-  const t = computeTotals(data, coupon);
-  const options = useMemo(
-    () => ({
-      mode: "payment" as const,
-      amount: Math.max(50, Math.round(t.total * 100)),
-      currency: "usd",
-      appearance: PAYMENT_ELEMENT_APPEARANCE,
-      paymentMethodCreation: "manual" as const,
-      paymentMethodTypes: ["card", "cashapp"],
-    }),
-    [t.total],
-  );
-  return (
-    <Elements stripe={stripePromise} options={options}>
-      <Step7 onPay={onPay} />
-    </Elements>
-  );
-};
-
+/* ---------------- Step 7: Redirect to Stripe Checkout ---------------- */
 const Step7 = ({ onPay }: { onPay: () => void }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
-  const stripe = useStripe();
-  const elements = useElements();
   const [loading, setLoading] = useState(false);
-  const [cardError, setCardError] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
 
   const handleSubmit = async () => {
-    if (!stripe || !elements) return;
     setLoading(true);
-    setCardError(null);
-
-    const { error: submitError } = await elements.submit();
-    if (submitError) {
-      setCardError(submitError.message || "Please check your payment details");
-      setLoading(false);
-      return;
-    }
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      elements,
-      params: {
-        billing_details: {
-          name: `${data.firstName} ${data.lastName}`.trim(),
-          email: data.email,
-          phone: data.phone,
-        },
-      },
-    });
-
-    if (error) {
-      setCardError(error.message || "Payment validation failed");
-      setLoading(false);
-      return;
-    }
-
-    console.log("PaymentMethod:", paymentMethod?.id);
-    onPay();
-    setLoading(false);
+    await onPay();
+    // onPay redirects the page; no need to setLoading(false)
   };
 
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Secure Payment</h2>
-      <p className="text-muted-foreground mb-6">Powered by Stripe. Your details are encrypted end-to-end.</p>
+      <p className="text-muted-foreground mb-6">
+        You will be redirected to Stripe's secure checkout to complete your payment. Promotion codes can be applied on the checkout page.
+      </p>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
         <div className="flex items-end justify-between mb-5 pb-5 border-b border-border">
@@ -1016,26 +912,19 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
           </div>
         </div>
 
-        <div className="space-y-4">
-          {!ready && (
-            <div className="h-40 flex items-center justify-center">
-              <span className="inline-block w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-          )}
-          <div className={cn(!ready && "hidden")}>
-            <PaymentElement
-              onReady={() => setReady(true)}
-              options={{
-                layout: { type: "tabs", defaultCollapsed: false },
-                fields: { billingDetails: { name: "never", email: "never", phone: "never" } },
-              }}
-            />
+        <div className="space-y-3 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+            <span>Credit card, Apple Pay, Google Pay accepted</span>
           </div>
-          {cardError && (
-            <p className="text-xs text-destructive flex items-center gap-1">
-              <AlertCircle className="h-3 w-3" /> {cardError}
-            </p>
-          )}
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+            <span>Apply promotion codes on the Stripe checkout page</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-success" />
+            <span>Your data is encrypted end-to-end</span>
+          </div>
         </div>
       </div>
 
@@ -1045,11 +934,11 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
         <Trust icon={CreditCard} text="Money-back assurance" />
       </div>
 
-      <Button onClick={handleSubmit} size="lg" disabled={!stripe || !ready || loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
+      <Button onClick={handleSubmit} size="lg" disabled={loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
         {loading ? (
-          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Redirecting…</>
         ) : (
-          <><Lock className="h-4 w-4 mr-2" /> Pay ${t.total} Securely</>
+          <><Lock className="h-4 w-4 mr-2" /> Proceed to Secure Checkout</>
         )}
       </Button>
       <p className="text-xs text-muted-foreground text-center mt-3">
