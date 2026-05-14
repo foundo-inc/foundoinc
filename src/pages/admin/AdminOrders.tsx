@@ -33,7 +33,7 @@ const AdminOrders = () => {
     <AdminShell>
       <div className="mb-6">
         <h1 className="text-2xl font-bold font-display">Orders</h1>
-        <p className="text-sm text-muted-foreground">All checkout submissions and their formation milestones.</p>
+        <p className="text-sm text-muted-foreground">All checkout submissions.</p>
       </div>
 
       <div className="relative mb-4">
