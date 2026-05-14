@@ -909,7 +909,7 @@ const Step7 = ({ onPay }: { onPay: (card: { name: string; number: string; expiry
 
   const applyCoupon = () => {
     const code = couponInput.trim();
-    if (!code) { setCoupon(null); setCouponMsg(null); return; }
+    if (!code) { dispatch(setCouponAction(null)); setCouponMsg(null); return; }
     // TODO(backend): validate coupon server-side.
     const c = findCoupon(code);
     if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
