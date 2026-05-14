@@ -62,7 +62,7 @@ export interface MockOrder {
 
 export const MOCK_ORDERS: MockOrder[] = [];
 
-const STORAGE_KEY = "foundo_mock_orders_v1";
+const STORAGE_KEY = "foundo_mock_orders_v2";
 
 function load(): MockOrder[] {
   try {
