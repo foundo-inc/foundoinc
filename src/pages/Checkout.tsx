@@ -915,7 +915,6 @@ const Step7 = ({ onPay }: { onPay: (card: { name: string; number: string; expiry
     if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
     else { dispatch(setCouponAction(null)); setCouponMsg("Invalid coupon code"); }
   };
-  const setCoupon = (c: Coupon | null) => dispatch(setCouponAction(c));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
