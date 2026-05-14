@@ -39,7 +39,7 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
-import { createCheckoutSession } from "@/lib/orders-api";
+import { createOrder } from "@/lib/orders-api";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -129,34 +129,29 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async () => {
+  const handlePay = async (card: { name: string; number: string; expiry: string; cvc: string }) => {
     dispatch(setPaymentStatus({ status: "processing", error: null }));
     const t = computeTotals(data, coupon);
     try {
-      const { url } = await createCheckoutSession({
-        origin: window.location.origin,
-        state: data.state,
-        company_type: data.companyType,
-        business_name: data.businessName,
+      // TODO(backend): tokenize card via PCI-compliant provider before sending to server.
+      const order = await createOrder({
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
-        phone: data.phone,
         country_code: data.countryCode,
+        phone: data.phone,
+        state: data.state,
+        company_type: data.companyType,
+        business_name: data.businessName,
         website: data.website || null,
         industry: data.industry || null,
         description: data.description || null,
         members: data.members.map((m) => ({
-          firstName: m.firstName,
-          lastName: m.lastName,
-          street: m.street,
-          city: m.city,
-          stateProvince: m.stateProvince,
-          zip: m.zip,
-          country: m.country,
-          idType: m.idType,
-          ssn: m.ssn || undefined,
-          isResponsible: m.isResponsible,
+          firstName: m.firstName, lastName: m.lastName,
+          street: m.street, city: m.city, stateProvince: m.stateProvince,
+          zip: m.zip, country: m.country, idType: m.idType,
+          ssn: m.ssn || undefined, isResponsible: m.isResponsible,
+          idFile: m.idFile ? { name: m.idFile.name } : undefined,
         })),
         addon_itin: data.addonItin,
         addon_seller_permit: data.addonSellerPermit,
@@ -164,13 +159,19 @@ const Checkout = () => {
         foundo_fee: FOUNDO_FEE,
         state_fee: t.stateFee,
         addons_total: t.addons,
+        subtotal: t.subtotal,
+        discount: t.discount,
         total: t.total,
+        coupon_code: coupon?.code ?? null,
+        notes: null,
       });
-      window.location.href = url;
+      dispatch(setPaymentStatus({ status: "succeeded", error: null }));
+      dispatch(resetCheckout());
+      navigate(`/checkout/thank-you?order=${encodeURIComponent(order.order_number)}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Could not start checkout";
+      const msg = err instanceof Error ? err.message : "Payment failed";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Checkout failed", description: msg, variant: "destructive" });
+      toast({ title: "Payment failed", description: msg, variant: "destructive" });
     }
   };
 
@@ -876,28 +877,59 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Redirect to Stripe Checkout ---------------- */
-const Step7 = ({ onPay }: { onPay: () => void }) => {
+/* ---------------- Step 7: Inline Card Payment ---------------- */
+const Step7 = ({ onPay }: { onPay: (card: { name: string; number: string; expiry: string; cvc: string }) => Promise<void> }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
+  const dispatch = useAppDispatch();
   const t = computeTotals(data, coupon);
   const [loading, setLoading] = useState(false);
+  const [card, setCard] = useState({ name: "", number: "", expiry: "", cvc: "" });
+  const [errs, setErrs] = useState<Record<string, string>>({});
+  const [couponInput, setCouponInput] = useState(coupon?.code ?? "");
+  const [couponMsg, setCouponMsg] = useState<string | null>(null);
 
-  const handleSubmit = async () => {
+  const formatCard = (v: string) =>
+    v.replace(/\D/g, "").slice(0, 19).replace(/(.{4})/g, "$1 ").trim();
+  const formatExpiry = (v: string) => {
+    const d = v.replace(/\D/g, "").slice(0, 4);
+    return d.length < 3 ? d : `${d.slice(0, 2)}/${d.slice(2)}`;
+  };
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!card.name.trim()) e.name = "Name on card required";
+    const digits = card.number.replace(/\s/g, "");
+    if (digits.length < 13 || digits.length > 19) e.number = "Enter a valid card number";
+    if (!/^\d{2}\/\d{2}$/.test(card.expiry)) e.expiry = "MM/YY";
+    if (!/^\d{3,4}$/.test(card.cvc)) e.cvc = "CVC";
+    setErrs(e);
+    return Object.keys(e).length === 0;
+  };
+
+  const applyCoupon = () => {
+    const code = couponInput.trim();
+    if (!code) { dispatch(setCouponAction(null)); setCouponMsg(null); return; }
+    // TODO(backend): validate coupon server-side.
+    const c = findCoupon(code);
+    if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
+    else { dispatch(setCouponAction(null)); setCouponMsg("Invalid coupon code"); }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
     setLoading(true);
-    await onPay();
-    // onPay redirects the page; no need to setLoading(false)
+    try { await onPay(card); } finally { setLoading(false); }
   };
 
   return (
     <section>
-      <h2 className="text-2xl font-bold font-display mb-1">Secure Payment</h2>
-      <p className="text-muted-foreground mb-6">
-        You will be redirected to Stripe's secure checkout to complete your payment. Promotion codes can be applied on the checkout page.
-      </p>
+      <h2 className="text-2xl font-bold font-display mb-1">Payment Details</h2>
+      <p className="text-muted-foreground mb-6">Enter your card information to complete your order.</p>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
-        <div className="flex items-end justify-between mb-5 pb-5 border-b border-border">
+        <div className="flex items-end justify-between">
           <div>
             <p className="font-bold font-display">Order Total</p>
             {t.discount > 0 && (
@@ -911,39 +943,99 @@ const Step7 = ({ onPay }: { onPay: () => void }) => {
             )}
           </div>
         </div>
+      </div>
 
-        <div className="space-y-3 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>Credit card, Apple Pay, Google Pay accepted</span>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Coupon */}
+        <Field label="Coupon Code (optional)">
+          <div className="flex gap-2">
+            <Input
+              value={couponInput}
+              onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+              placeholder="Enter code"
+              className="h-12 rounded-xl flex-1"
+            />
+            <Button type="button" variant="outline" onClick={applyCoupon} className="h-12 rounded-xl px-4">
+              <Tag className="h-4 w-4 mr-2" /> Apply
+            </Button>
           </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>Apply promotion codes on the Stripe checkout page</span>
+          {couponMsg && (
+            <p className={cn("text-xs mt-1", coupon ? "text-success" : "text-destructive")}>{couponMsg}</p>
+          )}
+        </Field>
+
+        <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="font-bold font-display flex items-center gap-2">
+              <CreditCard className="h-4 w-4 text-primary" /> Card Information
+            </p>
+            <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+              <Lock className="h-3 w-3" /> Encrypted
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-success" />
-            <span>Your data is encrypted end-to-end</span>
+
+          <Field label="Name on Card" error={errs.name}>
+            <Input
+              value={card.name}
+              onChange={(e) => setCard({ ...card, name: e.target.value })}
+              placeholder="John Doe"
+              className="h-12 rounded-xl"
+              autoComplete="cc-name"
+            />
+          </Field>
+
+          <Field label="Card Number" error={errs.number}>
+            <Input
+              value={card.number}
+              onChange={(e) => setCard({ ...card, number: formatCard(e.target.value) })}
+              placeholder="1234 5678 9012 3456"
+              className="h-12 rounded-xl font-mono tracking-wider"
+              inputMode="numeric"
+              autoComplete="cc-number"
+            />
+          </Field>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Expiry (MM/YY)" error={errs.expiry}>
+              <Input
+                value={card.expiry}
+                onChange={(e) => setCard({ ...card, expiry: formatExpiry(e.target.value) })}
+                placeholder="12/28"
+                className="h-12 rounded-xl font-mono"
+                inputMode="numeric"
+                autoComplete="cc-exp"
+              />
+            </Field>
+            <Field label="CVC" error={errs.cvc}>
+              <Input
+                value={card.cvc}
+                onChange={(e) => setCard({ ...card, cvc: e.target.value.replace(/\D/g, "").slice(0, 4) })}
+                placeholder="123"
+                className="h-12 rounded-xl font-mono"
+                inputMode="numeric"
+                autoComplete="cc-csc"
+              />
+            </Field>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
-        <Trust icon={Lock} text="256-bit SSL encryption" />
-        <Trust icon={ShieldCheck} text="Powered by Stripe" />
-        <Trust icon={CreditCard} text="Money-back assurance" />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Trust icon={Lock} text="256-bit SSL encryption" />
+          <Trust icon={ShieldCheck} text="PCI-DSS compliant" />
+          <Trust icon={CreditCard} text="Money-back assurance" />
+        </div>
 
-      <Button onClick={handleSubmit} size="lg" disabled={loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
-        {loading ? (
-          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Redirecting…</>
-        ) : (
-          <><Lock className="h-4 w-4 mr-2" /> Proceed to Secure Checkout</>
-        )}
-      </Button>
-      <p className="text-xs text-muted-foreground text-center mt-3">
-        By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
-      </p>
+        <Button type="submit" size="lg" disabled={loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
+          {loading ? (
+            <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+          ) : (
+            <><Lock className="h-4 w-4 mr-2" /> Pay ${t.total}</>
+          )}
+        </Button>
+        <p className="text-xs text-muted-foreground text-center">
+          By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+        </p>
+      </form>
     </section>
   );
 };
