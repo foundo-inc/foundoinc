@@ -64,11 +64,37 @@ async function callAdmin(path: string): Promise<Response> {
   });
 }
 
-export async function listOrders(): Promise<Order[]> {
-  const res = await callAdmin("");
+export interface ListOrdersParams {
+  search?: string;
+  state?: string;
+  companyType?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface ListOrdersResult {
+  orders: Order[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export async function listOrders(params: ListOrdersParams = {}): Promise<ListOrdersResult> {
+  const qs = new URLSearchParams();
+  if (params.search) qs.set("search", params.search);
+  if (params.state) qs.set("state", params.state);
+  if (params.companyType) qs.set("company_type", params.companyType);
+  qs.set("page", String(params.page ?? 1));
+  qs.set("limit", String(params.limit ?? 20));
+  const res = await callAdmin(`?${qs.toString()}`);
   if (!res.ok) throw new Error(`Failed to load orders (${res.status})`);
   const json = await res.json();
-  return json.orders ?? [];
+  return {
+    orders: json.orders ?? [],
+    total: json.total ?? 0,
+    page: json.page ?? 1,
+    limit: json.limit ?? 20,
+  };
 }
 
 export async function getOrder(id: string): Promise<Order | null> {
