@@ -878,50 +878,55 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Inline Card Payment ---------------- */
-const Step7 = ({ onPay }: { onPay: (card: { name: string; number: string; expiry: string; cvc: string }) => Promise<void> }) => {
+/* ---------------- Step 7: Stripe Elements Payment ---------------- */
+const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
   const dispatch = useAppDispatch();
   const t = computeTotals(data, coupon);
-  const [loading, setLoading] = useState(false);
-  const [card, setCard] = useState({ name: "", number: "", expiry: "", cvc: "" });
-  const [errs, setErrs] = useState<Record<string, string>>({});
+
+  const [stripePromise] = useState(() => getStripe());
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [intentId, setIntentId] = useState<string | null>(null);
+  const [intentError, setIntentError] = useState<string | null>(null);
+  const [intentAmount, setIntentAmount] = useState<number | null>(null);
+
   const [couponInput, setCouponInput] = useState(coupon?.code ?? "");
   const [couponMsg, setCouponMsg] = useState<string | null>(null);
 
-  const formatCard = (v: string) =>
-    v.replace(/\D/g, "").slice(0, 19).replace(/(.{4})/g, "$1 ").trim();
-  const formatExpiry = (v: string) => {
-    const d = v.replace(/\D/g, "").slice(0, 4);
-    return d.length < 3 ? d : `${d.slice(0, 2)}/${d.slice(2)}`;
-  };
-
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!card.name.trim()) e.name = "Name on card required";
-    const digits = card.number.replace(/\s/g, "");
-    if (digits.length < 13 || digits.length > 19) e.number = "Enter a valid card number";
-    if (!/^\d{2}\/\d{2}$/.test(card.expiry)) e.expiry = "MM/YY";
-    if (!/^\d{3,4}$/.test(card.cvc)) e.cvc = "CVC";
-    setErrs(e);
-    return Object.keys(e).length === 0;
-  };
+  // (Re)create PaymentIntent whenever the total changes.
+  useEffect(() => {
+    let cancelled = false;
+    setIntentError(null);
+    createPaymentIntent({
+      amount: t.total,
+      email: data.email || undefined,
+      metadata: {
+        business_name: data.businessName,
+        state: data.state,
+        coupon: coupon?.code ?? "",
+      },
+    })
+      .then((res) => {
+        if (cancelled) return;
+        setClientSecret(res.clientSecret);
+        setIntentId(res.id);
+        setIntentAmount(t.total);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setIntentError(err instanceof Error ? err.message : "Failed to initialize payment");
+      });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [t.total]);
 
   const applyCoupon = () => {
     const code = couponInput.trim();
     if (!code) { dispatch(setCouponAction(null)); setCouponMsg(null); return; }
-    // TODO(backend): validate coupon server-side.
     const c = findCoupon(code);
     if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
     else { dispatch(setCouponAction(null)); setCouponMsg("Invalid coupon code"); }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setLoading(true);
-    try { await onPay(card); } finally { setLoading(false); }
   };
 
   return (
@@ -946,98 +951,146 @@ const Step7 = ({ onPay }: { onPay: (card: { name: string; number: string; expiry
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Coupon */}
-        <Field label="Coupon Code (optional)">
-          <div className="flex gap-2">
-            <Input
-              value={couponInput}
-              onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-              placeholder="Enter code"
-              className="h-12 rounded-xl flex-1"
-            />
-            <Button type="button" variant="outline" onClick={applyCoupon} className="h-12 rounded-xl px-4">
-              <Tag className="h-4 w-4 mr-2" /> Apply
-            </Button>
-          </div>
-          {couponMsg && (
-            <p className={cn("text-xs mt-1", coupon ? "text-success" : "text-destructive")}>{couponMsg}</p>
-          )}
-        </Field>
-
-        <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="font-bold font-display flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-primary" /> Card Information
-            </p>
-            <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-              <Lock className="h-3 w-3" /> Encrypted
-            </span>
-          </div>
-
-          <Field label="Name on Card" error={errs.name}>
-            <Input
-              value={card.name}
-              onChange={(e) => setCard({ ...card, name: e.target.value })}
-              placeholder="John Doe"
-              className="h-12 rounded-xl"
-              autoComplete="cc-name"
-            />
-          </Field>
-
-          <Field label="Card Number" error={errs.number}>
-            <Input
-              value={card.number}
-              onChange={(e) => setCard({ ...card, number: formatCard(e.target.value) })}
-              placeholder="1234 5678 9012 3456"
-              className="h-12 rounded-xl font-mono tracking-wider"
-              inputMode="numeric"
-              autoComplete="cc-number"
-            />
-          </Field>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Expiry (MM/YY)" error={errs.expiry}>
-              <Input
-                value={card.expiry}
-                onChange={(e) => setCard({ ...card, expiry: formatExpiry(e.target.value) })}
-                placeholder="12/28"
-                className="h-12 rounded-xl font-mono"
-                inputMode="numeric"
-                autoComplete="cc-exp"
-              />
-            </Field>
-            <Field label="CVC" error={errs.cvc}>
-              <Input
-                value={card.cvc}
-                onChange={(e) => setCard({ ...card, cvc: e.target.value.replace(/\D/g, "").slice(0, 4) })}
-                placeholder="123"
-                className="h-12 rounded-xl font-mono"
-                inputMode="numeric"
-                autoComplete="cc-csc"
-              />
-            </Field>
-          </div>
+      <Field label="Coupon Code (optional)" className="mb-5">
+        <div className="flex gap-2">
+          <Input
+            value={couponInput}
+            onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+            placeholder="Enter code"
+            className="h-12 rounded-xl flex-1"
+          />
+          <Button type="button" variant="outline" onClick={applyCoupon} className="h-12 rounded-xl px-4">
+            <Tag className="h-4 w-4 mr-2" /> Apply
+          </Button>
         </div>
+        {couponMsg && (
+          <p className={cn("text-xs mt-1", coupon ? "text-success" : "text-destructive")}>{couponMsg}</p>
+        )}
+      </Field>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Trust icon={Lock} text="256-bit SSL encryption" />
-          <Trust icon={ShieldCheck} text="PCI-DSS compliant" />
-          <Trust icon={CreditCard} text="Money-back assurance" />
+      {intentError && (
+        <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
+          {intentError}
         </div>
+      )}
 
-        <Button type="submit" size="lg" disabled={loading} className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20">
-          {loading ? (
-            <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
-          ) : (
-            <><Lock className="h-4 w-4 mr-2" /> Pay ${t.total}</>
-          )}
-        </Button>
-        <p className="text-xs text-muted-foreground text-center">
-          By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
-        </p>
-      </form>
+      {!intentError && clientSecret && intentId && intentAmount === t.total && (
+        <Elements
+          key={clientSecret}
+          stripe={stripePromise}
+          options={{ clientSecret, appearance: { theme: "stripe" } }}
+        >
+          <StripePaymentForm total={t.total} intentId={intentId} onPay={onPay} />
+        </Elements>
+      )}
+
+      {!intentError && (!clientSecret || intentAmount !== t.total) && (
+        <div className="rounded-2xl border border-border bg-card p-6 flex items-center justify-center text-sm text-muted-foreground">
+          <span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          Initializing secure payment…
+        </div>
+      )}
     </section>
+  );
+};
+
+const StripePaymentForm = ({
+  total,
+  intentId,
+  onPay,
+}: {
+  total: number;
+  intentId: string;
+  onPay: (paymentIntentId: string) => Promise<void>;
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    setErrorMsg(null);
+    setLoading(true);
+    dispatch(setPaymentStatus({ status: "processing", error: null }));
+    try {
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        const msg = submitError.message || "Card details invalid";
+        setErrorMsg(msg);
+        dispatch(setPaymentStatus({ status: "failed", error: msg }));
+        return;
+      }
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+      });
+      if (error) {
+        const msg = error.message || "Payment failed";
+        setErrorMsg(msg);
+        dispatch(setPaymentStatus({ status: "failed", error: msg }));
+        toast({ title: "Payment failed", description: msg, variant: "destructive" });
+        return;
+      }
+      if (paymentIntent && paymentIntent.status === "succeeded") {
+        await onPay(paymentIntent.id);
+      } else {
+        const msg = `Payment ${paymentIntent?.status ?? "incomplete"}`;
+        setErrorMsg(msg);
+        dispatch(setPaymentStatus({ status: "failed", error: msg }));
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Payment failed";
+      setErrorMsg(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="font-bold font-display flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-primary" /> Card Information
+          </p>
+          <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+            <Lock className="h-3 w-3" /> Encrypted by Stripe
+          </span>
+        </div>
+        <PaymentElement options={{ layout: "tabs" }} />
+      </div>
+
+      {errorMsg && (
+        <p className="text-sm text-destructive flex items-center gap-1">
+          <AlertCircle className="h-4 w-4" /> {errorMsg}
+        </p>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Trust icon={Lock} text="256-bit SSL encryption" />
+        <Trust icon={ShieldCheck} text="PCI-DSS compliant" />
+        <Trust icon={CreditCard} text="Money-back assurance" />
+      </div>
+
+      <Button
+        type="submit"
+        size="lg"
+        disabled={loading || !stripe || !elements}
+        className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
+      >
+        {loading ? (
+          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+        ) : (
+          <><Lock className="h-4 w-4 mr-2" /> Pay ${total}</>
+        )}
+      </Button>
+      <p className="text-xs text-muted-foreground text-center">
+        By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+      </p>
+    </form>
   );
 };
 
