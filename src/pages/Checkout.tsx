@@ -131,11 +131,9 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async (card: { name: string; number: string; expiry: string; cvc: string }) => {
-    dispatch(setPaymentStatus({ status: "processing", error: null }));
+  const handlePay = async (paymentIntentId: string) => {
     const t = computeTotals(data, coupon);
     try {
-      // TODO(backend): tokenize card via PCI-compliant provider before sending to server.
       const order = await createOrder({
         first_name: data.firstName,
         last_name: data.lastName,
@@ -165,15 +163,16 @@ const Checkout = () => {
         discount: t.discount,
         total: t.total,
         coupon_code: coupon?.code ?? null,
-        notes: null,
+        notes: `stripe_pi:${paymentIntentId}`,
       });
       dispatch(setPaymentStatus({ status: "succeeded", error: null }));
       dispatch(resetCheckout());
       navigate(`/checkout/thank-you?order=${encodeURIComponent(order.order_number)}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Payment failed";
+      const msg = err instanceof Error ? err.message : "Order creation failed";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Payment failed", description: msg, variant: "destructive" });
+      toast({ title: "Order creation failed", description: msg, variant: "destructive" });
+      throw err;
     }
   };
 
