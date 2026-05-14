@@ -39,7 +39,7 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
-import { createCheckoutSession } from "@/lib/orders-api";
+import { createOrder } from "@/lib/orders-api";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
