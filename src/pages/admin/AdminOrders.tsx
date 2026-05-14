@@ -97,7 +97,7 @@ const AdminOrders = () => {
           <SelectContent>
             <SelectItem value={ALL}>All states</SelectItem>
             {STATES.map((s) => (
-              <SelectItem key={s.code} value={s.code}>
+              <SelectItem key={s.name} value={s.name}>
                 {s.name}
               </SelectItem>
             ))}
