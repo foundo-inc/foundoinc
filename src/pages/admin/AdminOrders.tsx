@@ -40,36 +40,11 @@ const AdminOrders = () => {
     );
   });
 
-  const counts = MILESTONES.reduce<Record<string, number>>((acc, m) => {
-    acc[m.key] = orders.filter((o) => o.current_milestone === m.key).length;
-    return acc;
-  }, {});
-
   return (
     <AdminShell>
       <div className="mb-6">
         <h1 className="text-2xl font-bold font-display">Orders</h1>
         <p className="text-sm text-muted-foreground">All checkout submissions and their formation milestones.</p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-        <button
-          onClick={() => setFilter("all")}
-          className={`text-left p-3 rounded-xl border ${filter === "all" ? "border-primary bg-primary/5" : "border-border bg-card"}`}
-        >
-          <div className="text-xs text-muted-foreground">All</div>
-          <div className="text-xl font-bold font-display">{orders.length}</div>
-        </button>
-        {MILESTONES.map((m) => (
-          <button
-            key={m.key}
-            onClick={() => setFilter(m.key)}
-            className={`text-left p-3 rounded-xl border ${filter === m.key ? "border-primary bg-primary/5" : "border-border bg-card"}`}
-          >
-            <div className="text-xs text-muted-foreground">{m.label}</div>
-            <div className="text-xl font-bold font-display">{counts[m.key] ?? 0}</div>
-          </button>
-        ))}
       </div>
 
       <div className="relative mb-4">
