@@ -64,18 +64,6 @@ async function callAdmin(path: string): Promise<Response> {
   });
 }
 
-async function callFn(name: string, body: unknown): Promise<Response> {
-  const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${name}`;
-  return fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-    },
-    body: JSON.stringify(body),
-  });
-}
-
 export interface ListOrdersParams {
   search?: string;
   state?: string;
