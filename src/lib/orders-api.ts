@@ -113,13 +113,3 @@ export async function createOrder(input: Omit<Order, "id" | "order_number" | "cr
   if (error) throw error;
   return data as unknown as Order;
 }
-
-export async function createCheckoutSession(payload: Record<string, unknown>): Promise<{ url: string }> {
-  const res = await callFn("create-checkout-session", payload);
-  if (!res.ok) {
-    const json = await res.json().catch(() => ({ error: "Unknown error" }));
-    throw new Error(json.error || `Checkout session failed (${res.status})`);
-  }
-  const json = await res.json();
-  return { url: json.url };
-}
