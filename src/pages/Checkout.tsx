@@ -919,14 +919,6 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t.total]);
 
-  const applyCoupon = () => {
-    const code = couponInput.trim();
-    if (!code) { dispatch(setCouponAction(null)); setCouponMsg(null); return; }
-    const c = findCoupon(code);
-    if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
-    else { dispatch(setCouponAction(null)); setCouponMsg("Invalid coupon code"); }
-  };
-
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Payment Details</h2>
