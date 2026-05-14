@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { MILESTONES, milestoneIndex, milestoneLabel } from "@/lib/admin-data";
 import { ArrowLeft, CheckCircle2, Circle, Mail, Loader2 } from "lucide-react";
-import { getOrder, updateOrderMilestone, MockOrder } from "@/lib/mock-orders";
+import { getOrder, updateOrderMilestone, MockOrder, MockMemberFile } from "@/lib/mock-orders";
+import { rebuildFileUrl } from "@/lib/idb-storage";
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
@@ -93,7 +94,7 @@ const AdminOrderDetail = () => {
                 <div className="text-xs text-muted-foreground">
                   {m.street}, {m.city}, {m.stateProvince} {m.zip}, {m.country}
                 </div>
-                {m.idFile && <div className="text-xs mt-1">📎 {m.idFile.name}</div>}
+                {m.idFile && <MemberFileLink file={m.idFile} />}
               </div>
             ))}
           </Card>
@@ -189,6 +190,37 @@ const AdminOrderDetail = () => {
         </div>
       </div>
     </AdminShell>
+  );
+};
+
+const MemberFileLink = ({ file }: { file: MockMemberFile }) => {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    if (file.key) {
+      rebuildFileUrl(file.key).then((u) => { if (active) setUrl(u); });
+    }
+    return () => { active = false; };
+  }, [file.key]);
+  const isImage = file.type?.startsWith("image/");
+  return (
+    <div className="mt-2 flex items-center gap-3">
+      {url && isImage && (
+        <a href={url} target="_blank" rel="noopener noreferrer" className="block w-14 h-14 rounded-md overflow-hidden border border-border bg-secondary">
+          <img src={url} alt={file.name} className="w-full h-full object-cover" />
+        </a>
+      )}
+      <div className="text-xs">
+        {url ? (
+          <a href={url} target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">
+            📎 {file.name}
+          </a>
+        ) : (
+          <span className="text-muted-foreground">📎 {file.name}{file.key ? " (file unavailable in this browser)" : ""}</span>
+        )}
+        {file.size && <div className="text-muted-foreground">{Math.round(file.size / 1024)} KB · {file.type}</div>}
+      </div>
+    </div>
   );
 };
 
