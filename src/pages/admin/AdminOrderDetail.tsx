@@ -4,18 +4,21 @@ import AdminShell from "./AdminShell";
 import { Badge } from "@/components/ui/badge";
 import { milestoneLabel } from "@/lib/admin-data";
 import { ArrowLeft } from "lucide-react";
-import { getOrder, MockOrder, MockMemberFile } from "@/lib/mock-orders";
+import { getOrder, Order, MemberFile } from "@/lib/orders-api";
 import { rebuildFileUrl } from "@/lib/idb-storage";
+import { toast } from "@/hooks/use-toast";
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
-  const [order, setOrder] = useState<MockOrder | null>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
-    setOrder(getOrder(id));
-    setLoading(false);
+    getOrder(id)
+      .then(setOrder)
+      .catch((e) => toast({ title: "Failed to load order", description: e.message, variant: "destructive" }))
+      .finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <AdminShell><div className="text-muted-foreground text-sm">Loading…</div></AdminShell>;
@@ -39,67 +42,65 @@ const AdminOrderDetail = () => {
       </div>
 
       <div className="space-y-6">
-        <div className="space-y-6">
-          <Card title="Customer">
-            <Row label="Name" value={`${order.first_name} ${order.last_name}`} />
-            <Row label="Email" value={order.email} />
-            <Row label="Phone" value={`${order.country_code ?? ""} ${order.phone ?? ""}`} />
-          </Card>
+        <Card title="Customer">
+          <Row label="Name" value={`${order.first_name} ${order.last_name}`} />
+          <Row label="Email" value={order.email} />
+          <Row label="Phone" value={`${order.country_code ?? ""} ${order.phone ?? ""}`} />
+        </Card>
 
-          <Card title="Business">
-            <Row label="Business name" value={order.business_name} />
-            <Row label="Entity" value={order.company_type} />
-            <Row label="State" value={order.state} />
-            <Row label="Industry" value={order.industry ?? "—"} />
-            <Row label="Website" value={order.website ?? "—"} />
-            <Row label="Description" value={order.description ?? "—"} multiline />
-          </Card>
+        <Card title="Business">
+          <Row label="Business name" value={order.business_name} />
+          <Row label="Entity" value={order.company_type} />
+          <Row label="State" value={order.state} />
+          <Row label="Industry" value={order.industry ?? "—"} />
+          <Row label="Website" value={order.website ?? "—"} />
+          <Row label="Description" value={order.description ?? "—"} multiline />
+        </Card>
 
-          <Card title={`Members (${order.members?.length ?? 0})`}>
-            {(order.members ?? []).map((m, i) => (
-              <div key={i} className="border border-border rounded-xl p-3 mb-2 last:mb-0">
-                <div className="flex items-center justify-between mb-1">
-                  <div className="font-semibold text-sm">
-                    {m.firstName} {m.lastName}{" "}
-                    {m.isResponsible && <Badge variant="outline" className="ml-1 text-[10px]">Responsible</Badge>}
-                  </div>
-                  <span className="text-xs text-muted-foreground">{m.idType}</span>
+        <Card title={`Members (${order.members?.length ?? 0})`}>
+          {(order.members ?? []).map((m, i) => (
+            <div key={i} className="border border-border rounded-xl p-3 mb-2 last:mb-0">
+              <div className="flex items-center justify-between mb-1">
+                <div className="font-semibold text-sm">
+                  {m.firstName} {m.lastName}{" "}
+                  {m.isResponsible && <Badge variant="outline" className="ml-1 text-[10px]">Responsible</Badge>}
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  {m.street}, {m.city}, {m.stateProvince} {m.zip}, {m.country}
-                </div>
-                {m.idFile && <MemberFileLink file={m.idFile} />}
+                <span className="text-xs text-muted-foreground">{m.idType}</span>
               </div>
-            ))}
-          </Card>
-
-          <Card title="Pricing">
-            <Row label="Package & state fee" value={`$${order.foundo_fee + order.state_fee}`} />
-            <Row label="Add-ons" value={`$${order.addons_total}`} />
-            {order.discount > 0 && (
-              <Row label={`Discount${order.coupon_code ? ` (${order.coupon_code})` : ""}`} value={`−$${order.discount}`} />
-            )}
-            <div className="flex justify-between pt-2 mt-2 border-t border-border font-bold">
-              <span>Total</span><span>${order.total}</span>
+              <div className="text-xs text-muted-foreground">
+                {m.street}, {m.city}, {m.stateProvince} {m.zip}, {m.country}
+              </div>
+              {m.idFile && <MemberFileLink file={m.idFile} />}
             </div>
-          </Card>
+          ))}
+        </Card>
 
-          {(order.addon_itin || order.addon_seller_permit || order.addon_premium_address) && (
-            <Card title="Add-ons selected">
-              <ul className="text-sm space-y-1">
-                {order.addon_itin && <li>— ITIN</li>}
-                {order.addon_seller_permit && <li>— Seller Permit</li>}
-                {order.addon_premium_address && <li>— Premium Address</li>}
-              </ul>
-            </Card>
+        <Card title="Pricing">
+          <Row label="Package & state fee" value={`$${order.foundo_fee + order.state_fee}`} />
+          <Row label="Add-ons" value={`$${order.addons_total}`} />
+          {order.discount > 0 && (
+            <Row label={`Discount${order.coupon_code ? ` (${order.coupon_code})` : ""}`} value={`−$${order.discount}`} />
           )}
-        </div>
+          <div className="flex justify-between pt-2 mt-2 border-t border-border font-bold">
+            <span>Total</span><span>${order.total}</span>
+          </div>
+        </Card>
+
+        {(order.addon_itin || order.addon_seller_permit || order.addon_premium_address) && (
+          <Card title="Add-ons selected">
+            <ul className="text-sm space-y-1">
+              {order.addon_itin && <li>— ITIN</li>}
+              {order.addon_seller_permit && <li>— Seller Permit</li>}
+              {order.addon_premium_address && <li>— Premium Address</li>}
+            </ul>
+          </Card>
+        )}
       </div>
     </AdminShell>
   );
 };
 
-const MemberFileLink = ({ file }: { file: MockMemberFile }) => {
+const MemberFileLink = ({ file }: { file: MemberFile }) => {
   const [url, setUrl] = useState<string | null>(null);
   useEffect(() => {
     let active = true;

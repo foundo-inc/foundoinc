@@ -81,7 +81,7 @@ export async function getOrder(id: string): Promise<Order | null> {
 export async function createOrder(input: Omit<Order, "id" | "order_number" | "created_at" | "current_milestone">): Promise<Order> {
   const { data, error } = await supabase
     .from("orders")
-    .insert({ ...input, current_milestone: "received" })
+    .insert({ ...input, members: input.members as unknown as never, current_milestone: "received" })
     .select()
     .single();
   if (error) throw error;
