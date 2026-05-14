@@ -891,8 +891,6 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
   const [intentError, setIntentError] = useState<string | null>(null);
   const [intentAmount, setIntentAmount] = useState<number | null>(null);
 
-  const [couponInput, setCouponInput] = useState(coupon?.code ?? "");
-  const [couponMsg, setCouponMsg] = useState<string | null>(null);
 
   // (Re)create PaymentIntent whenever the total changes.
   useEffect(() => {
@@ -921,14 +919,6 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t.total]);
 
-  const applyCoupon = () => {
-    const code = couponInput.trim();
-    if (!code) { dispatch(setCouponAction(null)); setCouponMsg(null); return; }
-    const c = findCoupon(code);
-    if (c) { dispatch(setCouponAction(c)); setCouponMsg(`Applied: ${c.label}`); }
-    else { dispatch(setCouponAction(null)); setCouponMsg("Invalid coupon code"); }
-  };
-
   return (
     <section>
       <h2 className="text-2xl font-bold font-display mb-1">Payment Details</h2>
@@ -950,23 +940,6 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
           </div>
         </div>
       </div>
-
-      <Field label="Coupon Code (optional)" className="mb-5">
-        <div className="flex gap-2">
-          <Input
-            value={couponInput}
-            onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-            placeholder="Enter code"
-            className="h-12 rounded-xl flex-1"
-          />
-          <Button type="button" variant="outline" onClick={applyCoupon} className="h-12 rounded-xl px-4">
-            <Tag className="h-4 w-4 mr-2" /> Apply
-          </Button>
-        </div>
-        {couponMsg && (
-          <p className={cn("text-xs mt-1", coupon ? "text-success" : "text-destructive")}>{couponMsg}</p>
-        )}
-      </Field>
 
       {intentError && (
         <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
