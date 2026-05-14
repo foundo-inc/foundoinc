@@ -891,8 +891,6 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
   const [intentError, setIntentError] = useState<string | null>(null);
   const [intentAmount, setIntentAmount] = useState<number | null>(null);
 
-  const [couponInput, setCouponInput] = useState(coupon?.code ?? "");
-  const [couponMsg, setCouponMsg] = useState<string | null>(null);
 
   // (Re)create PaymentIntent whenever the total changes.
   useEffect(() => {
