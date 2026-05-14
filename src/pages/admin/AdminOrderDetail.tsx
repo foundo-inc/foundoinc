@@ -1,51 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import AdminShell from "./AdminShell";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { toast } from "@/hooks/use-toast";
-import { MILESTONES, milestoneIndex, milestoneLabel } from "@/lib/admin-data";
-import { ArrowLeft, CheckCircle2, Circle, Mail, Loader2 } from "lucide-react";
-import { getOrder, updateOrderMilestone, MockOrder, MockMemberFile } from "@/lib/mock-orders";
+import { milestoneLabel } from "@/lib/admin-data";
+import { ArrowLeft } from "lucide-react";
+import { getOrder, MockOrder, MockMemberFile } from "@/lib/mock-orders";
 import { rebuildFileUrl } from "@/lib/idb-storage";
 
 const AdminOrderDetail = () => {
   const { id } = useParams();
   const [order, setOrder] = useState<MockOrder | null>(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState<string | null>(null);
-  const [note, setNote] = useState("");
 
-  const load = () => {
+  useEffect(() => {
     if (!id) return;
     setOrder(getOrder(id));
     setLoading(false);
-  };
-
-  useEffect(() => { load(); }, [id]);
-
-  const updateMilestone = async (next: string) => {
-    if (!order) return;
-    setUpdating(next);
-    await new Promise((r) => setTimeout(r, 400));
-    const updated = updateOrderMilestone(order.id, next, note.trim() || null);
-    if (!updated) {
-      toast({ title: "Update failed", variant: "destructive" });
-      setUpdating(null);
-      return;
-    }
-    toast({ title: "Milestone updated", description: `Notification queued for ${order.email}` });
-    setNote("");
-    setUpdating(null);
-    load();
-  };
+  }, [id]);
 
   if (loading) return <AdminShell><div className="text-muted-foreground text-sm">Loading…</div></AdminShell>;
   if (!order) return <AdminShell><div>Order not found.</div></AdminShell>;
-
-  const currentIdx = milestoneIndex(order.current_milestone);
-  const history = order.history;
 
   return (
     <AdminShell>
