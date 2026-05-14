@@ -86,9 +86,6 @@ const AdminOrders = () => {
                     {new Date(o.created_at).toLocaleDateString()}
                   </div>
                 </div>
-                <span className={`text-[11px] font-semibold px-2 py-1 rounded-full ${milestoneTone[o.current_milestone] ?? "bg-muted"}`}>
-                  {milestoneLabel(o.current_milestone)}
-                </span>
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
               </Link>
             ))}
