@@ -41,7 +41,7 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
-import { addOrder, MockOrder } from "@/lib/mock-orders";
+import { createOrder } from "@/lib/orders-api";
 
 const stripePromise = loadStripe("pk_test_51QFmWYG24hgFt3aLgor26H6xvWOssioBhX3Cm8ZahEzuATGXXujLfiXUK0texYwRlzYNY5v4XDAtXyfg2fZhbnt100v3KnvSMa");
 
@@ -137,58 +137,55 @@ const Checkout = () => {
     dispatch(setPaymentStatus({ status: "processing", error: null }));
     await new Promise((r) => setTimeout(r, 600));
     const t = computeTotals(data, coupon);
-    const now = new Date().toISOString();
-    const id = `ord_${Date.now()}`;
-    const orderNumber = `FND-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newOrder: MockOrder = {
-      id,
-      order_number: orderNumber,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      country_code: data.countryCode,
-      phone: data.phone,
-      state: data.state,
-      company_type: data.companyType,
-      business_name: data.businessName,
-      website: data.website || null,
-      industry: data.industry || null,
-      description: data.description || null,
-      members: data.members.map((m) => ({
-        firstName: m.firstName,
-        lastName: m.lastName,
-        street: m.street,
-        city: m.city,
-        stateProvince: m.stateProvince,
-        zip: m.zip,
-        country: m.country,
-        idType: m.idType,
-        ssn: m.ssn || undefined,
-        isResponsible: m.isResponsible,
-        idFile: m.idFile
-          ? { name: m.idFile.name, size: m.idFile.size, type: m.idFile.type, key: m.idFile.key }
-          : undefined,
-      })),
-      addon_itin: data.addonItin,
-      addon_seller_permit: data.addonSellerPermit,
-      addon_premium_address: data.addonPremiumAddress,
-      foundo_fee: FOUNDO_FEE,
-      state_fee: t.stateFee,
-      addons_total: t.addons,
-      subtotal: t.subtotal,
-      discount: t.discount,
-      total: t.total,
-      coupon_code: coupon?.code ?? null,
-      current_milestone: "received",
-      notes: null,
-      created_at: now,
-      history: [{ id: `h_${Date.now()}`, milestone: "received", note: "Order received", created_at: now }],
-    };
-    addOrder(newOrder);
-    dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: id }));
-    toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
-    dispatch(resetCheckout());
-    setTimeout(() => navigate("/checkout/thank-you"), 600);
+    try {
+      const saved = await createOrder({
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        country_code: data.countryCode,
+        phone: data.phone,
+        state: data.state,
+        company_type: data.companyType,
+        business_name: data.businessName,
+        website: data.website || null,
+        industry: data.industry || null,
+        description: data.description || null,
+        members: data.members.map((m) => ({
+          firstName: m.firstName,
+          lastName: m.lastName,
+          street: m.street,
+          city: m.city,
+          stateProvince: m.stateProvince,
+          zip: m.zip,
+          country: m.country,
+          idType: m.idType,
+          ssn: m.ssn || undefined,
+          isResponsible: m.isResponsible,
+          idFile: m.idFile
+            ? { name: m.idFile.name, size: m.idFile.size, type: m.idFile.type, key: m.idFile.key }
+            : undefined,
+        })),
+        addon_itin: data.addonItin,
+        addon_seller_permit: data.addonSellerPermit,
+        addon_premium_address: data.addonPremiumAddress,
+        foundo_fee: FOUNDO_FEE,
+        state_fee: t.stateFee,
+        addons_total: t.addons,
+        subtotal: t.subtotal,
+        discount: t.discount,
+        total: t.total,
+        coupon_code: coupon?.code ?? null,
+        notes: null,
+      });
+      dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: saved.id }));
+      toast({ title: "Order placed!", description: "Redirecting to confirmation…" });
+      dispatch(resetCheckout());
+      setTimeout(() => navigate("/checkout/thank-you"), 600);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Could not save order";
+      dispatch(setPaymentStatus({ status: "failed", error: msg }));
+      toast({ title: "Order failed", description: msg, variant: "destructive" });
+    }
   };
 
   const totals = computeTotals(data, coupon);

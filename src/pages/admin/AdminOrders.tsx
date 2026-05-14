@@ -4,9 +4,8 @@ import AdminShell from "./AdminShell";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, ChevronRight } from "lucide-react";
-import { listOrders, MockOrder } from "@/lib/mock-orders";
-
-type Order = MockOrder;
+import { listOrders, Order } from "@/lib/orders-api";
+import { toast } from "@/hooks/use-toast";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -14,8 +13,10 @@ const AdminOrders = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setOrders(listOrders());
-    setLoading(false);
+    listOrders()
+      .then(setOrders)
+      .catch((e) => toast({ title: "Failed to load orders", description: e.message, variant: "destructive" }))
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = orders.filter((o) => {
