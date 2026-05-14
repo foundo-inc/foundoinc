@@ -40,6 +40,8 @@ import {
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
 import { createOrder } from "@/lib/orders-api";
+import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { getStripe, createPaymentIntent } from "@/lib/stripe";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
