@@ -1,5 +1,13 @@
 // Mock orders data — replaces Supabase backend until real backend is ready.
 
+export interface MockMemberFile {
+  name: string;
+  size?: number;
+  type?: string;
+  /** IndexedDB key — use rebuildFileUrl() to get a viewable blob URL. */
+  key?: string;
+}
+
 export interface MockMember {
   firstName: string;
   lastName: string;
@@ -9,8 +17,9 @@ export interface MockMember {
   zip: string;
   country: string;
   idType: string;
+  ssn?: string;
   isResponsible?: boolean;
-  idFile?: { name: string };
+  idFile?: MockMemberFile;
 }
 
 export interface MockMilestone {
@@ -216,6 +225,13 @@ export function listOrders(): MockOrder[] {
 
 export function getOrder(id: string): MockOrder | null {
   return load().find((o) => o.id === id) ?? null;
+}
+
+export function addOrder(order: MockOrder): MockOrder {
+  const orders = load();
+  orders.unshift(order);
+  save(orders);
+  return order;
 }
 
 export function updateOrderMilestone(id: string, milestone: string, note: string | null): MockOrder | null {
