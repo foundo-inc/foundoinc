@@ -3,25 +3,15 @@ import { Link } from "react-router-dom";
 import AdminShell from "./AdminShell";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { MILESTONES, milestoneLabel } from "@/lib/admin-data";
 import { Search, ChevronRight } from "lucide-react";
 import { listOrders, MockOrder } from "@/lib/mock-orders";
 
 type Order = MockOrder;
 
-const milestoneTone: Record<string, string> = {
-  received: "bg-muted text-foreground",
-  filing: "bg-blue-100 text-blue-700",
-  ein: "bg-amber-100 text-amber-800",
-  documents_ready: "bg-purple-100 text-purple-800",
-  completed: "bg-green-100 text-green-800",
-};
-
 const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<string>("all");
 
   useEffect(() => {
     setOrders(listOrders());
