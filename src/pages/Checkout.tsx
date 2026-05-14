@@ -129,34 +129,29 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async () => {
+  const handlePay = async (card: { name: string; number: string; expiry: string; cvc: string }) => {
     dispatch(setPaymentStatus({ status: "processing", error: null }));
     const t = computeTotals(data, coupon);
     try {
-      const { url } = await createCheckoutSession({
-        origin: window.location.origin,
-        state: data.state,
-        company_type: data.companyType,
-        business_name: data.businessName,
+      // TODO(backend): tokenize card via PCI-compliant provider before sending to server.
+      const order = await createOrder({
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
-        phone: data.phone,
         country_code: data.countryCode,
+        phone: data.phone,
+        state: data.state,
+        company_type: data.companyType,
+        business_name: data.businessName,
         website: data.website || null,
         industry: data.industry || null,
         description: data.description || null,
         members: data.members.map((m) => ({
-          firstName: m.firstName,
-          lastName: m.lastName,
-          street: m.street,
-          city: m.city,
-          stateProvince: m.stateProvince,
-          zip: m.zip,
-          country: m.country,
-          idType: m.idType,
-          ssn: m.ssn || undefined,
-          isResponsible: m.isResponsible,
+          firstName: m.firstName, lastName: m.lastName,
+          street: m.street, city: m.city, stateProvince: m.stateProvince,
+          zip: m.zip, country: m.country, idType: m.idType,
+          ssn: m.ssn || undefined, isResponsible: m.isResponsible,
+          idFile: m.idFile ? { name: m.idFile.name } : undefined,
         })),
         addon_itin: data.addonItin,
         addon_seller_permit: data.addonSellerPermit,
@@ -164,13 +159,19 @@ const Checkout = () => {
         foundo_fee: FOUNDO_FEE,
         state_fee: t.stateFee,
         addons_total: t.addons,
+        subtotal: t.subtotal,
+        discount: t.discount,
         total: t.total,
+        coupon_code: coupon?.code ?? null,
+        notes: null,
       });
-      window.location.href = url;
+      dispatch(setPaymentStatus({ status: "succeeded", error: null }));
+      dispatch(resetCheckout());
+      navigate(`/checkout/thank-you?order=${encodeURIComponent(order.order_number)}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Could not start checkout";
+      const msg = err instanceof Error ? err.message : "Payment failed";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Checkout failed", description: msg, variant: "destructive" });
+      toast({ title: "Payment failed", description: msg, variant: "destructive" });
     }
   };
 
