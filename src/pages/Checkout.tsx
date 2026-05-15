@@ -39,6 +39,9 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
+import { Elements, CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { getStripe } from "@/lib/stripe";
+import { saveReceipt, buildReceipt, downloadReceiptHtml } from "@/lib/receipt-storage";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -128,11 +131,20 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async () => {
+  const handlePay = async (payment: { brand?: string; last4?: string; tokenId?: string }) => {
     try {
       dispatch(setPaymentStatus({ status: "processing", error: null }));
-      // Simulated client-side order placement (no backend).
       const orderNumber = `FN-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
+      const t = computeTotals(data, coupon);
+      const receipt = buildReceipt({
+        orderNumber,
+        data,
+        totals: t,
+        couponCode: coupon?.code ?? null,
+        payment,
+        foundoFee: FOUNDO_FEE,
+      });
+      await saveReceipt(receipt);
       dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: orderNumber }));
       dispatch(resetCheckout());
       navigate(`/checkout/thank-you?order=${encodeURIComponent(orderNumber)}`);
