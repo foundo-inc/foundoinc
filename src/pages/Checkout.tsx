@@ -39,6 +39,9 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
+import { Elements, CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { getStripe } from "@/lib/stripe";
+import { saveReceipt, buildReceipt, downloadReceiptHtml } from "@/lib/receipt-storage";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -128,11 +131,20 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async () => {
+  const handlePay = async (payment: { brand?: string; last4?: string; tokenId?: string }) => {
     try {
       dispatch(setPaymentStatus({ status: "processing", error: null }));
-      // Simulated client-side order placement (no backend).
       const orderNumber = `FN-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
+      const t = computeTotals(data, coupon);
+      const receipt = buildReceipt({
+        orderNumber,
+        data,
+        totals: t,
+        couponCode: coupon?.code ?? null,
+        payment,
+        foundoFee: FOUNDO_FEE,
+      });
+      await saveReceipt(receipt);
       dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: orderNumber }));
       dispatch(resetCheckout());
       navigate(`/checkout/thank-you?order=${encodeURIComponent(orderNumber)}`);
@@ -845,23 +857,19 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Payment (client-only placeholder) ---------------- */
-const Step7 = ({ onPay }: { onPay: () => Promise<void> }) => {
+/* ---------------- Step 7: Stripe CardElement Payment ---------------- */
+type PayInfo = { brand?: string; last4?: string; tokenId?: string };
+
+const Step7 = ({ onPay }: { onPay: (p: PayInfo) => Promise<void> }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
   const t = computeTotals(data, coupon);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try { await onPay(); } finally { setLoading(false); }
-  };
+  const [stripePromise] = useState(() => getStripe());
 
   return (
     <section>
-      <h2 className="text-2xl font-bold font-display mb-1">Review & Place Order</h2>
-      <p className="text-muted-foreground mb-6">Confirm your order to finish checkout.</p>
+      <h2 className="text-2xl font-bold font-display mb-1">Payment Details</h2>
+      <p className="text-muted-foreground mb-6">Enter your card information to complete your order.</p>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
         <div className="flex items-end justify-between">
@@ -880,30 +888,122 @@ const Step7 = ({ onPay }: { onPay: () => Promise<void> }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <Trust icon={Lock} text="256-bit SSL encryption" />
-          <Trust icon={ShieldCheck} text="Secure checkout" />
-          <Trust icon={CreditCard} text="Money-back assurance" />
-        </div>
-
-        <Button
-          type="submit"
-          size="lg"
-          disabled={loading}
-          className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
-        >
-          {loading ? (
-            <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
-          ) : (
-            <><Lock className="h-4 w-4 mr-2" /> Place Order · ${t.total}</>
-          )}
-        </Button>
-        <p className="text-xs text-muted-foreground text-center">
-          By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
-        </p>
-      </form>
+      <Elements stripe={stripePromise}>
+        <StripeCardForm total={t.total} email={data.email} name={`${data.firstName} ${data.lastName}`.trim()} onPay={onPay} />
+      </Elements>
     </section>
+  );
+};
+
+const StripeCardForm = ({
+  total,
+  email,
+  name,
+  onPay,
+}: {
+  total: number;
+  email: string;
+  name: string;
+  onPay: (p: PayInfo) => Promise<void>;
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [cardReady, setCardReady] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!stripe || !elements) return;
+    const card = elements.getElement(CardElement);
+    if (!card) return;
+    setErrorMsg(null);
+    setLoading(true);
+    dispatch(setPaymentStatus({ status: "processing", error: null }));
+    try {
+      const { token, error } = await stripe.createToken(card, { name: name || undefined });
+      if (error || !token) {
+        const msg = error?.message || "Card details invalid";
+        setErrorMsg(msg);
+        dispatch(setPaymentStatus({ status: "failed", error: msg }));
+        toast({ title: "Card error", description: msg, variant: "destructive" });
+        return;
+      }
+      await onPay({
+        brand: token.card?.brand,
+        last4: token.card?.last4,
+        tokenId: token.id,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Payment failed";
+      setErrorMsg(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <p className="font-bold font-display flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-primary" /> Card Information
+          </p>
+          <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+            <Lock className="h-3 w-3" /> Encrypted by Stripe
+          </span>
+        </div>
+        <div className="rounded-xl border border-border bg-background px-3 py-3.5">
+          <CardElement
+            onReady={() => setCardReady(true)}
+            options={{
+              hidePostalCode: false,
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "hsl(var(--foreground))",
+                  fontFamily: "Inter, system-ui, sans-serif",
+                  "::placeholder": { color: "hsl(var(--muted-foreground))" },
+                },
+                invalid: { color: "hsl(var(--destructive))" },
+              },
+            }}
+          />
+        </div>
+        <p className="text-[11px] text-muted-foreground">
+          Test card: <span className="font-mono">4242 4242 4242 4242</span> · any future date · any CVC · any ZIP.
+        </p>
+      </div>
+
+      {errorMsg && (
+        <p className="text-sm text-destructive flex items-center gap-1">
+          <AlertCircle className="h-4 w-4" /> {errorMsg}
+        </p>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <Trust icon={Lock} text="256-bit SSL encryption" />
+        <Trust icon={ShieldCheck} text="PCI-DSS compliant" />
+        <Trust icon={CreditCard} text="Money-back assurance" />
+      </div>
+
+      <Button
+        type="submit"
+        size="lg"
+        disabled={loading || !stripe || !elements || !cardReady}
+        className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
+      >
+        {loading ? (
+          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+        ) : (
+          <><Lock className="h-4 w-4 mr-2" /> Pay ${total}</>
+        )}
+      </Button>
+      <p className="text-xs text-muted-foreground text-center">
+        By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
+      </p>
+    </form>
   );
 };
 
