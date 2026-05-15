@@ -17,8 +17,19 @@ import { STATES } from "@/lib/checkout-data";
 import { toast } from "@/hooks/use-toast";
 
 const COMPANY_TYPES = ["LLC", "C-Corp"];
-const PAGE_SIZES = [10, 20, 50, 100];
 const ALL = "__all__";
+
+function getPageNumbers(current: number, total: number): (number | "…")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const pages: (number | "…")[] = [1];
+  const left = Math.max(2, current - 1);
+  const right = Math.min(total - 1, current + 1);
+  if (left > 2) pages.push("…");
+  for (let i = left; i <= right; i++) pages.push(i);
+  if (right < total - 1) pages.push("…");
+  pages.push(total);
+  return pages;
+}
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -161,44 +172,46 @@ const AdminOrders = () => {
         )}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
-        <div className="text-xs text-muted-foreground">
-          {total === 0
-            ? "0 results"
-            : `Showing ${showingFrom}–${showingTo} of ${total}`}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+        <div className="text-sm text-muted-foreground tabular-nums">
+          {total === 0 ? "0 results" : `${showingFrom}-${showingTo} of ${total}`}
         </div>
-        <div className="flex items-center gap-2">
-          <Select value={String(limit)} onValueChange={(v) => setLimit(Number(v))}>
-            <SelectTrigger className="h-9 w-[110px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {PAGE_SIZES.map((n) => (
-                <SelectItem key={n} value={String(n)}>
-                  {n} / page
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button
-            variant="outline"
-            size="sm"
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
             disabled={page <= 1 || loading}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="px-3 h-9 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors disabled:opacity-40 disabled:pointer-events-none"
           >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-xs text-muted-foreground tabular-nums">
-            {page} / {totalPages}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
+            Previous
+          </button>
+          {getPageNumbers(page, totalPages).map((p, i) =>
+            p === "…" ? (
+              <span key={`e${i}`} className="px-2 text-sm text-muted-foreground">…</span>
+            ) : (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setPage(p as number)}
+                disabled={loading}
+                className={`min-w-9 h-9 px-3 rounded-lg text-sm font-medium tabular-nums transition-colors ${
+                  p === page
+                    ? "bg-foreground text-background"
+                    : "text-foreground hover:bg-muted/60"
+                }`}
+              >
+                {p}
+              </button>
+            ),
+          )}
+          <button
+            type="button"
             disabled={page >= totalPages || loading}
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            className="px-3 h-9 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors disabled:opacity-40 disabled:pointer-events-none"
           >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+            Next
+          </button>
         </div>
       </div>
     </AdminShell>
