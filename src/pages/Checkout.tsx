@@ -39,9 +39,6 @@ import {
   selectCoupon,
 } from "@/store/checkoutSlice";
 import { saveFileToIDB, deleteFileFromIDB } from "@/lib/idb-storage";
-import { createOrder } from "@/lib/orders-api";
-import { Elements, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { getStripe, createPaymentIntent } from "@/lib/stripe";
 
 const STEPS = ["Package", "Your Info", "Business", "Members", "Add-ons", "Review", "Payment"];
 
@@ -131,48 +128,18 @@ const Checkout = () => {
   const next = () => { if (validate(step)) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
-  const handlePay = async (paymentIntentId: string) => {
-    const t = computeTotals(data, coupon);
+  const handlePay = async () => {
     try {
-      const order = await createOrder({
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        country_code: data.countryCode,
-        phone: data.phone,
-        state: data.state,
-        company_type: data.companyType,
-        business_name: data.businessName,
-        website: data.website || null,
-        industry: data.industry || null,
-        description: data.description || null,
-        members: data.members.map((m) => ({
-          firstName: m.firstName, lastName: m.lastName,
-          street: m.street, city: m.city, stateProvince: m.stateProvince,
-          zip: m.zip, country: m.country, idType: m.idType,
-          ssn: m.ssn || undefined, isResponsible: m.isResponsible,
-          idFile: m.idFile ? { name: m.idFile.name } : undefined,
-        })),
-        addon_itin: data.addonItin,
-        addon_seller_permit: data.addonSellerPermit,
-        addon_premium_address: data.addonPremiumAddress,
-        foundo_fee: FOUNDO_FEE,
-        state_fee: t.stateFee,
-        addons_total: t.addons,
-        subtotal: t.subtotal,
-        discount: t.discount,
-        total: t.total,
-        coupon_code: coupon?.code ?? null,
-        notes: `stripe_pi:${paymentIntentId}`,
-      });
-      dispatch(setPaymentStatus({ status: "succeeded", error: null }));
+      dispatch(setPaymentStatus({ status: "processing", error: null }));
+      // Simulated client-side order placement (no backend).
+      const orderNumber = `FN-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
+      dispatch(setPaymentStatus({ status: "succeeded", error: null, orderId: orderNumber }));
       dispatch(resetCheckout());
-      navigate(`/checkout/thank-you?order=${encodeURIComponent(order.order_number)}`);
+      navigate(`/checkout/thank-you?order=${encodeURIComponent(orderNumber)}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Order creation failed";
+      const msg = err instanceof Error ? err.message : "Order failed";
       dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      toast({ title: "Order creation failed", description: msg, variant: "destructive" });
-      throw err;
+      toast({ title: "Order failed", description: msg, variant: "destructive" });
     }
   };
 
@@ -878,51 +845,23 @@ const Step6 = ({ goTo }: { goTo: (n: number) => void }) => {
   );
 };
 
-/* ---------------- Step 7: Stripe Elements Payment ---------------- */
-const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> }) => {
+/* ---------------- Step 7: Payment (client-only placeholder) ---------------- */
+const Step7 = ({ onPay }: { onPay: () => Promise<void> }) => {
   const data = useAppSelector(selectCheckoutData);
   const coupon = useAppSelector(selectCoupon);
-  const dispatch = useAppDispatch();
   const t = computeTotals(data, coupon);
+  const [loading, setLoading] = useState(false);
 
-  const [stripePromise] = useState(() => getStripe());
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [intentId, setIntentId] = useState<string | null>(null);
-  const [intentError, setIntentError] = useState<string | null>(null);
-  const [intentAmount, setIntentAmount] = useState<number | null>(null);
-
-
-  // (Re)create PaymentIntent whenever the total changes.
-  useEffect(() => {
-    let cancelled = false;
-    setIntentError(null);
-    createPaymentIntent({
-      amount: t.total,
-      email: data.email || undefined,
-      metadata: {
-        business_name: data.businessName,
-        state: data.state,
-        coupon: coupon?.code ?? "",
-      },
-    })
-      .then((res) => {
-        if (cancelled) return;
-        setClientSecret(res.clientSecret);
-        setIntentId(res.id);
-        setIntentAmount(t.total);
-      })
-      .catch((err) => {
-        if (cancelled) return;
-        setIntentError(err instanceof Error ? err.message : "Failed to initialize payment");
-      });
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t.total]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try { await onPay(); } finally { setLoading(false); }
+  };
 
   return (
     <section>
-      <h2 className="text-2xl font-bold font-display mb-1">Payment Details</h2>
-      <p className="text-muted-foreground mb-6">Enter your card information to complete your order.</p>
+      <h2 className="text-2xl font-bold font-display mb-1">Review & Place Order</h2>
+      <p className="text-muted-foreground mb-6">Confirm your order to finish checkout.</p>
 
       <div className="rounded-xl border border-border p-5 bg-secondary/20 mb-5">
         <div className="flex items-end justify-between">
@@ -941,129 +880,30 @@ const Step7 = ({ onPay }: { onPay: (paymentIntentId: string) => Promise<void> })
         </div>
       </div>
 
-      {intentError && (
-        <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-4 text-sm text-destructive">
-          {intentError}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Trust icon={Lock} text="256-bit SSL encryption" />
+          <Trust icon={ShieldCheck} text="Secure checkout" />
+          <Trust icon={CreditCard} text="Money-back assurance" />
         </div>
-      )}
 
-      {!intentError && clientSecret && intentId && intentAmount === t.total && (
-        <Elements
-          key={clientSecret}
-          stripe={stripePromise}
-          options={{ clientSecret, appearance: { theme: "stripe" } }}
+        <Button
+          type="submit"
+          size="lg"
+          disabled={loading}
+          className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
         >
-          <StripePaymentForm total={t.total} intentId={intentId} onPay={onPay} />
-        </Elements>
-      )}
-
-      {!intentError && (!clientSecret || intentAmount !== t.total) && (
-        <div className="rounded-2xl border border-border bg-card p-6 flex items-center justify-center text-sm text-muted-foreground">
-          <span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" />
-          Initializing secure payment…
-        </div>
-      )}
-    </section>
-  );
-};
-
-const StripePaymentForm = ({
-  total,
-  intentId,
-  onPay,
-}: {
-  total: number;
-  intentId: string;
-  onPay: (paymentIntentId: string) => Promise<void>;
-}) => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!stripe || !elements) return;
-    setErrorMsg(null);
-    setLoading(true);
-    dispatch(setPaymentStatus({ status: "processing", error: null }));
-    try {
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        const msg = submitError.message || "Card details invalid";
-        setErrorMsg(msg);
-        dispatch(setPaymentStatus({ status: "failed", error: msg }));
-        return;
-      }
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        redirect: "if_required",
-      });
-      if (error) {
-        const msg = error.message || "Payment failed";
-        setErrorMsg(msg);
-        dispatch(setPaymentStatus({ status: "failed", error: msg }));
-        toast({ title: "Payment failed", description: msg, variant: "destructive" });
-        return;
-      }
-      if (paymentIntent && paymentIntent.status === "succeeded") {
-        await onPay(paymentIntent.id);
-      } else {
-        const msg = `Payment ${paymentIntent?.status ?? "incomplete"}`;
-        setErrorMsg(msg);
-        dispatch(setPaymentStatus({ status: "failed", error: msg }));
-      }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Payment failed";
-      setErrorMsg(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <p className="font-bold font-display flex items-center gap-2">
-            <CreditCard className="h-4 w-4 text-primary" /> Card Information
-          </p>
-          <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-            <Lock className="h-3 w-3" /> Encrypted by Stripe
-          </span>
-        </div>
-        <PaymentElement options={{ layout: "tabs" }} />
-      </div>
-
-      {errorMsg && (
-        <p className="text-sm text-destructive flex items-center gap-1">
-          <AlertCircle className="h-4 w-4" /> {errorMsg}
+          {loading ? (
+            <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
+          ) : (
+            <><Lock className="h-4 w-4 mr-2" /> Place Order · ${t.total}</>
+          )}
+        </Button>
+        <p className="text-xs text-muted-foreground text-center">
+          By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
         </p>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Trust icon={Lock} text="256-bit SSL encryption" />
-        <Trust icon={ShieldCheck} text="PCI-DSS compliant" />
-        <Trust icon={CreditCard} text="Money-back assurance" />
-      </div>
-
-      <Button
-        type="submit"
-        size="lg"
-        disabled={loading || !stripe || !elements}
-        className="w-full h-14 rounded-xl text-base font-bold shadow-lg shadow-primary/20"
-      >
-        {loading ? (
-          <><span className="inline-block w-4 h-4 mr-2 border-2 border-current border-t-transparent rounded-full animate-spin" /> Processing…</>
-        ) : (
-          <><Lock className="h-4 w-4 mr-2" /> Pay ${total}</>
-        )}
-      </Button>
-      <p className="text-xs text-muted-foreground text-center">
-        By placing this order you agree to our <Link to="/terms-of-service" className="text-primary hover:underline">Terms</Link> and <Link to="/privacy-policy" className="text-primary hover:underline">Privacy Policy</Link>.
-      </p>
-    </form>
+      </form>
+    </section>
   );
 };
 

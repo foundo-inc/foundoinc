@@ -17,9 +17,6 @@ import CheckoutThankYou from "./pages/CheckoutThankYou.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import TermsOfService from "./pages/TermsOfService.tsx";
 import NotFound from "./pages/NotFound.tsx";
-import AdminLogin from "./pages/admin/AdminLogin.tsx";
-import AdminOrders from "./pages/admin/AdminOrders.tsx";
-import AdminOrderDetail from "./pages/admin/AdminOrderDetail.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,9 +39,6 @@ const App = () => (
           <Route path="/checkout/thank-you" element={<CheckoutThankYou />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin" element={<AdminOrders />} />
-          <Route path="/admin/orders/:id" element={<AdminOrderDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
