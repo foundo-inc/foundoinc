@@ -52,6 +52,22 @@ export async function getReceiptByOrder(orderNumber: string): Promise<Receipt | 
   return history.find((r) => r.orderNumber === orderNumber) ?? null;
 }
 
+export async function listReceipts(): Promise<Receipt[]> {
+  return ((await get<Receipt[]>(HISTORY_KEY, receiptStore)) ?? []);
+}
+
+export async function deleteReceipt(orderNumber: string): Promise<void> {
+  const history = ((await get<Receipt[]>(HISTORY_KEY, receiptStore)) ?? []);
+  await set(HISTORY_KEY, history.filter((r) => r.orderNumber !== orderNumber), receiptStore);
+  const last = await get<Receipt>(LAST_KEY, receiptStore);
+  if (last?.orderNumber === orderNumber) await del(LAST_KEY, receiptStore);
+}
+
+export async function clearAllReceipts(): Promise<void> {
+  await del(LAST_KEY, receiptStore);
+  await del(HISTORY_KEY, receiptStore);
+}
+
 export async function clearLastReceipt(): Promise<void> {
   await del(LAST_KEY, receiptStore);
 }
