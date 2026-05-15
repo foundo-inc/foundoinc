@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+export const dynamic = 'force-dynamic';
 import StatsSection from "@/components/StatsSection";
 import SinglePackageSection from "@/components/SinglePackageSection";
 import StatesSection from "@/components/StatesSection";
