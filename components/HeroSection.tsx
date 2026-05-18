@@ -1,14 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import StatePricingModal from "./StatePricingModal";
+import Image from "next/image";
+import StatePricingModal from "@/components/StatePricingModal";
 import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign, Sparkles, Globe2, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import mercuryLogo from "@/assets/partners/mercury.svg";
-import airwallexLogo from "@/assets/partners/airwallex.svg";
-import payoneerLogo from "@/assets/partners/payoneer.svg";
-import openphoneLogo from "@/assets/partners/openphone.svg";
 
 
 
@@ -25,10 +21,10 @@ const stats = [
 ];
 
 const partnerLogos = [
-  { name: "Mercury", logo: mercuryLogo },
-  { name: "Airwallex", logo: airwallexLogo },
-  { name: "Payoneer", logo: payoneerLogo },
-  { name: "OpenPhone", logo: openphoneLogo },
+  { name: "Mercury", logo: "/partners/mercury.svg" },
+  { name: "Airwallex", logo: "/partners/airwallex.svg" },
+  { name: "Payoneer", logo: "/partners/payoneer.svg" },
+  { name: "OpenPhone", logo: "/partners/openphone.svg" },
 ];
 
 const HeroSection = () => {
@@ -173,9 +169,11 @@ const HeroSection = () => {
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 max-w-4xl mx-auto">
             {partnerLogos.map((p) => (
               <div key={p.name} className="flex items-center justify-center w-[100px] sm:w-[140px] md:w-[160px] h-[28px] sm:h-[32px] md:h-[36px]">
-                <img
+                <Image
                   src={p.logo}
                   alt={p.name}
+                  width={160}
+                  height={36}
                   className="w-full h-full object-contain opacity-40 hover:opacity-80 transition-opacity duration-300"
                 />
               </div>

@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { Mail, ArrowUpRight } from "lucide-react";
-import foundoLogoWhite from "@/assets/foundo-logo-white.svg";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Company: [
@@ -41,7 +41,7 @@ const Footer = () => (
       {/* Top bar — brand + newsletter */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-10 md:py-14 gap-6">
         <div className="flex items-center">
-          <img src={foundoLogoWhite} alt="Foundo" className="h-14 md:h-16 w-auto" />
+          <Image src="/foundo-logo-white.svg" alt="Foundo" width={64} height={64} className="h-14 md:h-16 w-auto" />
         </div>
         <div className="flex items-center gap-3">
           <a href="https://api.whatsapp.com/send?phone=919510022071&text=Hi!%20%F0%9F%91%8B%20I%27d%20like%20to%20know%20more.%20Is%20anyone%20free%20to%20chat?" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm font-semibold hover:bg-primary/90 transition-all duration-300 hover:-translate-y-0.5 shadow-lg shadow-primary/20">

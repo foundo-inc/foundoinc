@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import foundoLogo from "@/assets/foundo-logo.svg";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -21,7 +21,7 @@ const Navbar = () => {
     <nav className="absolute top-0 left-0 right-0 z-50 bg-transparent">
       <div className="mx-auto flex items-center justify-between h-16 md:h-20 px-3 md:px-8 lg:container">
         <Link href="/" className="flex items-center group">
-          <img src={foundoLogo} alt="Foundo" className="h-14 md:h-16 w-auto" />
+          <Image src="/foundo-logo.svg" alt="Foundo" width={64} height={64} className="h-14 md:h-16 w-auto" />
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
