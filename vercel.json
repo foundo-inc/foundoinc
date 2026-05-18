@@ -1,13 +1,9 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/public/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
