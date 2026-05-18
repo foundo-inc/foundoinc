@@ -1,6 +1,7 @@
+'use client';
+
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/sections/HeroSection";
-export const dynamic = 'force-dynamic';
 import StatsSection from "@/sections/StatsSection";
 import SinglePackageSection from "@/sections/SinglePackageSection";
 import StatesSection from "@/sections/StatesSection";

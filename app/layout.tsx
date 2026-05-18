@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Foundo",
   description: "Foundo - Your Business Management Platform",
