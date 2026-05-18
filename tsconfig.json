@@ -19,7 +19,7 @@
     "strictNullChecks": false,
     "allowJs": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./*"]
     },
     "plugins": [
       {
