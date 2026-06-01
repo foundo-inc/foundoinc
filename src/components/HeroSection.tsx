@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import StatePricingModal from "./StatePricingModal";
 import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign, Sparkles, Globe2, CreditCard } from "lucide-react";

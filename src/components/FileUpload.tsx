@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState, useCallback } from "react";
 import { Upload, FileCheck2, X, FileImage, FileText, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
