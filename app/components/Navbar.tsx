@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import foundoLogo from "@/assets/foundo-logo.svg";
+import foundoLogo from "../assets/foundo-logo.svg";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);

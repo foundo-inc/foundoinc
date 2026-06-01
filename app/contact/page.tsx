@@ -5,7 +5,7 @@ import { Mail, Phone, MapPin, MessageCircle, Send, Clock, Globe2, Sparkles, Arro
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 

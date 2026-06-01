@@ -1,5 +1,5 @@
 import { Mail, ArrowUpRight } from "lucide-react";
-import foundoLogoWhite from "@/assets/foundo-logo-white.svg";
+import foundoLogoWhite from "../assets/foundo-logo-white.svg";
 
 const footerLinks: Record<string, { label: string; href: string }[]> = {
   Company: [

@@ -5,10 +5,10 @@ import StatePricingModal from "./StatePricingModal";
 import { ArrowRight, ChevronRight, CheckCircle, Shield, Clock, DollarSign, Sparkles, Globe2, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import mercuryLogo from "@/assets/partners/mercury.svg";
-import airwallexLogo from "@/assets/partners/airwallex.svg";
-import payoneerLogo from "@/assets/partners/payoneer.svg";
-import openphoneLogo from "@/assets/partners/openphone.svg";
+import mercuryLogo from "../assets/partners/mercury.svg";
+import airwallexLogo from "../assets/partners/airwallex.svg";
+import payoneerLogo from "../assets/partners/payoneer.svg";
+import openphoneLogo from "../assets/partners/openphone.svg";
 
 
 
