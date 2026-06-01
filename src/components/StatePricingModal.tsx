@@ -1,8 +1,10 @@
+"use client";
+
 import { useState } from "react";
+import Link from "next/link";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Flag, Rocket } from "lucide-react";
 
 const states = [
@@ -95,7 +97,7 @@ const StatePricingModal = ({ open, onOpenChange }: StatePricingModalProps) => {
 
           {/* CTA */}
           <Button asChild className="w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 hover:shadow-xl transition-all duration-300">
-            <Link to="/checkout" onClick={() => onOpenChange(false)}>
+            <Link href="/checkout" onClick={() => onOpenChange(false)}>
               <Rocket className="mr-2 h-4 w-4" /> Start Your Business <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
